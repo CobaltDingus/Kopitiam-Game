@@ -66,5 +66,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "Kopitiam Game.sln"
+    "dotnet.defaultSolution": "Kopitiam-Game.slnx"
 }
