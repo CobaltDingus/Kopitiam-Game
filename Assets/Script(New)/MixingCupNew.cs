@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
-public class Cupcup : MonoBehaviour
+public class MixingCupNew : MonoBehaviour, DropInterface
 {
     //put MasterRecipe.asset here
     [SerializeField] private RecipeBook recipeBook;
     [SerializeField] private Image targetDisplayImage;
     [SerializeField] private GameObject imageContainer;
 
-    [SerializeField] private int maxIngredients = 4;
+    [SerializeField] private int maxIngredients = 5;
+
+    [SerializeField] private TMP_Text cupText;
 
     private List<Ingredient> currentIngredients = new List<Ingredient>();
 
@@ -23,6 +26,13 @@ public class Cupcup : MonoBehaviour
         currentIngredients.Add(newIngredient);
         Debug.Log($"Added {newIngredient.Name}. Total: {currentIngredients.Count}");
         return true;
+    }
+
+    public void ReceiveIngredient(Ingredient newIngredient)
+    {
+        currentIngredients.Add(newIngredient);
+
+        // cupText.text = string.Join("\n", ingredients);
     }
 
     public void FinaliseDrink()

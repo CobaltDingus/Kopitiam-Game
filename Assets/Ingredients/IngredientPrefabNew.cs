@@ -1,21 +1,24 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DraggableIngredient : MonoBehaviour,
+public class IngredientPrefabNew : 
+    MonoBehaviour,
     IPointerDownHandler,
     IDragHandler,
     IPointerUpHandler
 {
     [SerializeField] private GameObject dragPrefab;
+    public Ingredient ingredientAsset;
 
     private GameObject draggedObject;
     private Camera cam;
-    private string ingredientName;
+    private SpriteRenderer sourceRenderer;
 
     private void Awake()
     {
         cam = Camera.main;
-        ingredientName = GetComponent<IngredientSource>().ingredientName;
+
+        sourceRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -26,11 +29,13 @@ public class DraggableIngredient : MonoBehaviour,
 
         draggedObject = Instantiate(dragPrefab, worldPos, Quaternion.identity);
 
-        SpriteRenderer sourceRenderer = GetComponent<SpriteRenderer>();
-        SpriteRenderer dragRenderer = draggedObject.GetComponent<SpriteRenderer>();
+        // SpriteRenderer sourceRenderer = GetComponent<SpriteRenderer>();
+        // SpriteRenderer dragRenderer = draggedObject.GetComponent<SpriteRenderer>();
+        SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
 
-        dragRenderer.sprite = sourceRenderer.sprite;
+        // dragRenderer.sprite = sourceRenderer.sprite;
         dragRenderer.color = sourceRenderer.color;
+        Debug.Log("Pointer Down");
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -50,22 +55,22 @@ public class DraggableIngredient : MonoBehaviour,
         if (draggedObject == null)
             return;
 
-        Vector3 worldPos =
-            cam.ScreenToWorldPoint(eventData.position);
+        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
         worldPos.z = 0;
 
         Collider2D hit = Physics2D.OverlapPoint(worldPos);
 
         if (hit != null)
         {
-            Cup cup = hit.GetComponent<Cup>();
+            DropInterface dropTarget = hit.GetComponent<DropInterface>();
 
-            if (cup != null)
+            if (dropTarget != null)
             {
-                cup.AddIngredient(ingredientName);
+                dropTarget.ReceiveIngredient(ingredientAsset);
             }
         }
 
         Destroy(draggedObject);
+        draggedObject = null;
     }
 }

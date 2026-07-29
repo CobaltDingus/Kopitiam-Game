@@ -15,7 +15,8 @@ MonoBehaviour:
   allRecipes:
   - id: R001
     drinkName: 
-    ingredients: []
+    ingredients:
+    - {fileID: 0}
     drinkImage: {fileID: 0}
   - id: 
     drinkName: 

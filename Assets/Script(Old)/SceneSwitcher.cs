@@ -5,7 +5,7 @@ public class SceneSwitcher : MonoBehaviour
 {
     public void LoadKitchen()
     {
-        SceneManager.LoadScene("KitchenScene");
+        SceneManager.LoadScene("KitchenRearranged");
     }
 
     public void LoadCounter()
