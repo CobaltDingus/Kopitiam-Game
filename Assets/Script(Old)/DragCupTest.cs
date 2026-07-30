@@ -1,79 +1,82 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class DragCupTest : MonoBehaviour
+public class DragCupTest : MonoBehaviour,
+    IPointerDownHandler,
+    IDragHandler,
+    IPointerUpHandler
 {
     private bool dragging;
     private Vector3 startPosition;
+
     [SerializeField] private TMP_Text drinkText;
+
     private Collider2D cupCollider;
+    private Camera cam;
 
     public string DrinkContents => drinkText.text;
-    void Start()
+
+    private void Awake()
     {
-        startPosition = transform.position;
+        cam = Camera.main;
         cupCollider = GetComponent<Collider2D>();
     }
 
-    void Update()
+    private void Start()
     {
-        Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mouse.z = 0;
-
-        if (dragging)
-        {
-            transform.position = mouse;
-        }
-
-        if (dragging && Input.GetMouseButtonUp(0))
-        {
-            dragging = false;
-
-            // Enable collider again after checking
-            cupCollider.enabled = true;
-
-            // Collider2D hit = Physics2D.OverlapPoint(mouse);
-
-            // if (hit != null)
-            // {
-            //     Debug.Log(hit.gameObject.name);
-            //     Customer customer = hit.GetComponent<Customer>();
-
-            //     if (customer != null)
-            //     {
-            //         customer.ReceiveCup(this);
-            //         return;
-            //     }
-            // }
-            // else
-            // {
-            //     Debug.Log("Nothing detected");
-            // }
-
-            Collider2D[] hits = Physics2D.OverlapPointAll(mouse);
-
-            foreach (Collider2D hit in hits)
-            {
-                Customer customer = hit.GetComponent<Customer>();
-
-                if (customer != null)
-                {
-                    customer.ReceiveCup(this);
-                    Destroy(gameObject);
-                    return;
-                }
-            }
-
-            transform.position = startPosition;
-        }
+        startPosition = transform.position;
     }
 
-    void OnMouseDown()
+    public void OnPointerDown(PointerEventData eventData)
     {
         dragging = true;
 
+        // Disable so we can detect objects underneath while dragging
         cupCollider.enabled = false;
 
-        Debug.Log("Cup collider enabled: " + cupCollider.enabled);
+        Debug.Log("Started dragging cup");
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (!dragging)
+            return;
+
+        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+        worldPos.z = 0;
+
+        transform.position = worldPos;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (!dragging)
+            return;
+
+        dragging = false;
+
+        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+        worldPos.z = 0;
+
+        // Re-enable collider
+        cupCollider.enabled = true;
+
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPos);
+
+        foreach (Collider2D hit in hits)
+        {
+            Customer customer = hit.GetComponent<Customer>();
+
+            if (customer != null)
+            {
+                customer.ReceiveCup(this);
+                Destroy(gameObject);
+                return;
+            }
+        }
+
+        // Didn't hit a customer, return to where we started
+        transform.position = startPosition;
     }
 }

@@ -62,7 +62,7 @@ public class IngredientPrefabNew :
 
         if (hit != null)
         {
-            DropInterface dropTarget = hit.GetComponent<DropInterface>();
+            DropIngredientInterface dropTarget = hit.GetComponent<DropIngredientInterface>();
 
             if (dropTarget != null)
             {

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Ice
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: 
-  ingredientName: 
+  ingredientName: Ice
   icon: {fileID: 0}

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: EvaporatedMilk
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: 
-  ingredientName: 
+  ingredientName: Evaporated Milk
   icon: {fileID: 0}

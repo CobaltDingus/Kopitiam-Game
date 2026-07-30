@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Limau
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: 
-  ingredientName: 
+  ingredientName: Limau
   icon: {fileID: 0}

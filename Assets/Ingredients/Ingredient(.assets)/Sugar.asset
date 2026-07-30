@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Sugar
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: 
-  ingredientName: 
+  ingredientName: Sugar
   icon: {fileID: 0}

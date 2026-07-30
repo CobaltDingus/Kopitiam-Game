@@ -54,8 +54,8 @@ public class DragManager : MonoBehaviour
 
             if (hit != null)
             {
-                DropInterface target =
-                    hit.GetComponent<DropInterface>();
+                DropIngredientInterface target =
+                    hit.GetComponent<DropIngredientInterface>();
 
                 if (target != null)
                 {

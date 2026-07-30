@@ -1,4 +1,4 @@
-public interface DropInterface
+public interface DropIngredientInterface
 {
     void ReceiveIngredient(Ingredient ingredient);
 }

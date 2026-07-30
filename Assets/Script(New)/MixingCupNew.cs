@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
 
-public class MixingCupNew : MonoBehaviour, DropInterface
+public class MixingCupNew : MonoBehaviour, DropIngredientInterface
 {
     //put MasterRecipe.asset here
     [SerializeField] private RecipeBook recipeBook;
