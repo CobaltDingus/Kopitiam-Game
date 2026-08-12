@@ -4,29 +4,31 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class MixingCup : 
-MonoBehaviour,
+DraggableObject,
 DropIngredientInterface,
+// DropInterface,
 IPointerDownHandler,
 IDragHandler,
 IPointerUpHandler
 
 {
     private Drink drink = new Drink();
-    [SerializeField] private GameObject dragCupPrefab;
-    
-    private GameObject draggedObject;
-    private Camera cam;
-    private SpriteRenderer sourceRenderer;
     [SerializeField] private TMP_Text ingredientText;
+    // [SerializeField] private GameObject dragCupPrefab;
+    
+    // private GameObject draggedObject;
+    // private Camera cam;
+    // private SpriteRenderer sourceRenderer;
+
+    // // private List<Ingredient> ingredients = new List<Ingredient>();
 
 
-    // private List<Ingredient> ingredients = new List<Ingredient>();
 
-    private void Awake()
-    {
-        cam = Camera.main;
-        sourceRenderer = GetComponentInChildren<SpriteRenderer>();
-    }
+    // private void Awake()
+    // {
+    //     cam = Camera.main;
+    //     sourceRenderer = GetComponentInChildren<SpriteRenderer>();
+    // }
 
     public void ReceiveIngredient(Ingredient ingredient)
     {
@@ -36,6 +38,20 @@ IPointerUpHandler
         UpdateIngredientText();
     }
 
+    // public override DraggedData GetData()
+    // {
+    //     return drink;
+    // }
+    // public void ReceiveDraggable( draggableObject)
+    // {
+    //     if (draggableObject.GetData() is Ingredient ingredient)
+    //     {
+    //         drink.ingredients.Add(ingredient);
+
+    //         UpdateIngredientText();
+    //     }
+
+    // }
     private void UpdateIngredientText()
     {
         ingredientText.text = string.Join(
@@ -44,76 +60,68 @@ IPointerUpHandler
         );
     }
 
-    // public List<Ingredient> GetIngredients()
+    // // public List<Ingredient> GetIngredients()
+    // // {
+    // //     return ingredients;
+    // // }
+
+    // public void ClearCup()
     // {
-    //     return ingredients;
+    //     drink.ingredients.Clear();
+    //     ingredientText.text = "";
     // }
 
-    public void ClearCup()
-    {
-        drink.ingredients.Clear();
-        ingredientText.text = "";
-    }
+    // public void OnPointerDown(PointerEventData eventData)
+    // {
+    //     Vector3 worldPos =
+    //         cam.ScreenToWorldPoint(eventData.position);
+    //     worldPos.z = 0;
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        Vector3 worldPos =
-            cam.ScreenToWorldPoint(eventData.position);
-        worldPos.z = 0;
+    //     draggedObject = Instantiate(dragCupPrefab, worldPos, Quaternion.identity);
 
-        draggedObject = Instantiate(dragCupPrefab, worldPos, Quaternion.identity);
+    //     // SpriteRenderer sourceRenderer = GetComponent<SpriteRenderer>();
+    //     // SpriteRenderer dragRenderer = draggedObject.GetComponent<SpriteRenderer>();
+    //     SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
 
-        // SpriteRenderer sourceRenderer = GetComponent<SpriteRenderer>();
-        // SpriteRenderer dragRenderer = draggedObject.GetComponent<SpriteRenderer>();
-        SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
+    //     // dragRenderer.sprite = sourceRenderer.sprite;
+    //     dragRenderer.color = sourceRenderer.color;
+    //     Debug.Log("Pointer Down");
+    // }
 
-        // dragRenderer.sprite = sourceRenderer.sprite;
-        dragRenderer.color = sourceRenderer.color;
-        Debug.Log("Pointer Down");
-    }
+    // public void OnDrag(PointerEventData eventData)
+    // {
+    //     if (draggedObject == null)
+    //         return;
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (draggedObject == null)
-            return;
+    //     Vector3 worldPos =
+    //         cam.ScreenToWorldPoint(eventData.position);
+    //     worldPos.z = 0;
 
-        Vector3 worldPos =
-            cam.ScreenToWorldPoint(eventData.position);
-        worldPos.z = 0;
+    //     draggedObject.transform.position = worldPos;
+    // }
 
-        draggedObject.transform.position = worldPos;
-    }
+    // public void OnPointerUp(PointerEventData eventData)
+    // {
+    //     if (draggedObject == null)
+    //         return;
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        if (draggedObject == null)
-            return;
+    //     Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+    //     worldPos.z = 0;
 
-        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-        worldPos.z = 0;
+    //     Collider2D hit = Physics2D.OverlapPoint(worldPos);
 
-        Collider2D hit = Physics2D.OverlapPoint(worldPos);
-//         if (hit != null)
-// {
-//     Debug.Log("Hit: " + hit.name);
-// }
-// else
-// {
-//     Debug.Log("Hit nothing");
-// }
+    //     if (hit != null)
+    //     {
+    //         DropDrinkInterface dropTarget = hit.GetComponent<DropDrinkInterface>();
+    //         if (dropTarget != null)
+    //         {
+    //             Debug.Log("Tray received drink!");
+    //             dropTarget.ReceiveDrink(drink);
+    //             ClearCup();
+    //         }
+    //     }
 
-        if (hit != null)
-        {
-            DropDrinkInterface dropTarget = hit.GetComponent<DropDrinkInterface>();
-            if (dropTarget != null)
-            {
-                Debug.Log("Tray received drink!");
-                dropTarget.ReceiveDrink(drink);
-                ClearCup();
-            }
-        }
-
-        Destroy(draggedObject);
-        draggedObject = null;
-    }
+    //     Destroy(draggedObject);
+    //     draggedObject = null;
+    // }
 }

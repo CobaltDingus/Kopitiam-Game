@@ -1,0 +1,3 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Boh%20TEst.svg?fileID=7388822144124034973&amp;guid=acf9bcdebcb5f614cb2d0a5ad19a2782&amp;type=3#Boh TEst&quot;); width: auto;"/>
+</ui:UXML>

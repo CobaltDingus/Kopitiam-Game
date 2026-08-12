@@ -2,75 +2,81 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class IngredientPrefabNew : 
-    MonoBehaviour,
+    DraggableObject,
     IPointerDownHandler,
     IDragHandler,
     IPointerUpHandler
 {
-    [SerializeField] private GameObject dragPrefab;
+    // [SerializeField] private GameObject dragPrefab;
     public Ingredient ingredientAsset;
 
-    private GameObject draggedObject;
-    private Camera cam;
-    private SpriteRenderer sourceRenderer;
-
-    private void Awake()
+    public override object GetData()
     {
-        cam = Camera.main;
-
-        sourceRenderer = GetComponentInChildren<SpriteRenderer>();
+        return ingredientAsset;
+        // throw new System.NotImplementedException();
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        Vector3 worldPos =
-            cam.ScreenToWorldPoint(eventData.position);
-        worldPos.z = 0;
+    // private GameObject draggedObject;
+    // private Camera cam;
+    // private SpriteRenderer sourceRenderer;
 
-        draggedObject = Instantiate(dragPrefab, worldPos, Quaternion.identity);
+    // private void Awake()
+    // {
+    //     cam = Camera.main;
 
-        // SpriteRenderer sourceRenderer = GetComponent<SpriteRenderer>();
-        // SpriteRenderer dragRenderer = draggedObject.GetComponent<SpriteRenderer>();
-        SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
+    //     sourceRenderer = GetComponentInChildren<SpriteRenderer>();
+    // }
 
-        // dragRenderer.sprite = sourceRenderer.sprite;
-        dragRenderer.color = sourceRenderer.color;
-        Debug.Log("Pointer Down");
-    }
+    // public void OnPointerDown(PointerEventData eventData)
+    // {
+    //     Vector3 worldPos =
+    //         cam.ScreenToWorldPoint(eventData.position);
+    //     worldPos.z = 0;
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (draggedObject == null)
-            return;
+    //     draggedObject = Instantiate(dragPrefab, worldPos, Quaternion.identity);
 
-        Vector3 worldPos =
-            cam.ScreenToWorldPoint(eventData.position);
-        worldPos.z = 0;
+    //     // SpriteRenderer sourceRenderer = GetComponent<SpriteRenderer>();
+    //     // SpriteRenderer dragRenderer = draggedObject.GetComponent<SpriteRenderer>();
+    //     SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
 
-        draggedObject.transform.position = worldPos;
-    }
+    //     // dragRenderer.sprite = sourceRenderer.sprite;
+    //     dragRenderer.color = sourceRenderer.color;
+    //     Debug.Log("Pointer Down");
+    // }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        if (draggedObject == null)
-            return;
+    // public void OnDrag(PointerEventData eventData)
+    // {
+    //     if (draggedObject == null)
+    //         return;
 
-        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-        worldPos.z = 0;
+    //     Vector3 worldPos =
+    //         cam.ScreenToWorldPoint(eventData.position);
+    //     worldPos.z = 0;
 
-        Collider2D hit = Physics2D.OverlapPoint(worldPos);
+    //     draggedObject.transform.position = worldPos;
+    // }
 
-        if (hit != null)
-        {
-            DropIngredientInterface dropTarget = hit.GetComponent<DropIngredientInterface>();
+    // public virtual void OnPointerUp(PointerEventData eventData)
+    // {
+    //     if (draggedObject == null)
+    //         return;
 
-            if (dropTarget != null)
-            {
-                dropTarget.ReceiveIngredient(ingredientAsset);
-            }
-        }
+    //     Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+    //     worldPos.z = 0;
 
-        Destroy(draggedObject);
-        draggedObject = null;
-    }
+    //     Collider2D hit = Physics2D.OverlapPoint(worldPos);
+
+    //     if (hit != null)
+    //     {
+    //         DropIngredientInterface dropTarget = hit.GetComponent<DropIngredientInterface>();
+
+    //         if (dropTarget != null)
+    //         {
+    //             dropTarget.ReceiveIngredient(ingredientAsset);
+    //         }
+    //     }
+
+    //     Destroy(draggedObject);
+    //     draggedObject = null;
+    // }
 }

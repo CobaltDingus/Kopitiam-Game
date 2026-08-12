@@ -194,14 +194,17 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     private void CompleteCircle()
     {
         circleCount++;
+        Debug.Log("Circle Complete!");
         onCircleCompleted?.Invoke();
 
         if (circleCount >= maxCirclesAllowed)
         {
+
             DisableDetector();
         }
         else
         {
+            Debug.Log("No Backtracking");
             ResetGestureProgress();
         }
     }
