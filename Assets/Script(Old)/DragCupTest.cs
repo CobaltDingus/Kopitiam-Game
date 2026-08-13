@@ -70,7 +70,7 @@ public class DragCupTest : MonoBehaviour,
 
             if (customer != null)
             {
-                customer.ReceiveCup(this);
+                // customer.ReceiveCup(this);
                 Destroy(gameObject);
                 return;
             }

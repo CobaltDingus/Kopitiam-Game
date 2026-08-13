@@ -12,24 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ccdd4f3d0337543b3ec0b61f0940c5, type: 3}
   m_Name: TrayDatabase
   m_EditorClassIdentifier: Assembly-CSharp::TrayDatabase
-  savedDrinks:
-  - ingredients:
-    - {fileID: 11400000, guid: 7ac89a8f3d444cd498157839b50c963f, type: 2}
-    - {fileID: 11400000, guid: 97dcfa2128b4dc544bc272fad994c61a, type: 2}
-    - {fileID: 11400000, guid: d1eb19e8e41ed944a8751f7cc5627f22, type: 2}
-    drinkSprite: {fileID: -8871576838943690646, guid: fce100285bfe7bf4484530da88b6cb0f, type: 3}
-    drinkName: Custom Mix
-  - ingredients:
-    - {fileID: 11400000, guid: 7ac89a8f3d444cd498157839b50c963f, type: 2}
-    - {fileID: 11400000, guid: 97dcfa2128b4dc544bc272fad994c61a, type: 2}
-    - {fileID: 11400000, guid: 6febbf1a919dd7240999d00d718ab252, type: 2}
-    - {fileID: 11400000, guid: d1eb19e8e41ed944a8751f7cc5627f22, type: 2}
-    drinkSprite: {fileID: -8871576838943690646, guid: fce100285bfe7bf4484530da88b6cb0f, type: 3}
-    drinkName: Custom Mix
-  - ingredients:
-    - {fileID: 11400000, guid: 7ac89a8f3d444cd498157839b50c963f, type: 2}
-    - {fileID: 11400000, guid: 6febbf1a919dd7240999d00d718ab252, type: 2}
-    - {fileID: 11400000, guid: d1eb19e8e41ed944a8751f7cc5627f22, type: 2}
-    drinkSprite: {fileID: 0}
-    drinkName: Custom Mix
+  savedDrinks: []
   MaxSlots: 3
