@@ -31,9 +31,19 @@ public class CustomerData : ScriptableObject
 
     public string Variant => variant;
 
+    // Start dialogue
     public List<string> StartFrontDialogue => startFrontDialogue;
-
     public List<string> StartBackDialogue => startBackDialogue;
 
+    // Perfect dialogue (all drinks correct)
     public List<string> PerfectFrontDialogue => perfectFrontDialogue;
+    public List<string> PerfectBackDialogue => perfectBackDialgue;
+
+    // Decent dialogue (some drinks wrong)
+    public List<string> DecentFrontDialogue => decentFrontDialogue;
+    public List<string> DecentBackDialogue => decentBackDialogue;
+
+    // Wrong dialogue (all drinks wrong)
+    public List<string> WrongFrontDialogue => wrongFrontDialogue;
+    public List<string> WrongBackDialogue => wrongBackDiaogue;
 }
