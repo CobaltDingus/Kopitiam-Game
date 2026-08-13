@@ -13,12 +13,5 @@ MonoBehaviour:
   m_Name: MasterRecipeBook
   m_EditorClassIdentifier: Assembly-CSharp::RecipeBook
   allRecipes:
-  - id: R001
-    drinkName: 
-    ingredients:
-    - {fileID: 0}
-    drinkImage: {fileID: 0}
-  - id: 
-    drinkName: 
-    ingredients: []
-    drinkImage: {fileID: 0}
+  - {fileID: 11400000, guid: 795ca57872a30e749b35df29fcc7ebb7, type: 2}
+  - {fileID: 11400000, guid: 9b3ef01474759fb49b4163596b4c47a9, type: 2}

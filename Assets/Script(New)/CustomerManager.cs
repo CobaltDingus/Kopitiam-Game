@@ -40,7 +40,7 @@ public class CustomerManager : MonoBehaviour
         currentCustomer = customerDatabase.AllCustomers[randomCustomerIndex];
 
         if (customerSpriteRenderer != null)
-            customerSpriteRenderer.sprite = currentCustomer.CustomerSprite;
+            // customerSpriteRenderer.sprite = currentCustomer.CustomerSprite;
 
         //Choose 1 to 3 drinks randomly
         orderedRecipes.Clear();

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Drink: DraggedData
+public class Drink
 {
 
     // public Ingredient cupType;
@@ -11,7 +11,17 @@ public class Drink: DraggedData
 
     // public Color displayColor;
     // public string displayName;
+    private bool hasWater;
     public List<Ingredient> ingredients = new List<Ingredient>();
     public Sprite drinkSprite;
-    public string drinkName = "Custom Mix";
+    public string drinkName = "";
+
+    public Drink Clone()
+    {
+        Drink copy = new Drink();
+
+        copy.ingredients = new List<Ingredient>(ingredients);
+
+        return copy;
+    }
 }

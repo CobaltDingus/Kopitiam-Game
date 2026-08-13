@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2151781447be0b542a794c5c39be8e3b, type: 3}
-  m_Name: Cold Water
+  m_Name: ColdWater
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: 
   ingredientName: Cold Water

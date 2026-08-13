@@ -1450,6 +1450,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &851146571 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6620112174833098277, guid: 4e3a7e7cb27d2fe4b814682a2a6ba79a, type: 3}
+  m_PrefabInstance: {fileID: 1191164627}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &851146573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851146571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3544c14a927ab04ca10273d3aad0cbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrayCounter
+  trayDatabase: {fileID: 11400000, guid: e70fa4aa059bfc74e92464fc5ba0fc27, type: 2}
+  slotOne: {fileID: 1897839832}
+  slotTwo: {fileID: 851327763}
+  slotThree: {fileID: 1981620030}
+--- !u!1 &851327763 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5318500821416708167, guid: 4e3a7e7cb27d2fe4b814682a2a6ba79a, type: 3}
+  m_PrefabInstance: {fileID: 1191164627}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &873140288
 GameObject:
   m_ObjectHideFlags: 0
@@ -2649,6 +2675,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -5
       objectReference: {fileID: 0}
+    - target: {fileID: 8750057045600291130, guid: 4e3a7e7cb27d2fe4b814682a2a6ba79a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2656,6 +2686,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7533504718523148048, guid: 4e3a7e7cb27d2fe4b814682a2a6ba79a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6620112174833098277, guid: 4e3a7e7cb27d2fe4b814682a2a6ba79a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 851146573}
     - targetCorrespondingSourceObject: {fileID: 5994096660556644162, guid: 4e3a7e7cb27d2fe4b814682a2a6ba79a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -3418,6 +3451,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1897839832 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4285905172005374371, guid: 4e3a7e7cb27d2fe4b814682a2a6ba79a, type: 3}
+  m_PrefabInstance: {fileID: 1191164627}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1981620030 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9082707491507833733, guid: 4e3a7e7cb27d2fe4b814682a2a6ba79a, type: 3}
+  m_PrefabInstance: {fileID: 1191164627}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2049722939
 GameObject:
   m_ObjectHideFlags: 0

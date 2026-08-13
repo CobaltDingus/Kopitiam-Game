@@ -86,7 +86,12 @@ public abstract class DraggableObject :
 
             if (hit != null)
             {
-                checkInterface(hit);
+                // DropInterface dropTarget = hit.GetComponent<DropInterface>();
+
+                // if (dropTarget != null)
+                // {
+                //     dropTarget.ReceiveDraggable(GetData());
+                // }      
             }
 
             Destroy(draggedObject);

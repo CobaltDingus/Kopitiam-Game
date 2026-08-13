@@ -1,10 +1,7 @@
 using UnityEngine;
 
-public class Tray :  
-ExpandableUI
-// DropInterface
+public class DrinkPouringArea : MonoBehaviour
 {
-    public TrayDatabase trayDatabase;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ExpandableUI : MonoBehaviour
@@ -7,6 +8,8 @@ public class ExpandableUI : MonoBehaviour
     [SerializeField] protected GameObject inactiveObject;
     [SerializeField] protected GameObject activeObject;
     [SerializeField] protected Vector3 activeOffset;
+
+    [SerializeField] protected List<DragEnum> validDragTypes;
 
     protected SpriteRenderer spriteRenderer;
     protected Vector3 originalPosition;
@@ -35,7 +38,7 @@ public class ExpandableUI : MonoBehaviour
 
         // transform.localPosition =
         //     active ? originalPosition + activeOffset : originalPosition;
-        if (dragType == DragEnum.FinishedDrink)
+        if (validDragTypes.Contains(dragType))
         {
             activeObject.SetActive(true);
             inactiveObject.SetActive(false);

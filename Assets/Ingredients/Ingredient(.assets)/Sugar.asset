@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2151781447be0b542a794c5c39be8e3b, type: 3}
   m_Name: Sugar
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
-  id: 
+  id: ING04
   ingredientName: Sugar
   icon: {fileID: 0}

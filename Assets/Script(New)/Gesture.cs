@@ -194,7 +194,7 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
     private void CompleteCircle()
     {
         circleCount++;
-        Debug.Log("Circle Complete!");
+        Debug.Log("Circle Complete! Circle: " + circleCount);
         onCircleCompleted?.Invoke();
 
         if (circleCount >= maxCirclesAllowed)
