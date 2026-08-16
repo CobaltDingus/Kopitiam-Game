@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class CustomerManager : MonoBehaviour
 {
@@ -19,11 +22,19 @@ public class CustomerManager : MonoBehaviour
 
     [Header("Order Settings")]
     [SerializeField] private int minDrinks = 1;
-    [SerializeField] private int maxDrinks = 3;
+    [SerializeField] private int maxDrinks = 3; // inclusive
+
+    // swapped out from public to private var testing
+    [SerializeField] private Button repeat;
+    [SerializeField] private Button conclude;
+
+    Scene currentScene;
 
     private CustomerData currentCustomer;
     private List<DrinkRecipe> orderedRecipes = new();
 
+    // Cached "last known good" state so a newly loaded scene's UI can be
+    // repainted instantly without re-rolling the customer/order/dialogue.
     private Sprite currentSprite;
     private string currentDialogueText = "";
 
@@ -38,18 +49,60 @@ public class CustomerManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
     void Start()
     {
         if (currentCustomer == null)
-        {
             GenerateNewCustomer();
-        }
-            
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        currentScene = SceneManager.GetActiveScene();
+
+        repeat.onClick.AddListener(GenerateNewCustomer);
     }
 
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "CounterScene")
+        {
+            FindRepeatButton();
+        }
+    }
+
+    void FindRepeatButton()
+    {
+        repeat = GameObject.Find("Repeat").GetComponent<Button>();
+        repeat.onClick.AddListener(GenerateNewCustomer);
+        repeat.onClick.AddListener(repeat.GetComponent<CustomerManagerUIBridge>().OnGenerateNewCustomerClicked);
+        //repeat.GetComponent<Transform>().localScale = new Vector3();
+    }
+
+    // ---------------------------------------------------------------
+    // Called by CustomerDisplayLink (placed on the sprite/text objects
+    // in each scene) once that scene has loaded. Immediately repaints
+    // the newly found UI with whatever the current state already is,
+    // instead of generating anything new.
+    // ---------------------------------------------------------------
+    public void RegisterDisplayReferences(SpriteRenderer spriteRenderer, TMP_Text text)
+    {
+        customerSpriteRenderer = spriteRenderer;
+        dialogueText = text;
+
+        if (customerSpriteRenderer != null)
+            customerSpriteRenderer.sprite = currentSprite;
+
+        if (dialogueText != null)
+            dialogueText.text = currentDialogueText;
+    }
+
+    // ---------------------------------------------------------------
+    // Generate a brand new customer + order. Hook this to a button
+    // (or call it from Start) whenever you want to reset the scene.
+    // Kept fully separate from ServeOrder/Evaluate below.
+    // ---------------------------------------------------------------
     public void GenerateNewCustomer()
     {
-        //temp debug
+        //Debug.Log("Generate Customer Button Clicked.");
         if (customerDatabase == null || customerDatabase.AllCustomers.Count == 0)
         {
             Debug.LogError("CustomerDatabase is empty or unassigned!");
@@ -64,11 +117,9 @@ public class CustomerManager : MonoBehaviour
 
         // clear whatever was left in the tray from the previous customer
         if (trayDatabase != null)
-        {
             trayDatabase.ClearDatabase();
-        }
 
-        //select random customerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+        // select random customer
         int randomCustomerIndex = UnityEngine.Random.Range(0, customerDatabase.AllCustomers.Count);
         currentCustomer = customerDatabase.AllCustomers[randomCustomerIndex];
 
@@ -91,7 +142,7 @@ public class CustomerManager : MonoBehaviour
         SetStartDialogue();
     }
 
-    public void SetCustomerSprite()
+    private void SetCustomerSprite()
     {
         if (currentCustomer.CustomerSprite == null || currentCustomer.CustomerSprite.Count == 0)
         {
@@ -103,9 +154,7 @@ public class CustomerManager : MonoBehaviour
         currentSprite = currentCustomer.CustomerSprite[spriteIndex];
 
         if (customerSpriteRenderer != null)
-        {
             customerSpriteRenderer.sprite = currentSprite;
-        }
     }
 
     public void SetStartDialogue()
@@ -115,7 +164,7 @@ public class CustomerManager : MonoBehaviour
         int index = GetRandomDialogueIndex(currentCustomer.StartFrontDialogue, currentCustomer.StartBackDialogue);
         if (index == -1)
         {
-            if (dialogueText != null) dialogueText.text = "ded";
+            if (dialogueText != null) dialogueText.text = "...";
             return;
         }
 
@@ -125,6 +174,36 @@ public class CustomerManager : MonoBehaviour
         SetDialogueText(front, back);
     }
 
+    public void ServePerfectDrinksForTesting()
+    {
+        if (currentCustomer == null || orderedRecipes.Count == 0)
+        {
+            Debug.LogWarning("No current customer or order to serve.");
+            return;
+        }
+
+        if (trayDatabase == null)
+        {
+            Debug.LogError("TrayDatabase is unassigned!");
+            return;
+        }
+
+        trayDatabase.ClearDatabase();
+
+        foreach (DrinkRecipe recipe in orderedRecipes)
+        {
+            Drink perfectDrink = new Drink
+            {
+                drinkName = recipe.drinkName,
+                ingredients = new List<Ingredient>(recipe.ingredients),
+                drinkSprite = recipe.drinkImage
+            };
+
+            trayDatabase.AddDrink(perfectDrink);
+        }
+
+        ServeOrder();
+    }
     public void ServeOrder()
     {
         if (currentCustomer == null)
@@ -142,6 +221,7 @@ public class CustomerManager : MonoBehaviour
         EvaluateAndSetEndDialogue(trayDatabase.SavedDrinks);
     }
 
+    // Kept for backwards compatibility if something still calls this with a single Drink.
     public void ReceiveDrink(Drink servedDrink)
     {
         if (currentCustomer == null || servedDrink == null) return;
@@ -190,13 +270,14 @@ public class CustomerManager : MonoBehaviour
         int index = GetRandomDialogueIndex(frontList, backList);
         if (index == -1)
         {
-            if (dialogueText != null) dialogueText.text = "ded";
+            if (dialogueText != null) dialogueText.text = "...";
             return;
         }
 
-        SetDialogueText(frontList[index], backList[index]);
+        SetEndDialogueText(frontList[index], backList[index]);
     }
 
+    // First wave: drink name. Second wave: ingredient-by-ingredient comparison.
     private bool IsDrinkPerfect(Drink served, DrinkRecipe recipe)
     {
         if (served == null || recipe == null) return false;
@@ -207,6 +288,7 @@ public class CustomerManager : MonoBehaviour
         return IngredientsMatch(served.ingredients, recipe.ingredients);
     }
 
+    // Multiset comparison so duplicate ingredients and order don't matter.
     private bool IngredientsMatch(List<Ingredient> served, List<Ingredient> required)
     {
         served ??= new List<Ingredient>();
@@ -247,16 +329,21 @@ public class CustomerManager : MonoBehaviour
             dialogueText.text = currentDialogueText;
     }
 
-    //private string GetRandomStringFromList(List<string> list)
-    //{
-    //    if (list == null || list.Count == 0) return "...";
-    //    return list[UnityEngine.Random.Range(0, list.Count)];
-    //}
-
-
-    // Update is called once per frame
-    void Update()
+    private void SetEndDialogueText(string front, string back)
     {
-        
+        currentDialogueText = $"{front} {back}";
+        if (dialogueText != null)
+            dialogueText.text = currentDialogueText;
+    }
+
+    private string GetRandomStringFromList(List<string> list)
+    {
+        if (list == null || list.Count == 0) return "...";
+        return list[UnityEngine.Random.Range(0, list.Count)];
+    }
+
+    private void OnClick()
+    {
+        GenerateNewCustomer();
     }
 }

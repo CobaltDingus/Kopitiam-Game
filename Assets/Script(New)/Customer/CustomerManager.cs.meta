@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a969a7d60972516489b261f98a400b57
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - customerDatabase: {fileID: 11400000, guid: 706d2a1b1db0d904c8584ee650fda5cb, type: 2}
+  - recipeBook: {fileID: 11400000, guid: 2c53c2b8eccd2834fa67b11a2aa0a51d, type: 2}
+  - trayDatabase: {fileID: 11400000, guid: e70fa4aa059bfc74e92464fc5ba0fc27, type: 2}
+  - customerSpriteRenderer: {instanceID: 0}
+  - dialogueText: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

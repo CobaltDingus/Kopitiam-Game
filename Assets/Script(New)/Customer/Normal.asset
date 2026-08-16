@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab74ece8a89d1ff45ad3922f0af1e6d3, type: 3}
+  m_Name: Normal
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerData
+  id: C001
+  customerName: 
+  customerSprite:
+  - {fileID: -1660787362401345999, guid: ad97e5ed98853044694f0e258ba8f7ac, type: 3}
+  - {fileID: -1469128937152866181, guid: 6b540804f7ccbb1449805e46dae7e5c9, type: 3}
+  - {fileID: 854029978483440082, guid: 73f35533c6a52fa4e953980a03ad68be, type: 3}
+  - {fileID: 5669435767594890224, guid: 9eff3b2b97d27804595e82a80c97cd80, type: 3}
+  variant: Normal
+  startFrontDialogue:
+  - 'Could I have a '
+  - ' '
+  - ' '
+  startBackDialogue:
+  - ' please?'
+  - ' please.'
+  - .
+  perfectFrontDialogue:
+  - Thank you.
+  - This is delicious, Thank you!
+  - Thanks!
+  perfectBackDialgue:
+  - 
+  - 
+  - 
+  decentFrontDialogue:
+  - I didn't order this...
+  - This is not what I odered...
+  - Wrong order buddy.
+  decentBackDialogue:
+  - 
+  - 
+  - 
+  wrongFrontDialogue:
+  - 'I ordered '
+  - 
+  - 
+  wrongBackDiaogue:
+  - ', ths should have/too much'
+  - ' come with '
+  - '? It should''nt have'
