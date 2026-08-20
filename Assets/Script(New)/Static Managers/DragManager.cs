@@ -1,10 +1,12 @@
 using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 public enum DragEnum
 {
     None,
     Ingredient,
+    DrinkContainer,
     FinishedDrink,
     UnfinishedDrink,
     Tray
@@ -22,6 +24,7 @@ public static class DragManager
     {
         IsDragging = true;
         CurrentlyDragging = dragType;
+        Debug.Log(CurrentlyDragging + "HI");
         onDragChange?.Invoke(CurrentlyDragging);
     }
 

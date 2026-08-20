@@ -24,6 +24,7 @@ IPointerUpHandler
     private GameObject draggedObject;
     private Camera cam;
     private SpriteRenderer sourceRenderer;
+    public RecipeBook recipeBook;
 
     // private List<Ingredient> ingredients = new List<Ingredient>();
 
@@ -85,10 +86,29 @@ IPointerUpHandler
             drink.ingredients.Add(waterAsset);
             UpdateIngredientText();
             canDrag = true;
-            dragType = DragEnum.FinishedDrink;
+            StirDrink();
+            // dragType = DragEnum.FinishedDrink;
         } else
         {
             return;
+        }
+    }
+
+    public void StirDrink()
+    {
+        drink.isStirred = true;
+        foreach (DrinkRecipe recipe in recipeBook.allRecipes)
+        {
+            if (drink.ingredients.Count == recipe.ingredients.Count &&
+            drink.ingredients
+            .OrderBy(i => i.Id)
+            .SequenceEqual(recipe.ingredients.OrderBy(i => i.Id)))
+            {
+                drink.drinkSprite = recipe.drinkImage;
+                drink.drinkName = recipe.drinkName;
+                break;
+            }
+            
         }
     }
 
@@ -145,11 +165,11 @@ IPointerUpHandler
 
             if (hit != null)
             {
-                DropDrinkInterface dropTarget = hit.GetComponent<DropDrinkInterface>();
+                DropInterface dropTarget = hit.GetComponent<DropInterface>();
                 if (dropTarget != null)
                 {
                     Debug.Log("Tray received drink!");
-                    if (dropTarget.ReceiveDrink(drink.Clone()))
+                    if (dropTarget.ReceiveDraggable(drink.Clone()))
                     {
                         ClearCup();
                     }

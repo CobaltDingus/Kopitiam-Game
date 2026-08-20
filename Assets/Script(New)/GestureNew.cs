@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Collider2D))]
-public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class GestureNew : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private enum RotationDirection
     {
@@ -39,6 +39,7 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
     private bool isDrawing = false;
 
+    // Center of the drawing area.
     private Vector2 rotationCenter;
 
     private float totalAngle = 0f;
@@ -48,6 +49,9 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
     private RotationDirection currentDirection =
         RotationDirection.None;
+
+    // Used before we decide whether the player is moving
+    // clockwise or counter-clockwise.
     private float directionDetectionProgress = 0f;
 
     private int circleCount = 0;
@@ -182,10 +186,15 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
         }
     }
 
+    // ============================================================
+    // Gesture Logic
+    // ============================================================
+
     private void StartDrawing(Vector2 worldPos)
     {
         isDrawing = true;
 
+        // Make sure the center is up to date.
         UpdateRotationCenter();
 
         CurrentFingerWorldPosition = worldPos;
@@ -217,11 +226,13 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
                 );
         }
 
+        // Calculate distance from the center of the drawing area.
         Vector2 delta =
             currentPos - rotationCenter;
 
         float radius = delta.magnitude;
 
+        // Ignore movement that is too close or too far.
         if (radius < minRadius ||
             radius > maxRadius)
         {
@@ -232,6 +243,7 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             Mathf.Atan2(delta.y, delta.x) *
             Mathf.Rad2Deg;
 
+        // First valid point.
         if (!hasPrevAngle)
         {
             prevAngle = angle;
@@ -239,14 +251,22 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             return;
         }
 
+        // Calculate angular movement.
         float diff =
             Mathf.DeltaAngle(prevAngle, angle);
 
+        // Ignore extremely tiny movement.
         if (Mathf.Abs(diff) <= 0.1f)
             return;
 
+        // ========================================================
+        // Determine rotation direction
+        // ========================================================
+
         if (currentDirection == RotationDirection.None)
         {
+            // Accumulate movement until we have enough information
+            // to determine the intended direction.
             directionDetectionProgress += diff;
 
             if (Mathf.Abs(directionDetectionProgress)
@@ -263,6 +283,8 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
                         RotationDirection.Clockwise;
                 }
 
+                // Only start counting toward the circle after
+                // direction has been established.
                 totalAngle = 0f;
 
                 Debug.Log(
@@ -275,6 +297,10 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             return;
         }
 
+        // ========================================================
+        // Detect backtracking
+        // ========================================================
+
         bool isBacktracking =
             (currentDirection ==
                 RotationDirection.CounterClockwise &&
@@ -286,6 +312,8 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
 
         if (isBacktracking)
         {
+            // Instead of resetting completely, subtract the
+            // backwards movement.
 
             totalAngle -= Mathf.Abs(diff);
 
@@ -295,6 +323,10 @@ public class Gesture : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointe
             prevAngle = angle;
             return;
         }
+
+        // ========================================================
+        // Normal rotation
+        // ========================================================
 
         totalAngle += Mathf.Abs(diff);
 

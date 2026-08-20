@@ -1,4 +1,4 @@
 public interface DropInterface
 {
-    void ReceiveDraggable(object draggableObject);
+    bool ReceiveDraggable<T>(T draggableObject);
 }

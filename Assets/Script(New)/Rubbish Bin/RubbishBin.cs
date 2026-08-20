@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class RubbishBin : 
 ExpandableUI, 
-DropDrinkInterface
+// DropDrinkInterface
+DropInterface
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public bool ReceiveDrink(Drink drink) 
+    public bool ReceiveDraggable<T>(T dragData) 
     {
-        Debug.Log("Drink was thrown way");
+        Debug.Log("Item was thrown away");
         return true;
     }
     void Start()

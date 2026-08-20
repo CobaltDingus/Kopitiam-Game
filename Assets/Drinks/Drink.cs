@@ -15,12 +15,17 @@ public class Drink
     public List<Ingredient> ingredients = new List<Ingredient>();
     public Sprite drinkSprite;
     public string drinkName = "";
+    public ContainerType containerType = ContainerType.None;
+    public bool isStirred;
+    public bool isFinished;
 
     public Drink Clone()
     {
         Drink copy = new Drink();
 
         copy.ingredients = new List<Ingredient>(ingredients);
+        copy.containerType = containerType;
+        copy.drinkName = drinkName;
 
         return copy;
     }
