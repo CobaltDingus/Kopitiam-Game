@@ -20,6 +20,16 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private SpriteRenderer customerSpriteRenderer;
     [SerializeField] private TMP_Text dialogueText;
 
+    [SerializeField] private TMP_Text timerText;
+
+    private float timeElapsed;
+    private float timeRemaining;
+    [SerializeField] private float duration = 120f;
+
+    private bool isTimerRunning;
+
+    [SerializeField] private bool challenge = false;
+
     [Header("Order Settings")]
     [SerializeField] private int minDrinks = 1;
     [SerializeField] private int maxDrinks = 3; // inclusive
@@ -28,6 +38,7 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private Button repeat;
     [SerializeField] private Button conclude;
 
+
     Scene currentScene;
 
     private CustomerData currentCustomer;
@@ -35,6 +46,7 @@ public class CustomerManager : MonoBehaviour
 
     // Cached "last known good" state so a newly loaded scene's UI can be
     // repainted instantly without re-rolling the customer/order/dialogue.
+
     private Sprite currentSprite;
     private string currentDialogueText = "";
 
@@ -55,10 +67,87 @@ public class CustomerManager : MonoBehaviour
         if (currentCustomer == null)
             GenerateNewCustomer();
 
+        RestartTimer();
+
         SceneManager.sceneLoaded += OnSceneLoaded;
         currentScene = SceneManager.GetActiveScene();
 
         repeat.onClick.AddListener(GenerateNewCustomer);
+    }
+
+    void Update()
+    {
+        if (!isTimerRunning) return;
+        if (challenge)
+        {
+            if (timeRemaining > 0)
+            {
+                timeRemaining -= Time.deltaTime;
+                UpdateTimerDisplayCountDown(timeRemaining);
+            }
+            else
+            {
+                timeRemaining = 0;
+                isTimerRunning = false;
+                UpdateTimerDisplayCountDown(timeRemaining);
+                // loops back the timer, can remove the RestartTimer() here if want to add an outcome if timer ended
+                RestartTimer();
+            }
+        }
+        else
+        {
+            timeElapsed += Time.deltaTime;
+            UpdateTimerDisplayCountUp(timeElapsed);
+        }
+    }
+
+    private void UpdateTimerDisplayCountUp(float timeToDisplay)
+    {
+        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
+        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
+
+        if (timerText != null)
+        {
+            string word = "Time Elapsed ";
+            timerText.text = word + string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
+    }
+
+    private void UpdateTimerDisplayCountDown(float timeToDisplay)
+    {
+        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
+        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
+
+        if (timerText != null)
+        {
+            string word = "Time Remaining ";
+            timerText.text = word + string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
+    }
+
+
+    public void RestartTimer()
+    {
+        timeElapsed = 0f;
+        isTimerRunning = true;
+        UpdateTimerDisplayCountUp(timeElapsed);
+        if (challenge)
+        {
+            timeRemaining = duration;
+            isTimerRunning = true;
+            UpdateTimerDisplayCountDown(timeRemaining);
+        }
+        else
+        {
+            timeElapsed = 0f;
+            isTimerRunning = true;
+            UpdateTimerDisplayCountUp(timeElapsed);
+        }
+    }
+
+    public void StopTimer()
+    {
+        isTimerRunning = false;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -336,14 +425,4 @@ public class CustomerManager : MonoBehaviour
             dialogueText.text = currentDialogueText;
     }
 
-    private string GetRandomStringFromList(List<string> list)
-    {
-        if (list == null || list.Count == 0) return "...";
-        return list[UnityEngine.Random.Range(0, list.Count)];
-    }
-
-    private void OnClick()
-    {
-        GenerateNewCustomer();
-    }
 }
