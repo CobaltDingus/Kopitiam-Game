@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Linq;
-using Unity.VisualScripting;
 
 public class MixingCup : 
 MonoBehaviour,
@@ -19,6 +18,8 @@ IPointerUpHandler
     [SerializeField] private Ingredient waterAsset;
     [SerializeField] private TMP_Text ingredientText;
     [SerializeField] private GameObject dragCupPrefab;
+    [SerializeField] private GameObject liquidObject;
+    private SpriteRenderer liquidSprite;
     public DragEnum dragType;
     public bool canDrag;
     private GameObject draggedObject;
@@ -26,12 +27,16 @@ IPointerUpHandler
     private SpriteRenderer sourceRenderer;
     public RecipeBook recipeBook;
 
+    public Sprite testSprite;
+    public string waterColorHex = "#98DCFF";
+
     // private List<Ingredient> ingredients = new List<Ingredient>();
 
     private void Awake()
     {
         cam = Camera.main;
         sourceRenderer = GetComponentInChildren<SpriteRenderer>();
+        liquidSprite = liquidObject.GetComponent<SpriteRenderer>();
     }
 
     public void ReceiveIngredient(Ingredient ingredient)
@@ -77,6 +82,7 @@ IPointerUpHandler
         canDrag = false;
         dragType = DragEnum.None;
         drink.ingredients.Clear();
+        liquidObject.SetActive(false);
     }
 
     public void AddWater()
@@ -85,7 +91,10 @@ IPointerUpHandler
         {
             drink.ingredients.Add(waterAsset);
             UpdateIngredientText();
+            dragType = DragEnum.UnfinishedDrink;
             canDrag = true;
+            SetSpriteColorFromHex(waterColorHex, liquidSprite);
+            liquidObject.SetActive(true);
             StirDrink();
             // dragType = DragEnum.FinishedDrink;
         } else
@@ -105,6 +114,7 @@ IPointerUpHandler
             .SequenceEqual(recipe.ingredients.OrderBy(i => i.Id)))
             {
                 drink.drinkSprite = recipe.drinkImage;
+                testSprite = recipe.drinkImage;
                 drink.drinkName = recipe.drinkName;
                 break;
             }
@@ -181,5 +191,18 @@ IPointerUpHandler
             DragManager.EndDrag();       
         }
 
+    }
+
+        public void SetSpriteColorFromHex(string hex, SpriteRenderer spriteComponent)
+    {
+        // TryParseHtmlString returns true if the conversion is successful
+        if (ColorUtility.TryParseHtmlString(hex, out Color newColor))
+        {
+            spriteComponent.color = newColor;
+        }
+        else
+        {
+            Debug.LogWarning("Invalid Hexadecimal string provided!");
+        }
     }
 }

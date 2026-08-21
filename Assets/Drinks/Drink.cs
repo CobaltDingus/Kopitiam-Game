@@ -26,6 +26,10 @@ public class Drink
         copy.ingredients = new List<Ingredient>(ingredients);
         copy.containerType = containerType;
         copy.drinkName = drinkName;
+        copy.drinkSprite = drinkSprite;
+        copy.isStirred = isStirred;
+        copy.isFinished = isFinished;
+        copy.hasWater = hasWater;
 
         return copy;
     }

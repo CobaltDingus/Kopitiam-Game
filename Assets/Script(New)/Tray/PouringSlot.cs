@@ -52,7 +52,14 @@ public class PouringSlot : DraggableObject, DropInterface
 
     public override object GetData()
     {
-        return storedDrink.Clone();
+        if (storedDrink.isFinished)
+        {
+            return storedDrink.Clone();
+        }
+        else
+        {
+            return storedContainerType;
+        }
     }
 
     public override void AfterDropFunctions()

@@ -25,6 +25,7 @@ public abstract class DraggableObject :
     [SerializeField] private bool hasDragIcon;
     private Collider2D objectCollider;
     private Vector3 startPosition;
+    private Vector3 dragOffset;
     
     private void Awake()
     {
@@ -47,8 +48,7 @@ public abstract class DraggableObject :
         {
             if (hasDragIcon)
             {
-                Vector3 worldPos =
-                    cam.ScreenToWorldPoint(eventData.position);
+                Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
                 worldPos.z = 0;
 
                 draggedObject = Instantiate(dragPrefab, worldPos, Quaternion.identity);
@@ -68,6 +68,11 @@ public abstract class DraggableObject :
             }
             else
             {
+                Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+                worldPos.z = 0;
+
+                dragOffset = transform.position - worldPos;
+
                 DragManager.BeginDrag(dragType);
 
                 objectCollider.enabled = false;
@@ -89,8 +94,7 @@ public abstract class DraggableObject :
                 if (draggedObject == null)
                     return;
 
-                Vector3 worldPos =
-                    cam.ScreenToWorldPoint(eventData.position);
+                Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
                 worldPos.z = 0;
 
                 draggedObject.transform.position = worldPos;
@@ -99,7 +103,7 @@ public abstract class DraggableObject :
             {
                 Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
                 worldPos.z = 0;
-                transform.position = worldPos;
+                transform.position = worldPos + dragOffset;
             }
         }
         else
@@ -140,9 +144,6 @@ public abstract class DraggableObject :
             {
                 Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
                 worldPos.z = 0;
-
-                objectCollider.enabled = true;
-
                 // Collider2D[] hits = Physics2D.OverlapPointAll(worldPos);
 
                 // foreach (Collider2D hit in hits)
@@ -156,14 +157,16 @@ public abstract class DraggableObject :
                 {
                     DropInterface dropTarget = hit.GetComponent<DropInterface>();
 
-                    if (dropTarget != null)
+                    if (dropTarget != null && hit.gameObject != gameObject)
                     {
-                        dropTarget.ReceiveDraggable(GetData());
-                        // transform.position = startPosition;
-                        // DragManager.EndDrag(); 
-                        AfterDropFunctions();
+                        if (dropTarget.ReceiveDraggable(GetData()))
+                        {
+                            Debug.Log(dropTarget);
+                            AfterDropFunctions();
+                        }
                     }      
                 }
+                objectCollider.enabled = true;
 
                 DragManager.EndDrag(); 
                 transform.position = startPosition;
