@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Background
+  - 
   - 
   - 
   - 
@@ -40,6 +40,21 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2088865287
+    locked: 0
+  - name: Ingredients
+    uniqueID: 1067755571
+    locked: 0
+  - name: UI
+    uniqueID: 1389949143
+    locked: 0
+  - name: Counter Objects
+    uniqueID: 4168331415
+    locked: 0
+  - name: Drag Icons
+    uniqueID: 117737767
     locked: 0
   m_RenderingLayers:
   - Default

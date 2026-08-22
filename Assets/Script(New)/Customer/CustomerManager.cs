@@ -100,17 +100,37 @@ public class CustomerManager : MonoBehaviour
     {
         if (scene.name == "CounterScene")
         {
-            FindNextButton();
+            // FindNextButton();
+            return;
         }
     }
 
-    void FindNextButton()
-    {
-        next = GameObject.Find("Next").GetComponent<Button>();
-        next.onClick.AddListener(GenerateNewCustomer);
-        next.onClick.AddListener(next.GetComponent<CustomerManagerUIBridge>().OnGenerateNewCustomerClicked);
-        //next.GetComponent<Transform>().localScale = new Vector3();
-    }
+// void FindNextButton()
+// {
+//     GameObject nextObj = GameObject.Find("Next");
+//     if (nextObj == null)
+//     {
+//         Debug.LogError("FindNextButton: No GameObject named 'Next' found in scene.");
+//         return;
+//     }
+
+//     next = nextObj.GetComponent<Button>();
+//     if (next == null)
+//     {
+//         Debug.LogError("FindNextButton: 'Next' object has no Button component.");
+//         return;
+//     }
+
+//     var bridge = next.GetComponent<CustomerManagerUIBridge>();
+//     if (bridge == null)
+//     {
+//         Debug.LogError("FindNextButton: 'Next' object has no CustomerManagerUIBridge component.");
+//         return;
+//     }
+
+//     next.onClick.AddListener(GenerateNewCustomer);
+//     next.onClick.AddListener(bridge.OnGenerateNewCustomerClicked);
+// }
 
     void FindTryAgainButton()
     {

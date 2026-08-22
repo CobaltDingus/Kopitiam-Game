@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6994bf44501a3474197cc7aaedcc3bb0
+guid: 72ca322cc09ad9347b2bb2857ee40096
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 943231683519144238
-    second: Sugar_0
+      213: -8490028303422418611
+    second: Uilo_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Sugar_0
+      name: Uilo_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 100
-        height: 246
+        width: 263
+        height: 387
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e216d0df738071d00800000000000000
-      internalID: 943231683519144238
+      spriteID: d419e797d3c5d2a80800000000000000
+      internalID: -8490028303422418611
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Sugar_0: 943231683519144238
+      Uilo_0: -8490028303422418611
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

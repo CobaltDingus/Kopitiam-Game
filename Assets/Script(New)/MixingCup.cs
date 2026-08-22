@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 using System.Linq;
 
 public class MixingCup : 
-MonoBehaviour,
-// DraggableObject,
+// MonoBehaviour,
+DraggableObject,
 DropIngredientInterface,
 // DropInterface,
 IPointerDownHandler,
@@ -17,11 +17,11 @@ IPointerUpHandler
     private Drink drink = new Drink();
     [SerializeField] private Ingredient waterAsset;
     [SerializeField] private TMP_Text ingredientText;
-    [SerializeField] private GameObject dragCupPrefab;
+    // [SerializeField] private GameObject dragCupPrefab;
     [SerializeField] private GameObject liquidObject;
     private SpriteRenderer liquidSprite;
-    public DragEnum dragType;
-    public bool canDrag;
+    // public DragEnum dragType;
+    // public bool canDrag;
     private GameObject draggedObject;
     private Camera cam;
     private SpriteRenderer sourceRenderer;
@@ -32,10 +32,15 @@ IPointerUpHandler
 
     // private List<Ingredient> ingredients = new List<Ingredient>();
 
-    private void Awake()
+    // private void Awake()
+    // {
+    //     cam = Camera.main;
+    //     sourceRenderer = GetComponentInChildren<SpriteRenderer>();
+        
+    // }
+    
+    private void Start()
     {
-        cam = Camera.main;
-        sourceRenderer = GetComponentInChildren<SpriteRenderer>();
         liquidSprite = liquidObject.GetComponent<SpriteRenderer>();
     }
 
@@ -122,78 +127,88 @@ IPointerUpHandler
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if (canDrag)
-        {
-            Vector3 worldPos =
-                cam.ScreenToWorldPoint(eventData.position);
-            worldPos.z = 0;
+    // public void OnPointerDown(PointerEventData eventData)
+    // {
+    //     if (canDrag)
+    //     {
+    //         Vector3 worldPos =
+    //             cam.ScreenToWorldPoint(eventData.position);
+    //         worldPos.z = 0;
 
-            draggedObject = Instantiate(dragCupPrefab, worldPos, Quaternion.identity);
+    //         draggedObject = Instantiate(dragCupPrefab, worldPos, Quaternion.identity);
 
-            // SpriteRenderer sourceRenderer = GetComponent<SpriteRenderer>();
-            // SpriteRenderer dragRenderer = draggedObject.GetComponent<SpriteRenderer>();
-            SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
+    //         // SpriteRenderer sourceRenderer = GetComponent<SpriteRenderer>();
+    //         // SpriteRenderer dragRenderer = draggedObject.GetComponent<SpriteRenderer>();
+    //         SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
 
-            // dragRenderer.sprite = sourceRenderer.sprite;
-            dragRenderer.color = sourceRenderer.color;
-            Debug.Log("Pointer Down"); 
-            DragManager.BeginDrag(dragType);       
-        }
+    //         // dragRenderer.sprite = sourceRenderer.sprite;
+    //         dragRenderer.color = sourceRenderer.color;
+    //         Debug.Log("Pointer Down"); 
+    //         DragManager.BeginDrag(dragType);       
+    //     }
         
 
-    }
+    // }
 
-    public void OnDrag(PointerEventData eventData)
+    // public void OnDrag(PointerEventData eventData)
+    // {
+    //     if (canDrag)
+    //     {
+    //         if (draggedObject == null)
+    //             return;
+
+    //         Vector3 worldPos =
+    //             cam.ScreenToWorldPoint(eventData.position);
+    //         worldPos.z = 0;
+
+    //         draggedObject.transform.position = worldPos;          
+    //     }
+
+    // }
+
+    // public void OnPointerUp(PointerEventData eventData)
+    // {
+    //     if (canDrag)
+    //     {
+    //         if (draggedObject == null)
+    //             return;
+
+    //         Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+    //         worldPos.z = 0;
+
+    //         Collider2D hit = Physics2D.OverlapPoint(worldPos);
+
+    //         if (hit != null)
+    //         {
+    //             DropInterface dropTarget = hit.GetComponent<DropInterface>();
+    //             if (dropTarget != null)
+    //             {
+    //                 Debug.Log("Tray received drink!");
+    //                 if (dropTarget.ReceiveDraggable(drink.Clone()))
+    //                 {
+    //                     ClearCup();
+    //                 }
+    //             }
+    //         }
+
+    //         Destroy(draggedObject);
+    //         draggedObject = null;
+    //         DragManager.EndDrag();       
+    //     }
+
+    // }
+
+    public override object GetData()
     {
-        if (canDrag)
-        {
-            if (draggedObject == null)
-                return;
-
-            Vector3 worldPos =
-                cam.ScreenToWorldPoint(eventData.position);
-            worldPos.z = 0;
-
-            draggedObject.transform.position = worldPos;          
-        }
-
+        return drink.Clone();
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public override void AfterDropFunctions()
     {
-        if (canDrag)
-        {
-            if (draggedObject == null)
-                return;
-
-            Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-            worldPos.z = 0;
-
-            Collider2D hit = Physics2D.OverlapPoint(worldPos);
-
-            if (hit != null)
-            {
-                DropInterface dropTarget = hit.GetComponent<DropInterface>();
-                if (dropTarget != null)
-                {
-                    Debug.Log("Tray received drink!");
-                    if (dropTarget.ReceiveDraggable(drink.Clone()))
-                    {
-                        ClearCup();
-                    }
-                }
-            }
-
-            Destroy(draggedObject);
-            draggedObject = null;
-            DragManager.EndDrag();       
-        }
-
+        ClearCup();
     }
 
-        public void SetSpriteColorFromHex(string hex, SpriteRenderer spriteComponent)
+    public void SetSpriteColorFromHex(string hex, SpriteRenderer spriteComponent)
     {
         // TryParseHtmlString returns true if the conversion is successful
         if (ColorUtility.TryParseHtmlString(hex, out Color newColor))
