@@ -23,18 +23,6 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private List<string> tutorialDialogue;
     //[SerializeField] private string tutorialWrong = "Thats the wrong drink, could you do it again?";
 
-
-
-    //[SerializeField] private TMP_Text timerText;
-
-    //private float timeElapsed;
-    //private float timeRemaining;
-    //[SerializeField] private float duration = 120f;
-
-    //private bool isTimerRunning;
-
-    //[SerializeField] private bool challenge = false;
-
     private bool hasServed = false;
 
     [Header("Order Settings")]
@@ -100,37 +88,17 @@ public class CustomerManager : MonoBehaviour
     {
         if (scene.name == "CounterScene")
         {
-            // FindNextButton();
+            FindNextButton();
             return;
         }
     }
 
-// void FindNextButton()
-// {
-//     GameObject nextObj = GameObject.Find("Next");
-//     if (nextObj == null)
-//     {
-//         Debug.LogError("FindNextButton: No GameObject named 'Next' found in scene.");
-//         return;
-//     }
-
-//     next = nextObj.GetComponent<Button>();
-//     if (next == null)
-//     {
-//         Debug.LogError("FindNextButton: 'Next' object has no Button component.");
-//         return;
-//     }
-
-//     var bridge = next.GetComponent<CustomerManagerUIBridge>();
-//     if (bridge == null)
-//     {
-//         Debug.LogError("FindNextButton: 'Next' object has no CustomerManagerUIBridge component.");
-//         return;
-//     }
-
-//     next.onClick.AddListener(GenerateNewCustomer);
-//     next.onClick.AddListener(bridge.OnGenerateNewCustomerClicked);
-// }
+    void FindNextButton()
+    {
+        next = GameObject.Find("Next").GetComponent<Button>();
+        next.onClick.AddListener(GenerateNewCustomer);
+        //next.onClick.AddListener(next.GetComponent<CustomerManagerUIBridge>().OnGenerateNewCustomerClicked);
+    }
 
     void FindTryAgainButton()
     {
