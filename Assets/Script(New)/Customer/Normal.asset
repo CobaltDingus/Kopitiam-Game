@@ -45,10 +45,10 @@ MonoBehaviour:
   - 
   - 
   wrongFrontDialogue:
-  - 'I ordered '
-  - 
-  - 
+  - 'wrong '
+  - i think
+  - you gave me
   wrongBackDiaogue:
-  - ', this should have/too much'
-  - ' come with '
-  - '? It should''nt have'
+  - order
+  - 'this is wrong '
+  - the wrong order

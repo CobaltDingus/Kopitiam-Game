@@ -85,30 +85,36 @@ public class TrayCounter :
 
         dragging = false;
 
-        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-        worldPos.z = 0;
-
         // Re-enable collider
         trayCollider.enabled = true;
+
+        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+        worldPos.z = 0;
 
         Collider2D[] hits = Physics2D.OverlapPointAll(worldPos);
 
         foreach (Collider2D hit in hits)
         {
-            DropTrayInterface customer = hit.GetComponent<DropTrayInterface>();
+            // Searches the hit collider AND its parent objects for CustomerDisplayLink
+            CustomerDisplayLink customer = hit.GetComponentInParent<CustomerDisplayLink>();
 
             if (customer != null)
             {
-                customer.ReceiveTray(trayDatabase.SavedDrinks);
-                trayDatabase.ClearDatabase();
-                // Destroy(gameObject);
-                Debug.Log("Tray dropped");
+                if (CustomerManager.Instance.serveStatus)
+                {
+                    transform.position = startPosition;
+                    return;
+                }
+                CustomerManager.Instance.CustomerServed();
+                CustomerManager.Instance.ServeOrder();
+
+                // Reset tray position
                 transform.position = startPosition;
                 return;
             }
         }
 
-        // Didn't hit a customer, return to where we started
+        // Didn't hit a customer, return to original position
         transform.position = startPosition;
     }
 }

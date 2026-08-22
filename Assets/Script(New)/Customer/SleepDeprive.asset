@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab74ece8a89d1ff45ad3922f0af1e6d3, type: 3}
-  m_Name: NewCustomer
+  m_Name: SleepDeprive
   m_EditorClassIdentifier: Assembly-CSharp::CustomerData
   id: 
   customerName: 

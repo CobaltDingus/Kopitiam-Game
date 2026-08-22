@@ -20,23 +20,30 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private SpriteRenderer customerSpriteRenderer;
     [SerializeField] private TMP_Text dialogueText;
 
-    [SerializeField] private TMP_Text timerText;
+    [SerializeField] private List<string> tutorialDialogue;
+    //[SerializeField] private string tutorialWrong = "Thats the wrong drink, could you do it again?";
 
-    private float timeElapsed;
-    private float timeRemaining;
-    [SerializeField] private float duration = 120f;
 
-    private bool isTimerRunning;
 
-    [SerializeField] private bool challenge = false;
+    //[SerializeField] private TMP_Text timerText;
+
+    //private float timeElapsed;
+    //private float timeRemaining;
+    //[SerializeField] private float duration = 120f;
+
+    //private bool isTimerRunning;
+
+    //[SerializeField] private bool challenge = false;
+
+    private bool hasServed = false;
 
     [Header("Order Settings")]
     [SerializeField] private int minDrinks = 1;
     [SerializeField] private int maxDrinks = 3; // inclusive
 
     // swapped out from public to private var testing
-    [SerializeField] private Button repeat;
-    [SerializeField] private Button conclude;
+    [SerializeField] private Button next;
+    [SerializeField] private Button tryAgain;
 
 
     Scene currentScene;
@@ -49,6 +56,8 @@ public class CustomerManager : MonoBehaviour
 
     private Sprite currentSprite;
     private string currentDialogueText = "";
+
+    public bool serveStatus => hasServed;
 
     void Awake()
     {
@@ -65,105 +74,47 @@ public class CustomerManager : MonoBehaviour
     void Start()
     {
         if (currentCustomer == null)
+        {
             GenerateNewCustomer();
+            //if (SaveManager.saveManager.DayCount == 0)
+            //{
 
-        RestartTimer();
+            //    GenerateTutorialDayZero();
+
+            //}
+            //else
+            //{
+            //    GenerateNewCustomer();
+            //}
+        }
+
+        //RestartTimer();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
         currentScene = SceneManager.GetActiveScene();
 
-        repeat.onClick.AddListener(GenerateNewCustomer);
-    }
-
-    void Update()
-    {
-        if (!isTimerRunning) return;
-        if (challenge)
-        {
-            if (timeRemaining > 0)
-            {
-                timeRemaining -= Time.deltaTime;
-                UpdateTimerDisplayCountDown(timeRemaining);
-            }
-            else
-            {
-                timeRemaining = 0;
-                isTimerRunning = false;
-                UpdateTimerDisplayCountDown(timeRemaining);
-                // loops back the timer, can remove the RestartTimer() here if want to add an outcome if timer ended
-                RestartTimer();
-            }
-        }
-        else
-        {
-            timeElapsed += Time.deltaTime;
-            UpdateTimerDisplayCountUp(timeElapsed);
-        }
-    }
-
-    private void UpdateTimerDisplayCountUp(float timeToDisplay)
-    {
-        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
-        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
-
-        if (timerText != null)
-        {
-            string word = "Time Elapsed ";
-            timerText.text = word + string.Format("{0:00}:{1:00}", minutes, seconds);
-        }
-    }
-
-    private void UpdateTimerDisplayCountDown(float timeToDisplay)
-    {
-        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
-        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
-
-        if (timerText != null)
-        {
-            string word = "Time Remaining ";
-            timerText.text = word + string.Format("{0:00}:{1:00}", minutes, seconds);
-        }
-    }
-
-
-    public void RestartTimer()
-    {
-        timeElapsed = 0f;
-        isTimerRunning = true;
-        UpdateTimerDisplayCountUp(timeElapsed);
-        if (challenge)
-        {
-            timeRemaining = duration;
-            isTimerRunning = true;
-            UpdateTimerDisplayCountDown(timeRemaining);
-        }
-        else
-        {
-            timeElapsed = 0f;
-            isTimerRunning = true;
-            UpdateTimerDisplayCountUp(timeElapsed);
-        }
-    }
-
-    public void StopTimer()
-    {
-        isTimerRunning = false;
+        next.onClick.AddListener(GenerateNewCustomer);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "CounterScene")
         {
-            FindRepeatButton();
+            FindNextButton();
         }
     }
 
-    void FindRepeatButton()
+    void FindNextButton()
     {
-        repeat = GameObject.Find("Repeat").GetComponent<Button>();
-        repeat.onClick.AddListener(GenerateNewCustomer);
-        repeat.onClick.AddListener(repeat.GetComponent<CustomerManagerUIBridge>().OnGenerateNewCustomerClicked);
-        //repeat.GetComponent<Transform>().localScale = new Vector3();
+        next = GameObject.Find("Next").GetComponent<Button>();
+        next.onClick.AddListener(GenerateNewCustomer);
+        next.onClick.AddListener(next.GetComponent<CustomerManagerUIBridge>().OnGenerateNewCustomerClicked);
+        //next.GetComponent<Transform>().localScale = new Vector3();
+    }
+
+    void FindTryAgainButton()
+    {
+        
     }
 
     // ---------------------------------------------------------------
@@ -189,8 +140,34 @@ public class CustomerManager : MonoBehaviour
     // (or call it from Start) whenever you want to reset the scene.
     // Kept fully separate from ServeOrder/Evaluate below.
     // ---------------------------------------------------------------
+    public void GenerateTutorialDayZero()
+    {
+        UiManager.uiManager.HideTimer();
+        if(SaveManager.saveManager.TutorialPhase == 0)
+        {
+            //int position;
+            
+            for (int i =0; i < recipeBook.AllRecipes.Count; i++)
+            {
+                // add a drink where the drink name is called "Kopi O"
+            }
+            //orderedRecipes.Add(recipeBook.AllRecipes[]);
+
+        }
+        else if (SaveManager.saveManager.TutorialPhase == 1)
+        {
+
+        }
+        
+    }
+
     public void GenerateNewCustomer()
     {
+        UiManager.uiManager.TurnOnTimer();
+        UiManager.uiManager.RestartTimer();
+
+        //SaveManager.saveManager.
+        hasServed = false;
         //Debug.Log("Generate Customer Button Clicked.");
         if (customerDatabase == null || customerDatabase.AllCustomers.Count == 0)
         {
@@ -291,10 +268,11 @@ public class CustomerManager : MonoBehaviour
             trayDatabase.AddDrink(perfectDrink);
         }
 
-        ServeOrder();
+        //ServeOrder();
     }
     public void ServeOrder()
     {
+        UiManager.uiManager.TurnOffTimer();
         if (currentCustomer == null)
         {
             Debug.LogWarning("No current customer to serve.");
@@ -308,6 +286,13 @@ public class CustomerManager : MonoBehaviour
         }
 
         EvaluateAndSetEndDialogue(trayDatabase.SavedDrinks);
+        trayDatabase.ClearDatabase();
+    }
+
+    public void CustomerServed()
+    {
+        hasServed = true;
+        return;
     }
 
     // Kept for backwards compatibility if something still calls this with a single Drink.
@@ -342,6 +327,7 @@ public class CustomerManager : MonoBehaviour
             // all drinks correct
             frontList = currentCustomer.PerfectFrontDialogue;
             backList = currentCustomer.PerfectBackDialogue;
+            //SaveManager.saveManager.setTutorialPhase(1);
         }
         else if (perfectCount == 0)
         {
