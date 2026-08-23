@@ -17,5 +17,27 @@ public class CustomerDisplayLink : MonoBehaviour
         }
 
         CustomerManager.Instance.RegisterDisplayReferences(customerSpriteRenderer, dialogueText);
+
+        if (!CustomerManager.Instance.IsNext)
+        {
+            CustomerManager.Instance.NextButton.gameObject.SetActive(false);
+        }
+
+        if (!CustomerManager.Instance.IsOkay)
+        {
+            CustomerManager.Instance.OkayButton.gameObject.SetActive(false);
+        }
+        if (!CustomerManager.Instance.IsTryAgain)
+        {
+            CustomerManager.Instance.TryAgainButton.gameObject.SetActive(false);
+        }
+        if (CustomerManager.Instance.tutorialserve)
+        {
+            CustomerManager.Instance.OkayButton.gameObject.SetActive(true);
+        }
+        if (CustomerManager.Instance.tutorialComplete)
+        {
+            CustomerManager.Instance.NextButton.gameObject.SetActive(true);
+        }
     }
 }

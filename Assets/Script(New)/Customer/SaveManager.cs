@@ -13,24 +13,28 @@ public class SaveManager : MonoBehaviour
 
     private float previousFavor;
 
-    private float tutorialPhase;
+    //private float tutorialPhase;
 
     private bool retry;
     // getters
     public float DayCount => dayCount;
     public float MaxCustomerCount => maxCustomerCount;
 
-    public float TutorialPhase => tutorialPhase;
+    //public float TutorialPhase => tutorialPhase;
 
     public float CurrentCustomerCount => currentCustomerCount;
 
     public bool Retry => retry;
     //setters
-
-    public void setTutorialPhase(int num)
+    public void setDayCount(int num)
     {
-        tutorialPhase += num;
+        dayCount += num;
+        return;
     }
+    //public void setTutorialPhase(int num)
+    //{
+    //    tutorialPhase += num;
+    //}
 
     public void setCurrentCustomerCount(int num)
     {
@@ -51,8 +55,7 @@ public class SaveManager : MonoBehaviour
 
         saveManager = this;
         DontDestroyOnLoad(gameObject);
-        tutorialPhase = 0;
-        dayCount = 1;
+        dayCount = 0;
     }
     void Update()
     {

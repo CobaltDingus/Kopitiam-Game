@@ -34,6 +34,16 @@ public class UiManager : MonoBehaviour
 
     public bool timerStatus => isTimerRunning;
 
+    public void HideCustomerCount()
+    {
+        customerCountText.gameObject.SetActive(false);
+    }
+
+    public void ShowCustomerCount()
+    {
+        customerCountText.gameObject.SetActive(true);
+    }
+
     public void HideTimer()
     {
         timerText.gameObject.SetActive(false);
@@ -147,25 +157,25 @@ public class UiManager : MonoBehaviour
         isTimerRunning = false;
     }
 
-    private void UpdateDayCount()
+    public void UpdateDayCount()
     {
         
         if (timerText != null)
         {
             string text = "DAY: ";
-            dayText.text = text + dayCount;
+            dayText.text = text + SaveManager.saveManager.DayCount;
         }
     }
 
-    private void UpdateCustomerCount()
+    public void UpdateCustomerCount()
     {
         if (customerCountText != null)
         {
-            customerCountText.text = "CUSTOMER: " + currentCustomer.ToString() + "/" + maxCustomerCount.ToString();
+            customerCountText.text = "CUSTOMER: " + SaveManager.saveManager.CurrentCustomerCount.ToString() + "/" + SaveManager.saveManager.MaxCustomerCount.ToString();
         }
     }
 
-    private void UpdateFavor()
+    public void UpdateFavor()
     {
 
         if (favorText != null)
