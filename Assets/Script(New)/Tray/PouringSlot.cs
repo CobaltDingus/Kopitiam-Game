@@ -33,7 +33,7 @@ public class PouringSlot : DraggableObject, DropInterface
         }
         else
         {
-            if (draggableObject is Drink drink)
+            if (draggableObject is Drink drink && drink.isStirred)
             {
                 storedDrink = drink.Clone();
                 storedDrink.containerType = storedContainerType;

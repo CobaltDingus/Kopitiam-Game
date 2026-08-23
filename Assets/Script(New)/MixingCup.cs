@@ -30,6 +30,7 @@ IPointerUpHandler
 
     public Sprite testSprite;
     public string waterColorHex = "#98DCFF";
+    Color currentLiquidColor;
 
     private Vector3 originalScale;
     private Coroutine bounceCoroutine;
@@ -41,9 +42,12 @@ IPointerUpHandler
     private TMP_Text stirButtonText;
     [SerializeField] private GesturePanel gesturePanel;
 
+    private Image gesturePanelDrawArea;
+
     private bool isValidDrink = false;
     public int stirsRequired = 4;
     public int currentStirCount = 0;
+
 
     // private List<Ingredient> ingredients = new List<Ingredient>();
 
@@ -60,6 +64,8 @@ IPointerUpHandler
         liquidSprite = liquidObject.GetComponent<SpriteRenderer>();
         ingredientText.text = "Mixing Cup Contents: \n\nEMPTY";
         stirButtonText = stirButton.GetComponentInChildren<TMP_Text>();
+        gesturePanelDrawArea = gesturePanel.GetComponent<Image>();
+        gesturePanelDrawArea.color = Color.white;
     }
 
     public void ReceiveIngredient(Ingredient ingredient)
@@ -191,20 +197,25 @@ IPointerUpHandler
 
         // gesturePanel
         gesturePanel.DisableDetector();
+        gesturePanelDrawArea.color = Color.white;
+        currentLiquidColor = Color.white;
     }
 
     public void AddWater()
     {
-        if (!drink.ingredients.Any(ingredient => ingredient.name == "Hot Water"))
+        if (!drink.ingredients.Any(ingredient => ingredient.name == "HotWater"))
         {
             drink.ingredients.Add(waterAsset);
             UpdateIngredientText(waterAsset);
             dragType = DragEnum.UnfinishedDrink;
             canDrag = true;
-            SetSpriteColorFromHex(waterColorHex, liquidSprite);
+
+
+            currentLiquidColor = HexToColor(waterColorHex);
+            liquidSprite.color = currentLiquidColor;
             liquidObject.SetActive(true);
 
-            
+            gesturePanelDrawArea.color = currentLiquidColor;
 
             // StirDrink();
             // dragType = DragEnum.FinishedDrink;
@@ -229,6 +240,16 @@ IPointerUpHandler
     {
         currentStirCount++;
         stirCounterText.text = "Stirs Left (" + (stirsRequired - currentStirCount) + ")";
+
+        currentLiquidColor = Color.Lerp(
+            HexToColor(waterColorHex),
+            HexToColor(drink.colorHex),
+            currentStirCount / 4f
+        );
+
+        gesturePanelDrawArea.color = currentLiquidColor;
+        liquidSprite.color = currentLiquidColor;
+
         if (currentStirCount == stirsRequired)
         {
             drink.isStirred = true;
@@ -286,6 +307,7 @@ IPointerUpHandler
                 drink.drinkSprite = recipe.drinkImage;
                 testSprite = recipe.drinkImage;
                 drink.drinkName = recipe.drinkName;
+                drink.colorHex = recipe.drinkColorHex;
                 return true;
             }
         }

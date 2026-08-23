@@ -19,6 +19,8 @@ public class Drink
     public bool isStirred;
     public bool isFinished;
 
+    public string colorHex;
+
     public Drink Clone()
     {
         Drink copy = new Drink();
@@ -30,6 +32,7 @@ public class Drink
         copy.isStirred = isStirred;
         copy.isFinished = isFinished;
         copy.hasWater = hasWater;
+        copy.colorHex = colorHex;
 
         return copy;
     }
