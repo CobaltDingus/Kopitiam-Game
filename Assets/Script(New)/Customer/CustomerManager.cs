@@ -188,19 +188,32 @@ public class CustomerManager : MonoBehaviour
 
     public void NextDialogue()
     {
+        // If on tutorial index 5, clicking OKAY transitions to the Kitchen scene
+        if (tutorialPhase == 5 && SaveManager.saveManager.DayCount == 0 && !tutorialserve)
+        {
+            UpdateOkayButton();
+            return;
+        }
+
         tutorialPhase += 1;
-        if (tutorialPhase == tutorialDialogue.Count +1)
+
+        // Check if tutorial dialogue sequence is completed
+        if (tutorialPhase >= tutorialDialogue.Count)
         {
             tutorialComplete = true;
             okay.gameObject.SetActive(false);
             next.gameObject.SetActive(true);
+
+            // Advance to Day 1 and generate first real customer
             SaveManager.saveManager.setDayCount(1);
             GenerateNewCustomer();
+
             UiManager.uiManager.UpdateDayCount();
             UiManager.uiManager.ShowTimer();
             UiManager.uiManager.RestartTimer();
             return;
         }
+
         LoadTutorialDialogue();
     }
 
@@ -241,9 +254,9 @@ public class CustomerManager : MonoBehaviour
 
     public void LoadTutorialDialogue()
     {
-        // Reset evaluation flag whenever dialogue updates
         canEvaluateTutorial = false;
         Debug.Log(tutorialPhase);
+
         if (tutorialwrong)
         {
             currentDialogueText = tutorialWrongDialogue;
@@ -252,12 +265,23 @@ public class CustomerManager : MonoBehaviour
             return;
         }
 
-        // Phase 5 is the drink ordering step
+        // Phase 5 is the ordering / kitchen transition step
         if (tutorialPhase == 5)
         {
-            canEvaluateTutorial = true; // Allow evaluation only when phase 5 is reached
-            okay.gameObject.SetActive(false); // Lock okay button until order is evaluated
-            tryAgain.gameObject.SetActive(false);
+            canEvaluateTutorial = true;
+
+            if (!tutorialserve)
+            {
+                // First time on index 5: OKAY button takes player to kitchen
+                okay.gameObject.SetActive(true);
+                tryAgain.gameObject.SetActive(false);
+            }
+            else
+            {
+                // Returned from kitchen & served correctly: show OKAY button to move to dialogue index 6
+                okay.gameObject.SetActive(true);
+                tryAgain.gameObject.SetActive(false);
+            }
         }
 
         if (tutorialDialogue != null && tutorialPhase < tutorialDialogue.Count)
@@ -275,7 +299,6 @@ public class CustomerManager : MonoBehaviour
     {
         servedDrinks ??= new List<Drink>();
 
-        // Check if the amount of served drinks matches the ordered amount
         if (servedDrinks.Count != orderedRecipes.Count)
         {
             SetTutorialWrongState();
@@ -284,7 +307,6 @@ public class CustomerManager : MonoBehaviour
 
         List<Drink> remainingServed = new List<Drink>(servedDrinks);
 
-        // Match each ordered recipe against remaining served drinks
         foreach (DrinkRecipe requiredRecipe in orderedRecipes)
         {
             Drink match = remainingServed.FirstOrDefault(d =>
@@ -292,9 +314,7 @@ public class CustomerManager : MonoBehaviour
 
             if (match != null)
             {
-                remainingServed.Remove(match); // Consume matched drink
-                tutorialserve = true;
-                NextDialogue();
+                remainingServed.Remove(match);
             }
             else
             {
@@ -305,9 +325,14 @@ public class CustomerManager : MonoBehaviour
 
         // --- Order Correct ---
         tutorialwrong = false;
-        okay.gameObject.SetActive(true);      // Unlock okay button
-        tryAgain.gameObject.SetActive(false);  // Ensure try again is hidden
-        Debug.Log("Tutorial Order Correct!");
+        tutorialserve = true; // Mark as successfully served
+
+        // Enable OKAY button so player can proceed to next dialogue
+        okay.gameObject.SetActive(true);
+        tryAgain.gameObject.SetActive(false);
+
+        // Advance to dialogue index 6
+        NextDialogue();
     }
 
     private void SetTutorialWrongState()
@@ -326,7 +351,7 @@ public class CustomerManager : MonoBehaviour
 
     public void UpdateOkayButton()
     {
-
+        SceneManager.LoadScene("KitchenRearranged");
     }
 
     public void RevertOkayButton()
@@ -337,7 +362,11 @@ public class CustomerManager : MonoBehaviour
     public void GenerateNewCustomer()
     {
         UiManager.uiManager.TurnOnTimer();
-        UiManager.uiManager.RestartTimer();
+        if (UiManager.uiManager.ChallengeMode)
+        {
+            UiManager.uiManager.RestartTimer();
+        }
+        //UiManager.uiManager.RestartTimer();
 
         SaveManager.saveManager.setDayCount(1);
         

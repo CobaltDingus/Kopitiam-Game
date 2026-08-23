@@ -21,16 +21,10 @@ public class UiManager : MonoBehaviour
     [SerializeField] private float duration = 20f;
 
     // base var for saves
-    private float currentCustomerCount;
-
-    private float maxCustomerCount;
-    private float dayCount;
-
-    private float currentCustomer;
-
-    private float baseCustomerCount;
 
     private float favor;
+
+    public bool ChallengeMode => challengeMode;
 
     public bool timerStatus => isTimerRunning;
 

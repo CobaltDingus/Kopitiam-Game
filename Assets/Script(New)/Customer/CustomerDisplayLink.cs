@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+
 public class CustomerDisplayLink : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private SpriteRenderer customerSpriteRenderer;
     [SerializeField] private TMP_Text dialogueText;
-    //[SerializeField] private TM_Text score;
 
     void Start()
     {
@@ -18,26 +16,36 @@ public class CustomerDisplayLink : MonoBehaviour
 
         CustomerManager.Instance.RegisterDisplayReferences(customerSpriteRenderer, dialogueText);
 
-        if (!CustomerManager.Instance.IsNext)
-        {
-            CustomerManager.Instance.NextButton.gameObject.SetActive(false);
-        }
+        // Standard button initializations
+        if (CustomerManager.Instance.NextButton != null)
+            CustomerManager.Instance.NextButton.gameObject.SetActive(CustomerManager.Instance.IsNext);
 
-        if (!CustomerManager.Instance.IsOkay)
+        if (CustomerManager.Instance.TryAgainButton != null)
+            CustomerManager.Instance.TryAgainButton.gameObject.SetActive(CustomerManager.Instance.IsTryAgain);
+
+        // --- Tutorial Scene Load Handling ---
+        if (SaveManager.saveManager != null && SaveManager.saveManager.DayCount == 0)
         {
-            CustomerManager.Instance.OkayButton.gameObject.SetActive(false);
+            if (CustomerManager.Instance.tutorialPhase == 5)
+            {
+                if (!CustomerManager.Instance.tutorialserve)
+                {
+                    // Returned from kitchen scene: HIDE Okay button until drinks are served
+                    if (CustomerManager.Instance.OkayButton != null)
+                        CustomerManager.Instance.OkayButton.gameObject.SetActive(false);
+                }
+                else
+                {
+                    // Order has been served correctly: SHOW Okay button
+                    if (CustomerManager.Instance.OkayButton != null)
+                        CustomerManager.Instance.OkayButton.gameObject.SetActive(true);
+                }
+            }
         }
-        if (!CustomerManager.Instance.IsTryAgain)
+        else if (CustomerManager.Instance.tutorialComplete)
         {
-            CustomerManager.Instance.TryAgainButton.gameObject.SetActive(false);
-        }
-        if (CustomerManager.Instance.tutorialserve)
-        {
-            CustomerManager.Instance.OkayButton.gameObject.SetActive(true);
-        }
-        if (CustomerManager.Instance.tutorialComplete)
-        {
-            CustomerManager.Instance.NextButton.gameObject.SetActive(true);
+            if (CustomerManager.Instance.NextButton != null)
+                CustomerManager.Instance.NextButton.gameObject.SetActive(true);
         }
     }
 }
