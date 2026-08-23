@@ -15,11 +15,15 @@ public class TrayCounter :
 
     private bool dragging;
     private Vector3 startPosition;
+    private Vector3 dragOffset;
 
     // [SerializeField] private TMP_Text drinkText;
 
     private Collider2D trayCollider;
     private Camera cam;
+    [SerializeField] private Sprite[] containerSprites;
+    [SerializeField] private SpriteRenderer[] cupRenderers;
+    [SerializeField] private SpriteRenderer[] drinkRenderers;
 
     // public string DrinkContents => drinkText.text;
 
@@ -32,17 +36,36 @@ public class TrayCounter :
             slotThree
         };
 
-        for (int i = 0; i < slots.Length; i++)
-        {
-            SpriteRenderer spriteRenderer = slots[i].GetComponentInChildren<SpriteRenderer>();
+        // for (int i = 0; i < slots.Length; i++)
+        // {
+        //     SpriteRenderer spriteRenderer = slots[i].GetComponentInChildren<SpriteRenderer>();
 
+        //     if (i < trayDatabase.SavedDrinks.Count)
+        //     {
+        //         spriteRenderer.sprite = trayDatabase.SavedDrinks[i].drinkSprite;
+        //     }
+        //     else
+        //     {
+        //         spriteRenderer.sprite = null;
+        //     }
+        // }
+        for (int i = 0; i < cupRenderers.Length; i++)
+        {
             if (i < trayDatabase.SavedDrinks.Count)
             {
-                spriteRenderer.sprite = trayDatabase.SavedDrinks[i].drinkSprite;
+                if (trayDatabase.SavedDrinks[i].containerType == ContainerType.Hot)
+                {
+                    cupRenderers[i].sprite = containerSprites[0];
+                }
+                
+                drinkRenderers[i].color = HexToColor(trayDatabase.SavedDrinks[i].colorHex);
+                drinkRenderers[i].enabled = true;
             }
             else
             {
-                spriteRenderer.sprite = null;
+                cupRenderers[i].sprite = null;
+                drinkRenderers[i].color = Color.clear;
+                drinkRenderers[i].enabled = false;
             }
         }
     }
@@ -60,9 +83,14 @@ public class TrayCounter :
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+        worldPos.z = 0;
+
         dragging = true;
 
         trayCollider.enabled = false;
+
+        dragOffset = transform.position - worldPos;
 
         Debug.Log("Started dragging tray");
     }
@@ -75,7 +103,7 @@ public class TrayCounter :
         Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
         worldPos.z = 0;
 
-        transform.position = worldPos;
+        transform.position = worldPos + dragOffset;
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -116,5 +144,18 @@ public class TrayCounter :
 
         // Didn't hit a customer, return to original position
         transform.position = startPosition;
+    }
+
+    public Color HexToColor(string hexCode)
+    {
+        if (ColorUtility.TryParseHtmlString(hexCode, out Color newColor))
+        {
+            return newColor;
+        }
+        else
+        {
+            Debug.LogWarning("Invalid Hexadecimal string provided!");
+            return Color.clear;
+        }
     }
 }

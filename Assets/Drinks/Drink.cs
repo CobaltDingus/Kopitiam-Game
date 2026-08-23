@@ -14,6 +14,7 @@ public class Drink
     private bool hasWater;
     public List<Ingredient> ingredients = new List<Ingredient>();
     public Sprite drinkSprite;
+    public Sprite cupSprite;
     public string drinkName = "";
     public ContainerType containerType = ContainerType.None;
     public bool isStirred;
@@ -28,11 +29,12 @@ public class Drink
         copy.ingredients = new List<Ingredient>(ingredients);
         copy.containerType = containerType;
         copy.drinkName = drinkName;
-        copy.drinkSprite = drinkSprite;
+        // copy.drinkSprite = drinkSprite;
         copy.isStirred = isStirred;
         copy.isFinished = isFinished;
         copy.hasWater = hasWater;
         copy.colorHex = colorHex;
+        copy.drinkSprite = cupSprite;
 
         return copy;
     }

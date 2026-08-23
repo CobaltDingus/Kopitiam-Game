@@ -146,7 +146,7 @@ public class CustomerManager : MonoBehaviour
             FindNextButton();
             FindOkayButton();
             FindTryAgainButton();
-            FindPerfectButton();
+            // FindPerfectButton();
             return;
         }
     }
@@ -387,7 +387,7 @@ public class CustomerManager : MonoBehaviour
 
     public void UpdateOkayButton()
     {
-        SceneManager.LoadScene("KitchenRearranged");
+        SceneManager.LoadScene("KitchenScene");
     }
 
     public void RevertOkayButton()

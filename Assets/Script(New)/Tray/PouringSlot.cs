@@ -5,6 +5,7 @@ public class PouringSlot : DraggableObject, DropInterface
 {
     // [SerializeField] private TMP_Text slotText;
     [SerializeField] private SpriteRenderer slotSprite;
+    [SerializeField] private SpriteRenderer liquidSprite;
     [SerializeField] private Sprite outlineSprite;
     private Drink storedDrink = new Drink();
     private bool hasContainer;
@@ -38,7 +39,9 @@ public class PouringSlot : DraggableObject, DropInterface
                 storedDrink = drink.Clone();
                 storedDrink.containerType = storedContainerType;
                 storedDrink.isFinished = true;
-                slotSprite.sprite = storedDrink.drinkSprite;
+                // slotSprite.sprite = storedDrink.drinkSprite;
+                liquidSprite.enabled = true;
+                liquidSprite.color = HexToColor(storedDrink.colorHex);
                 canDrag = true;
                 dragType = DragEnum.FinishedDrink;
 
@@ -75,6 +78,21 @@ public class PouringSlot : DraggableObject, DropInterface
         hasContainer = false;
         dragType = DragEnum.None;
         slotSprite.sprite = outlineSprite;
+        liquidSprite.enabled = false;
+        liquidSprite.color = Color.white;
+    }
+
+    public Color HexToColor(string hexCode)
+    {
+        if (ColorUtility.TryParseHtmlString(hexCode, out Color newColor))
+        {
+            return newColor;
+        }
+        else
+        {
+            Debug.LogWarning("Invalid Hexadecimal string provided!");
+            return Color.clear;
+        }
     }
     // public bool ReceiveDrink(Drink drink)
     // {
