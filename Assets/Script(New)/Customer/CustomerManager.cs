@@ -31,7 +31,7 @@ public class CustomerManager : MonoBehaviour
 
     [Header("Order Settings")]
     [SerializeField] private int minDrinks = 1;
-    [SerializeField] private int maxDrinks = 3; // inclusive
+    [SerializeField] private int maxDrinks = 1; // inclusive
 
     // swapped out from public to private var testing
     [SerializeField] private Button next;
@@ -106,6 +106,7 @@ public class CustomerManager : MonoBehaviour
 
     void Start()
     {
+        //SaveManager.saveManager
         UiManager.uiManager.UpdateDayCount();
         if (currentCustomer == null)
         {
@@ -188,14 +189,29 @@ public class CustomerManager : MonoBehaviour
 
     public void NextDialogue()
     {
-        // If on tutorial index 5, clicking OKAY transitions to the Kitchen scene
-        if (tutorialPhase == 5 && SaveManager.saveManager.DayCount == 0 && !tutorialserve)
+        // If on tutorial index 5 or 7, transition to Kitchen ONLY if the drink hasn't been served yet
+        if ((tutorialPhase == 5 || tutorialPhase == 7) && SaveManager.saveManager.DayCount == 0 && !tutorialserve)
         {
             UpdateOkayButton();
             return;
         }
 
         tutorialPhase += 1;
+
+        // Reset served state for the new dialogue step
+        hasServed = false;
+
+        // Reset tutorialserve back to false only when advancing to non-serve dialogue steps
+        if (tutorialPhase != 5 && tutorialPhase != 7)
+        {
+            tutorialserve = false;
+        }
+
+        // Populate the recipe requirements whenever moving into a recipe phase
+        if (tutorialPhase == 4 || tutorialPhase == 5 || tutorialPhase == 7)
+        {
+            GenerateTutorialOrderOne();
+        }
 
         // Check if tutorial dialogue sequence is completed
         if (tutorialPhase >= tutorialDialogue.Count)
@@ -204,7 +220,6 @@ public class CustomerManager : MonoBehaviour
             okay.gameObject.SetActive(false);
             next.gameObject.SetActive(true);
 
-            // Advance to Day 1 and generate first real customer
             SaveManager.saveManager.setDayCount(1);
             GenerateNewCustomer();
 
@@ -241,16 +256,38 @@ public class CustomerManager : MonoBehaviour
         isTryAgain = false;
         orderedRecipes.Clear();
 
-        DrinkRecipe kopi = recipeBook.AllRecipes.FirstOrDefault(r =>
-        string.Equals(r.drinkName, "Kopi", StringComparison.OrdinalIgnoreCase));
+        //DrinkRecipe kopi = recipeBook.AllRecipes.FirstOrDefault(r =>
+        //string.Equals(r.drinkName, "Kopi", StringComparison.OrdinalIgnoreCase));
 
-        DrinkRecipe kopiO = recipeBook.AllRecipes.FirstOrDefault(r =>
-            string.Equals(r.drinkName, "Kopi O", StringComparison.OrdinalIgnoreCase));
+        //DrinkRecipe kopiO = recipeBook.AllRecipes.FirstOrDefault(r =>
+        //string.Equals(r.drinkName, "Kopi O", StringComparison.OrdinalIgnoreCase));
 
-        orderedRecipes.Add(kopi);
-        orderedRecipes.Add(kopiO);
-        return;
+        //orderedRecipes.Add(kopi);
+        //orderedRecipes.Add(kopiO);
+        //return;
     }
+    public void GenerateTutorialOrderOne()
+    {
+        orderedRecipes.Clear();
+
+        if (tutorialPhase == 4 || tutorialPhase == 5)
+        {
+            DrinkRecipe kopi = recipeBook.AllRecipes.FirstOrDefault(r =>
+                string.Equals(r.drinkName, "Kopi", StringComparison.OrdinalIgnoreCase));
+
+            if (kopi != null)
+                orderedRecipes.Add(kopi);
+        }
+        else if (tutorialPhase == 7)
+        {
+            DrinkRecipe kopiO = recipeBook.AllRecipes.FirstOrDefault(r =>
+                string.Equals(r.drinkName, "Kopi O", StringComparison.OrdinalIgnoreCase));
+
+            if (kopiO != null)
+                orderedRecipes.Add(kopiO);
+        }
+    }
+
 
     public void LoadTutorialDialogue()
     {
@@ -265,20 +302,18 @@ public class CustomerManager : MonoBehaviour
             return;
         }
 
-        // Phase 5 is the ordering / kitchen transition step
-        if (tutorialPhase == 5)
+        // Explicitly allow both Phase 5 and Phase 7 to enable tutorial serving
+        if (tutorialPhase == 5 || tutorialPhase == 7)
         {
-            canEvaluateTutorial = true;
+            canEvaluateTutorial = true; // Fix: unlocks ServeOrder() execution
 
             if (!tutorialserve)
             {
-                // First time on index 5: OKAY button takes player to kitchen
                 okay.gameObject.SetActive(true);
                 tryAgain.gameObject.SetActive(false);
             }
             else
             {
-                // Returned from kitchen & served correctly: show OKAY button to move to dialogue index 6
                 okay.gameObject.SetActive(true);
                 tryAgain.gameObject.SetActive(false);
             }
@@ -325,29 +360,30 @@ public class CustomerManager : MonoBehaviour
 
         // --- Order Correct ---
         tutorialwrong = false;
-        tutorialserve = true; // Mark as successfully served
+        tutorialserve = true;
 
-        // Enable OKAY button so player can proceed to next dialogue
         okay.gameObject.SetActive(true);
         tryAgain.gameObject.SetActive(false);
 
-        // Advance to dialogue index 6
+        // Advance to next dialogue step
         NextDialogue();
     }
 
     private void SetTutorialWrongState()
+{
+    // --- Order Wrong ---
+    tutorialwrong = true;
+    hasServed = false; // Fix: Reset serve status so player can drag and try serving again
+    currentDialogueText = tutorialWrongDialogue;
+    
+    if (dialogueText != null)
     {
-        // --- Order Wrong ---
-        tutorialwrong = true;
-        currentDialogueText = tutorialWrongDialogue;
-        if (dialogueText != null)
-        {
-            dialogueText.text = currentDialogueText;
-        }
-
-        tryAgain.gameObject.SetActive(true); // Unlock try again button
-        okay.gameObject.SetActive(false);     // Hide okay button
+        dialogueText.text = currentDialogueText;
     }
+
+    tryAgain.gameObject.SetActive(true);
+    okay.gameObject.SetActive(false);
+}
 
     public void UpdateOkayButton()
     {
@@ -503,11 +539,11 @@ public class CustomerManager : MonoBehaviour
         // --- TUTORIAL / DAY 0 BYPASS ---
         if (SaveManager.saveManager.DayCount == 0)
         {
-            if (tutorialPhase == 5)
+            if (tutorialPhase == 5 || tutorialPhase == 7)
             {
                 if (!canEvaluateTutorial)
                 {
-                    Debug.Log("Tutorial evaluation locked. Reach Phase 5 dialogue first.");
+                    Debug.Log("Tutorial evaluation locked. Reach active dialogue phase first.");
                     return;
                 }
                 EvaluateTutorialOrderByName(trayDatabase.SavedDrinks);
@@ -539,111 +575,6 @@ public class CustomerManager : MonoBehaviour
         if (currentCustomer == null || servedDrink == null) return;
         EvaluateAndSetEndDialogue(new List<Drink> { servedDrink });
     }
-
-    //origin
-    //public void EvaluateAndSetEndDialogue(List<Drink> servedDrinks)
-    //{
-    //    if (currentCustomer == null || orderedRecipes.Count == 0) return;
-
-    //    servedDrinks ??= new List<Drink>();
-
-    //    int perfectCount = 0;
-
-    //    for (int i = 0; i < orderedRecipes.Count; i++)
-    //    {
-    //        DrinkRecipe recipe = orderedRecipes[i];
-    //        Drink served = i < servedDrinks.Count ? servedDrinks[i] : null;
-
-    //        if (IsDrinkPerfect(served, recipe))
-    //            perfectCount++;
-    //    }
-
-    //    List<string> frontList;
-    //    List<string> backList;
-
-    //    if (perfectCount == orderedRecipes.Count)
-    //    {
-    //        // all drinks correct
-    //        frontList = currentCustomer.PerfectFrontDialogue;
-    //        backList = currentCustomer.PerfectBackDialogue;
-    //        //SaveManager.saveManager.setTutorialPhase(1);
-    //    }
-    //    else if (perfectCount == 0)
-    //    {
-    //        // all drinks wrong
-    //        frontList = currentCustomer.WrongFrontDialogue;
-    //        backList = currentCustomer.WrongBackDialogue;
-    //    }
-    //    else
-    //    {
-    //        // at least one wrong, but not all
-    //        frontList = currentCustomer.DecentFrontDialogue;
-    //        backList = currentCustomer.DecentBackDialogue;
-    //    }
-
-    //    int index = GetRandomDialogueIndex(frontList, backList);
-    //    if (index == -1)
-    //    {
-    //        if (dialogueText != null) dialogueText.text = "...";
-    //        return;
-    //    }
-
-    //    SetEndDialogueText(frontList[index], backList[index]);
-    //}
-
-    //second prototype
-    //public void EvaluateAndSetEndDialogue(List<Drink> servedDrinks)
-    //{
-    //    if (currentCustomer == null || orderedRecipes.Count == 0) return;
-
-    //    servedDrinks ??= new List<Drink>();
-
-    //    int perfectCount = 0;
-    //    List<Drink> remainingServed = new List<Drink>(servedDrinks);
-
-    //    // Unordered matching: check each required recipe against remaining tray drinks
-    //    foreach (DrinkRecipe recipe in orderedRecipes)
-    //    {
-    //        Drink match = remainingServed.FirstOrDefault(served => IsDrinkPerfect(served, recipe));
-
-    //        if (match != null)
-    //        {
-    //            perfectCount++;
-    //            remainingServed.Remove(match); // Consume the drink so it isn't matched twice
-    //        }
-    //    }
-
-    //    List<string> frontList;
-    //    List<string> backList;
-
-    //    if (perfectCount == orderedRecipes.Count && servedDrinks.Count == orderedRecipes.Count)
-    //    {
-    //        // All ordered drinks matched perfectly and no extra/missing drinks
-    //        frontList = currentCustomer.PerfectFrontDialogue;
-    //        backList = currentCustomer.PerfectBackDialogue;
-    //    }
-    //    else if (perfectCount == 0)
-    //    {
-    //        // All drinks wrong
-    //        frontList = currentCustomer.WrongFrontDialogue;
-    //        backList = currentCustomer.WrongBackDialogue;
-    //    }
-    //    else
-    //    {
-    //        // Partially correct order
-    //        frontList = currentCustomer.DecentFrontDialogue;
-    //        backList = currentCustomer.DecentBackDialogue;
-    //    }
-
-    //    int index = GetRandomDialogueIndex(frontList, backList);
-    //    if (index == -1)
-    //    {
-    //        if (dialogueText != null) dialogueText.text = "...";
-    //        return;
-    //    }
-
-    //    SetEndDialogueText(frontList[index], backList[index]);
-    //}
 
     public void EvaluateAndSetEndDialogue(List<Drink> servedDrinks)
     {

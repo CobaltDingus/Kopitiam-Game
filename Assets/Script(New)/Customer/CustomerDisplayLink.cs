@@ -26,7 +26,8 @@ public class CustomerDisplayLink : MonoBehaviour
         // --- Tutorial Scene Load Handling ---
         if (SaveManager.saveManager != null && SaveManager.saveManager.DayCount == 0)
         {
-            if (CustomerManager.Instance.tutorialPhase == 5)
+            // Support BOTH Phase 5 and Phase 7
+            if (CustomerManager.Instance.tutorialPhase == 5 || CustomerManager.Instance.tutorialPhase == 7)
             {
                 if (!CustomerManager.Instance.tutorialserve)
                 {

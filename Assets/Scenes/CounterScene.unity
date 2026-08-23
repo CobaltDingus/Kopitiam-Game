@@ -286,7 +286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &127503683
 RectTransform:
   m_ObjectHideFlags: 0
@@ -305,7 +305,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -484.44, y: -270.77}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &127503684
 MonoBehaviour:
@@ -444,7 +444,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0372749410f9e5479eda2861b85d4ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveManager
-  baseCustomerCount: 0
 --- !u!4 &144368544
 Transform:
   m_ObjectHideFlags: 0
@@ -3681,13 +3680,15 @@ MonoBehaviour:
     you, I treat my employees all the same."
   - 'The only exception is your aunt, heh. '
   - Great Lets get started, make me a cup of Kopi and Kopi O.
-  - 'Kopi is made of coffee,sugar, condensed milk and water, while kopi O is everything
-    besides the condensed milk '
+  - 'Kopi is made of coffee,sugar, condensed milk and water. '
+  - Nice work, Lets try another drink called Kopi O
+  - 'Similar to Kopi, add coffee, sugar and water, Remember there is no condensed
+    milk. '
   - "Alright, I\u2019ll let you serve 5 customers for today, don\u2019t mess this
     up!"
   TutorialBoss: {fileID: -6248741079362886434, guid: fb730fb58019a604f8e2223953a42332, type: 3}
   minDrinks: 1
-  maxDrinks: 3
+  maxDrinks: 1
   next: {fileID: 1539991132}
   okay: {fileID: 1280370342}
   tryAgain: {fileID: 171077751}

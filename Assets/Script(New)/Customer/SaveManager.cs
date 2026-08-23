@@ -7,7 +7,7 @@ public class SaveManager : MonoBehaviour
     private float maxCustomerCount;
     private float dayCount;
 
-    private float baseCustomerCount;
+    private float baseCustomerCount = 5;
 
     private float favor;
 
