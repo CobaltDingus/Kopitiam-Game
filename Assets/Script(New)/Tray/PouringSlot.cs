@@ -5,6 +5,7 @@ public class PouringSlot : DraggableObject, DropInterface
 {
     // [SerializeField] private TMP_Text slotText;
     [SerializeField] private SpriteRenderer slotSprite;
+    [SerializeField] private Sprite outlineSprite;
     private Drink storedDrink = new Drink();
     private bool hasContainer;
 
@@ -73,7 +74,7 @@ public class PouringSlot : DraggableObject, DropInterface
         canDrag = false;
         hasContainer = false;
         dragType = DragEnum.None;
-        slotSprite.sprite = null;
+        slotSprite.sprite = outlineSprite;
     }
     // public bool ReceiveDrink(Drink drink)
     // {

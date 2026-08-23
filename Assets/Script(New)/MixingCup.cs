@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Linq;
+using System.Data.Common;
 
 public class MixingCup : 
 // MonoBehaviour,
@@ -46,6 +47,7 @@ IPointerUpHandler
     {
         originalScale = transform.localScale;
         liquidSprite = liquidObject.GetComponent<SpriteRenderer>();
+        ingredientText.text = "Mixing Cup Contents: \n\nEMPTY";
     }
 
     public void ReceiveIngredient(Ingredient ingredient)
@@ -55,7 +57,7 @@ IPointerUpHandler
         dragType = DragEnum.UnfinishedDrink;
         canDrag = true;
 
-        UpdateIngredientText();
+        UpdateIngredientText(ingredient);
     }
 
     private IEnumerator Bounce()
@@ -119,12 +121,19 @@ IPointerUpHandler
     //     }
 
     // }
-    private void UpdateIngredientText()
+    private void UpdateIngredientText(Ingredient ingredient)
     {
-        ingredientText.text = string.Join(
-            "\n",
-            drink.ingredients.ConvertAll(i => i.Name)
-        );
+        if (drink.ingredients.Count == 1)
+        {
+            ingredientText.text = "Mixing Cup Contents: \n\n";
+        }
+
+        // ingredientText.text = string.Join(
+        //     "\n",
+        //     drink.ingredients.ConvertAll(i => i.Name)
+        // );
+
+        ingredientText.text += ingredient.Name + "\n";
 
         if (bounceCoroutine != null) {
             StopCoroutine(bounceCoroutine);
@@ -140,7 +149,7 @@ IPointerUpHandler
 
     public void ClearCup()
     {
-        ingredientText.text = "Mixing Cup (Empty)";
+        ingredientText.text = "Mixing Cup Contents: \n\nEMPTY";
         canDrag = false;
         dragType = DragEnum.None;
         drink.ingredients.Clear();
@@ -152,7 +161,7 @@ IPointerUpHandler
         if (!drink.ingredients.Any(ingredient => ingredient.name == "Hot Water"))
         {
             drink.ingredients.Add(waterAsset);
-            UpdateIngredientText();
+            UpdateIngredientText(waterAsset);
             dragType = DragEnum.UnfinishedDrink;
             canDrag = true;
             SetSpriteColorFromHex(waterColorHex, liquidSprite);
@@ -183,77 +192,6 @@ IPointerUpHandler
             
         }
     }
-
-    // public void OnPointerDown(PointerEventData eventData)
-    // {
-    //     if (canDrag)
-    //     {
-    //         Vector3 worldPos =
-    //             cam.ScreenToWorldPoint(eventData.position);
-    //         worldPos.z = 0;
-
-    //         draggedObject = Instantiate(dragCupPrefab, worldPos, Quaternion.identity);
-
-    //         // SpriteRenderer sourceRenderer = GetComponent<SpriteRenderer>();
-    //         // SpriteRenderer dragRenderer = draggedObject.GetComponent<SpriteRenderer>();
-    //         SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
-
-    //         // dragRenderer.sprite = sourceRenderer.sprite;
-    //         dragRenderer.color = sourceRenderer.color;
-    //         Debug.Log("Pointer Down"); 
-    //         DragManager.BeginDrag(dragType);       
-    //     }
-        
-
-    // }
-
-    // public void OnDrag(PointerEventData eventData)
-    // {
-    //     if (canDrag)
-    //     {
-    //         if (draggedObject == null)
-    //             return;
-
-    //         Vector3 worldPos =
-    //             cam.ScreenToWorldPoint(eventData.position);
-    //         worldPos.z = 0;
-
-    //         draggedObject.transform.position = worldPos;          
-    //     }
-
-    // }
-
-    // public void OnPointerUp(PointerEventData eventData)
-    // {
-    //     if (canDrag)
-    //     {
-    //         if (draggedObject == null)
-    //             return;
-
-    //         Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-    //         worldPos.z = 0;
-
-    //         Collider2D hit = Physics2D.OverlapPoint(worldPos);
-
-    //         if (hit != null)
-    //         {
-    //             DropInterface dropTarget = hit.GetComponent<DropInterface>();
-    //             if (dropTarget != null)
-    //             {
-    //                 Debug.Log("Tray received drink!");
-    //                 if (dropTarget.ReceiveDraggable(drink.Clone()))
-    //                 {
-    //                     ClearCup();
-    //                 }
-    //             }
-    //         }
-
-    //         Destroy(draggedObject);
-    //         draggedObject = null;
-    //         DragManager.EndDrag();       
-    //     }
-
-    // }
 
     public override object GetData()
     {

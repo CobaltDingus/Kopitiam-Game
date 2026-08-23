@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
+
 
 public abstract class DraggableObject : 
     MonoBehaviour,
@@ -19,19 +21,32 @@ public abstract class DraggableObject :
     [SerializeField] private GameObject dragPrefab;
     [SerializeField] private Sprite dragPrefabSprite;
     private Camera cam;
-    // private SpriteRenderer sourceRenderer;
-
-    // private object dragData;
     [SerializeField] private bool hasDragIcon;
     private Collider2D objectCollider;
     private Vector3 startPosition;
     private Vector3 dragOffset;
+
+    [SerializeField] private UIPanel panel;
+    // [SerializeField] private UIPanel overlay;
+
+    [SerializeField] private float dragHoldTime = 0.2f;
+
+    private float holdTimer;
+    private bool isHolding;
+    private bool isDragging;
+
+    private Vector2 pointerDownPosition;
+
+    // Just for objects that drag themselves not icons
+    [SerializeField] private string normalSortingLayer = "CounterObjects";
+    [SerializeField] private string dragSortingLayer = "DragObjects";
+
+    [SerializeField] private List<SpriteRenderer> objectSprites;
+
     
     private void Awake()
     {
         cam = Camera.main;
-
-        // sourceRenderer = GetComponentInChildren<SpriteRenderer>();
 
         objectCollider = GetComponent<Collider2D>();
 
@@ -44,156 +59,146 @@ public abstract class DraggableObject :
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (canDrag)
-        {
-            if (hasDragIcon)
-            {
-                Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-                worldPos.z = 0;
-
-                draggedObject = Instantiate(dragPrefab, worldPos, Quaternion.identity);
-
-                // SpriteRenderer sourceRenderer = GetComponent<SpriteRenderer>();
-                // SpriteRenderer dragRenderer = draggedObject.GetComponent<SpriteRenderer>();
-                SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
-
-                // dragRenderer.sprite = sourceRenderer.sprite;
-                // dragRenderer.color = sourceRenderer.color;
-
-                dragRenderer.sprite = dragPrefabSprite;
-                dragRenderer.sortingOrder = 100;
-
-                DragManager.BeginDrag(dragType);
-                Debug.Log("Pointer Down");
-            }
-            else
-            {
-                Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-                worldPos.z = 0;
-
-                dragOffset = transform.position - worldPos;
-
-                DragManager.BeginDrag(dragType);
-
-                objectCollider.enabled = false;
-
-                Debug.Log("Started dragging");
-            }
-        }
-        else
-        {
-            return;
-        }
-    }
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (canDrag)
-        {
-            if (hasDragIcon)
-            {
-                if (draggedObject == null)
-                    return;
-
-                Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-                worldPos.z = 0;
-
-                draggedObject.transform.position = worldPos;
-            }
-            else
-            {
-                Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-                worldPos.z = 0;
-                transform.position = worldPos + dragOffset;
-            }
-        }
-        else
-        {
-            return;
-        }
-    }
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        if (canDrag)
-        {
-            if (hasDragIcon)
-            {
-                if (draggedObject == null)
-                    return;
-
-                Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-                worldPos.z = 0;
-
-                Collider2D hit = Physics2D.OverlapPoint(worldPos);
-
-                if (hit != null)
-                {
-                    DropInterface dropTarget = hit.GetComponent<DropInterface>();
-
-                    if (dropTarget != null)
-                    {
-                        dropTarget.ReceiveDraggable(GetData());
-                        AfterDropFunctions();
-                    }      
-                }
-
-                Destroy(draggedObject);
-                draggedObject = null;
-                DragManager.EndDrag(); 
-            }
-            else
-            {
-                Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
-                worldPos.z = 0;
-                // Collider2D[] hits = Physics2D.OverlapPointAll(worldPos);
-
-                // foreach (Collider2D hit in hits)
-                // {
-
-                // }
-
-                Collider2D hit = Physics2D.OverlapPoint(worldPos);
-
-                if (hit != null)
-                {
-                    DropInterface dropTarget = hit.GetComponent<DropInterface>();
-
-                    if (dropTarget != null && hit.gameObject != gameObject)
-                    {
-                        if (dropTarget.ReceiveDraggable(GetData()))
-                        {
-                            Debug.Log(dropTarget);
-                            AfterDropFunctions();
-                        }
-                    }      
-                }
-                objectCollider.enabled = true;
-
-                DragManager.EndDrag(); 
-                transform.position = startPosition;
-            }
-        }
-        else
-        {
-            return;
-        }
-    }
-
-    public void checkInterface(Collider2D hit)
-    {
-                // DropInterface dropTarget = hit.GetComponent<DropInterface>();
-
-                // if (dropTarget != null)
-                // {
-                //     dropTarget.ReceiveDraggable(GetData());
-                // }
-    }
-    void Start()
-    {
         
+        holdTimer = 0f;
+        isHolding = true;
+        isDragging = false;
+
+        pointerDownPosition = eventData.position;
     }
 
     void Update()
     {
-        
+        if (!isHolding || isDragging)
+            return;
+
+        if (canDrag)
+        {
+            holdTimer += Time.deltaTime;
+
+            if (holdTimer >= dragHoldTime)
+            {
+                StartDragging();
+            }
+        }
     }
+
+    void StartDragging()
+    {
+        isDragging = true;
+
+        if (objectSprites.Count > 0)
+        {
+            foreach (SpriteRenderer spriteRenderer in objectSprites)
+            {
+                spriteRenderer.sortingLayerName = dragSortingLayer;
+            }
+        }
+
+        Vector3 worldPos = cam.ScreenToWorldPoint(pointerDownPosition);
+        worldPos.z = 0;
+
+        if (hasDragIcon)
+        {
+            draggedObject = Instantiate(dragPrefab, worldPos, Quaternion.identity);
+
+            SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
+
+            dragRenderer.sprite = dragPrefabSprite;
+            // dragRenderer.sortingOrder = 100;
+
+            Debug.Log("Dragging icon");
+        }
+        else
+        {
+            dragOffset = transform.position - worldPos;      
+
+            objectCollider.enabled = false;
+
+            Debug.Log("Dragging object");
+        }
+        DragManager.BeginDrag(dragType);
+    }
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (!isDragging)
+        {
+            return;
+        }
+
+        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+        worldPos.z = 0;
+
+        if (hasDragIcon)
+        {
+            if (draggedObject == null)
+                return;
+
+            draggedObject.transform.position = worldPos;
+        }
+        else
+        {
+            transform.position = worldPos + dragOffset;
+        }
+    }
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        isHolding = false;
+
+        if (!isDragging)
+        {
+            if (panel != null)
+            {
+                panel.OpenPanel();
+                // overlay.SetActive(!overlay.activeSelf);
+            }
+
+            return;
+        }
+
+        Vector3 worldPos = cam.ScreenToWorldPoint(eventData.position);
+        worldPos.z = 0;
+        Collider2D hit = Physics2D.OverlapPoint(worldPos);
+
+        if (hit != null)
+        {
+            DropInterface dropTarget =
+                hit.GetComponent<DropInterface>();
+
+            if (dropTarget != null && hit.gameObject != gameObject)
+            {
+                if (dropTarget.ReceiveDraggable(GetData()))
+                {
+                    AfterDropFunctions();
+                }
+            }
+        }
+
+        if (hasDragIcon)
+        {
+            if (draggedObject == null)
+                return;
+
+            Destroy(draggedObject);
+            draggedObject = null;
+        }
+        else
+        {
+            objectCollider.enabled = true;
+            transform.position = startPosition;
+
+            if (objectSprites.Count > 0)
+            {
+                foreach (SpriteRenderer spriteRenderer in objectSprites)
+                {
+                    spriteRenderer.sortingLayerName = normalSortingLayer;
+                }
+            }
+        }
+        isDragging = false;
+        DragManager.EndDrag(); 
+
+    }
+
+
 }

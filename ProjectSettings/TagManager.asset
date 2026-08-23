@@ -47,14 +47,17 @@ TagManager:
   - name: Ingredients
     uniqueID: 1067755571
     locked: 0
+  - name: CounterObjects
+    uniqueID: 4168331415
+    locked: 0
   - name: UI
     uniqueID: 1389949143
     locked: 0
-  - name: Counter Objects
-    uniqueID: 4168331415
-    locked: 0
-  - name: Drag Icons
+  - name: DragObjects
     uniqueID: 117737767
+    locked: 0
+  - name: Screen Overlay
+    uniqueID: 2466673053
     locked: 0
   m_RenderingLayers:
   - Default
