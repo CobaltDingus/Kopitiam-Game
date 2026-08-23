@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class CustomerManager : MonoBehaviour
 {
@@ -20,9 +21,12 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private SpriteRenderer customerSpriteRenderer;
     [SerializeField] private TMP_Text dialogueText;
 
+    // Tutorial stuff
     [SerializeField] private List<string> tutorialDialogue;
-    //[SerializeField] private string tutorialWrong = "Thats the wrong drink, could you do it again?";
+    private string tutorialWrongDialogue = "Thats the wrong drink, could you do it again?";
+    [SerializeField] private Sprite TutorialBoss;
 
+    //
     private bool hasServed = false;
 
     [Header("Order Settings")]
@@ -31,8 +35,49 @@ public class CustomerManager : MonoBehaviour
 
     // swapped out from public to private var testing
     [SerializeField] private Button next;
-    [SerializeField] private Button tryAgain;
+    [SerializeField] private Button okay;
 
+    [SerializeField] private Button tryAgain;
+    [SerializeField] private Button perfect;
+
+    private bool canEvaluateTutorial = false;
+
+    private bool isNext;
+    private bool isOkay;
+    private bool isTryAgain;
+
+    public int tutorialPhase;
+    private bool tutorialwrong;
+
+    public bool tutorialserve = false;
+
+    public bool tutorialComplete = false;
+    //getters
+
+    public bool IsNext => isNext;
+    public bool IsOkay => isOkay;
+    public bool IsTryAgain => isTryAgain;
+
+    public Button NextButton => next;
+    public Button OkayButton => okay;
+    public Button TryAgainButton => tryAgain;
+
+    //setters
+
+    public void setIsNext(bool status)
+    {
+        isNext = status;
+    }
+
+    public void setIsOkay(bool status)
+    {
+        isOkay = status;
+    }
+
+    public void setIsTryAgain(bool status)
+    {
+        isTryAgain = status;
+    }
 
     Scene currentScene;
 
@@ -61,19 +106,28 @@ public class CustomerManager : MonoBehaviour
 
     void Start()
     {
+        UiManager.uiManager.UpdateDayCount();
         if (currentCustomer == null)
         {
-            GenerateNewCustomer();
-            //if (SaveManager.saveManager.DayCount == 0)
-            //{
-
-            //    GenerateTutorialDayZero();
-
-            //}
-            //else
-            //{
-            //    GenerateNewCustomer();
-            //}
+            //GenerateNewCustomer();
+            tutorialwrong = false;
+            tryAgain.gameObject.SetActive(false);
+            okay.gameObject.SetActive(false);
+            next.gameObject.SetActive(false);
+            if (SaveManager.saveManager.DayCount == 0)
+            {
+                okay.gameObject.SetActive(true);
+                customerSpriteRenderer.sprite = TutorialBoss;
+                currentSprite = TutorialBoss;
+                tutorialPhase = 0;
+                GenerateTutorialDayZero();
+                LoadTutorialDialogue();
+            }
+            else
+            {
+                next.gameObject.SetActive(true);
+                GenerateNewCustomer();
+            }
         }
 
         //RestartTimer();
@@ -89,6 +143,9 @@ public class CustomerManager : MonoBehaviour
         if (scene.name == "CounterScene")
         {
             FindNextButton();
+            FindOkayButton();
+            FindTryAgainButton();
+            FindPerfectButton();
             return;
         }
     }
@@ -100,17 +157,66 @@ public class CustomerManager : MonoBehaviour
         //next.onClick.AddListener(next.GetComponent<CustomerManagerUIBridge>().OnGenerateNewCustomerClicked);
     }
 
-    void FindTryAgainButton()
+    void FindOkayButton()
     {
-        
+        okay = GameObject.Find("Okay").GetComponent<Button>();
+        okay.onClick.AddListener(NextDialogue);
     }
 
-    // ---------------------------------------------------------------
-    // Called by CustomerDisplayLink (placed on the sprite/text objects
-    // in each scene) once that scene has loaded. Immediately repaints
-    // the newly found UI with whatever the current state already is,
-    // instead of generating anything new.
-    // ---------------------------------------------------------------
+    void FindTryAgainButton()
+    {
+        tryAgain = GameObject.Find("TryAgain").GetComponent<Button>();
+        tryAgain.onClick.AddListener(GoBackPreviousDialogue);
+    }
+
+    void FindPerfectButton()
+    {
+        perfect = GameObject.Find("CompletePerfect").GetComponent<Button>();
+        perfect.onClick.AddListener(ServePerfectDrinksForTesting);
+    }
+
+    public void GoBackPreviousDialogue()
+    {
+        tutorialwrong = false;
+        hasServed = false;
+        tutorialPhase -= 1;
+        tryAgain.gameObject.SetActive(false);
+        okay.gameObject.SetActive(true);
+        LoadTutorialDialogue();
+        return;
+    }
+
+    public void NextDialogue()
+    {
+        // If on tutorial index 5, clicking OKAY transitions to the Kitchen scene
+        if (tutorialPhase == 5 && SaveManager.saveManager.DayCount == 0 && !tutorialserve)
+        {
+            UpdateOkayButton();
+            return;
+        }
+
+        tutorialPhase += 1;
+
+        // Check if tutorial dialogue sequence is completed
+        if (tutorialPhase >= tutorialDialogue.Count)
+        {
+            tutorialComplete = true;
+            okay.gameObject.SetActive(false);
+            next.gameObject.SetActive(true);
+
+            // Advance to Day 1 and generate first real customer
+            SaveManager.saveManager.setDayCount(1);
+            GenerateNewCustomer();
+
+            UiManager.uiManager.UpdateDayCount();
+            UiManager.uiManager.ShowTimer();
+            UiManager.uiManager.RestartTimer();
+            return;
+        }
+
+        LoadTutorialDialogue();
+    }
+
     public void RegisterDisplayReferences(SpriteRenderer spriteRenderer, TMP_Text text)
     {
         customerSpriteRenderer = spriteRenderer;
@@ -131,29 +237,141 @@ public class CustomerManager : MonoBehaviour
     public void GenerateTutorialDayZero()
     {
         UiManager.uiManager.HideTimer();
-        if(SaveManager.saveManager.TutorialPhase == 0)
+        isNext = false;
+        isTryAgain = false;
+        orderedRecipes.Clear();
+
+        DrinkRecipe kopi = recipeBook.AllRecipes.FirstOrDefault(r =>
+        string.Equals(r.drinkName, "Kopi", StringComparison.OrdinalIgnoreCase));
+
+        DrinkRecipe kopiO = recipeBook.AllRecipes.FirstOrDefault(r =>
+            string.Equals(r.drinkName, "Kopi O", StringComparison.OrdinalIgnoreCase));
+
+        orderedRecipes.Add(kopi);
+        orderedRecipes.Add(kopiO);
+        return;
+    }
+
+    public void LoadTutorialDialogue()
+    {
+        canEvaluateTutorial = false;
+        Debug.Log(tutorialPhase);
+
+        if (tutorialwrong)
         {
-            //int position;
-            
-            for (int i =0; i < recipeBook.AllRecipes.Count; i++)
+            currentDialogueText = tutorialWrongDialogue;
+            if (dialogueText != null)
+                dialogueText.text = currentDialogueText;
+            return;
+        }
+
+        // Phase 5 is the ordering / kitchen transition step
+        if (tutorialPhase == 5)
+        {
+            canEvaluateTutorial = true;
+
+            if (!tutorialserve)
             {
-                // add a drink where the drink name is called "Kopi O"
+                // First time on index 5: OKAY button takes player to kitchen
+                okay.gameObject.SetActive(true);
+                tryAgain.gameObject.SetActive(false);
             }
-            //orderedRecipes.Add(recipeBook.AllRecipes[]);
-
+            else
+            {
+                // Returned from kitchen & served correctly: show OKAY button to move to dialogue index 6
+                okay.gameObject.SetActive(true);
+                tryAgain.gameObject.SetActive(false);
+            }
         }
-        else if (SaveManager.saveManager.TutorialPhase == 1)
+
+        if (tutorialDialogue != null && tutorialPhase < tutorialDialogue.Count)
         {
-
+            currentDialogueText = tutorialDialogue[tutorialPhase];
         }
-        
+
+        if (dialogueText != null)
+        {
+            dialogueText.text = currentDialogueText;
+        }
+    }
+
+    public void EvaluateTutorialOrderByName(List<Drink> servedDrinks)
+    {
+        servedDrinks ??= new List<Drink>();
+
+        if (servedDrinks.Count != orderedRecipes.Count)
+        {
+            SetTutorialWrongState();
+            return;
+        }
+
+        List<Drink> remainingServed = new List<Drink>(servedDrinks);
+
+        foreach (DrinkRecipe requiredRecipe in orderedRecipes)
+        {
+            Drink match = remainingServed.FirstOrDefault(d =>
+                d != null && string.Equals(d.drinkName, requiredRecipe.drinkName, StringComparison.OrdinalIgnoreCase));
+
+            if (match != null)
+            {
+                remainingServed.Remove(match);
+            }
+            else
+            {
+                SetTutorialWrongState();
+                return;
+            }
+        }
+
+        // --- Order Correct ---
+        tutorialwrong = false;
+        tutorialserve = true; // Mark as successfully served
+
+        // Enable OKAY button so player can proceed to next dialogue
+        okay.gameObject.SetActive(true);
+        tryAgain.gameObject.SetActive(false);
+
+        // Advance to dialogue index 6
+        NextDialogue();
+    }
+
+    private void SetTutorialWrongState()
+    {
+        // --- Order Wrong ---
+        tutorialwrong = true;
+        currentDialogueText = tutorialWrongDialogue;
+        if (dialogueText != null)
+        {
+            dialogueText.text = currentDialogueText;
+        }
+
+        tryAgain.gameObject.SetActive(true); // Unlock try again button
+        okay.gameObject.SetActive(false);     // Hide okay button
+    }
+
+    public void UpdateOkayButton()
+    {
+        SceneManager.LoadScene("KitchenRearranged");
+    }
+
+    public void RevertOkayButton()
+    {
+
     }
 
     public void GenerateNewCustomer()
     {
         UiManager.uiManager.TurnOnTimer();
-        UiManager.uiManager.RestartTimer();
+        if (UiManager.uiManager.ChallengeMode)
+        {
+            UiManager.uiManager.RestartTimer();
+        }
+        //UiManager.uiManager.RestartTimer();
 
+        SaveManager.saveManager.setDayCount(1);
+        
+
+        UiManager.uiManager.UpdateCustomerCount();
         //SaveManager.saveManager.
         hasServed = false;
         //Debug.Log("Generate Customer Button Clicked.");
@@ -230,9 +448,19 @@ public class CustomerManager : MonoBehaviour
 
     public void ServePerfectDrinksForTesting()
     {
-        if (currentCustomer == null || orderedRecipes.Count == 0)
+        // Check if we are in Day 0 / Tutorial
+        bool isTutorial = SaveManager.saveManager != null && SaveManager.saveManager.DayCount == 0;
+
+        // Validate state: standard customers require currentCustomer, tutorial only requires orderedRecipes
+        if (!isTutorial && currentCustomer == null)
         {
-            Debug.LogWarning("No current customer or order to serve.");
+            Debug.LogWarning("No current customer to serve.");
+            return;
+        }
+
+        if (orderedRecipes == null || orderedRecipes.Count == 0)
+        {
+            Debug.LogWarning("No ordered recipes found to populate testing drinks.");
             return;
         }
 
@@ -242,10 +470,14 @@ public class CustomerManager : MonoBehaviour
             return;
         }
 
+        // Clear existing drinks in tray before populating test drinks
         trayDatabase.ClearDatabase();
 
+        // Populate the tray database with perfect drinks matching orderedRecipes
         foreach (DrinkRecipe recipe in orderedRecipes)
         {
+            if (recipe == null) continue;
+
             Drink perfectDrink = new Drink
             {
                 drinkName = recipe.drinkName,
@@ -256,20 +488,38 @@ public class CustomerManager : MonoBehaviour
             trayDatabase.AddDrink(perfectDrink);
         }
 
-        //ServeOrder();
+        Debug.Log($"[Testing] Added {orderedRecipes.Count} perfect drink(s) to TrayDatabase for {(isTutorial ? "Tutorial" : currentCustomer.CustomerName)}.");
     }
     public void ServeOrder()
     {
         UiManager.uiManager.TurnOffTimer();
-        if (currentCustomer == null)
-        {
-            Debug.LogWarning("No current customer to serve.");
-            return;
-        }
 
         if (trayDatabase == null)
         {
             Debug.LogError("TrayDatabase is unassigned!");
+            return;
+        }
+
+        // --- TUTORIAL / DAY 0 BYPASS ---
+        if (SaveManager.saveManager.DayCount == 0)
+        {
+            if (tutorialPhase == 5)
+            {
+                if (!canEvaluateTutorial)
+                {
+                    Debug.Log("Tutorial evaluation locked. Reach Phase 5 dialogue first.");
+                    return;
+                }
+                EvaluateTutorialOrderByName(trayDatabase.SavedDrinks);
+            }
+            trayDatabase.ClearDatabase();
+            return; // Exit here so non-tutorial checks don't trigger
+        }
+
+        // --- STANDARD CUSTOMER LOGIC ---
+        if (currentCustomer == null)
+        {
+            Debug.LogWarning("No current customer to serve.");
             return;
         }
 
@@ -290,6 +540,111 @@ public class CustomerManager : MonoBehaviour
         EvaluateAndSetEndDialogue(new List<Drink> { servedDrink });
     }
 
+    //origin
+    //public void EvaluateAndSetEndDialogue(List<Drink> servedDrinks)
+    //{
+    //    if (currentCustomer == null || orderedRecipes.Count == 0) return;
+
+    //    servedDrinks ??= new List<Drink>();
+
+    //    int perfectCount = 0;
+
+    //    for (int i = 0; i < orderedRecipes.Count; i++)
+    //    {
+    //        DrinkRecipe recipe = orderedRecipes[i];
+    //        Drink served = i < servedDrinks.Count ? servedDrinks[i] : null;
+
+    //        if (IsDrinkPerfect(served, recipe))
+    //            perfectCount++;
+    //    }
+
+    //    List<string> frontList;
+    //    List<string> backList;
+
+    //    if (perfectCount == orderedRecipes.Count)
+    //    {
+    //        // all drinks correct
+    //        frontList = currentCustomer.PerfectFrontDialogue;
+    //        backList = currentCustomer.PerfectBackDialogue;
+    //        //SaveManager.saveManager.setTutorialPhase(1);
+    //    }
+    //    else if (perfectCount == 0)
+    //    {
+    //        // all drinks wrong
+    //        frontList = currentCustomer.WrongFrontDialogue;
+    //        backList = currentCustomer.WrongBackDialogue;
+    //    }
+    //    else
+    //    {
+    //        // at least one wrong, but not all
+    //        frontList = currentCustomer.DecentFrontDialogue;
+    //        backList = currentCustomer.DecentBackDialogue;
+    //    }
+
+    //    int index = GetRandomDialogueIndex(frontList, backList);
+    //    if (index == -1)
+    //    {
+    //        if (dialogueText != null) dialogueText.text = "...";
+    //        return;
+    //    }
+
+    //    SetEndDialogueText(frontList[index], backList[index]);
+    //}
+
+    //second prototype
+    //public void EvaluateAndSetEndDialogue(List<Drink> servedDrinks)
+    //{
+    //    if (currentCustomer == null || orderedRecipes.Count == 0) return;
+
+    //    servedDrinks ??= new List<Drink>();
+
+    //    int perfectCount = 0;
+    //    List<Drink> remainingServed = new List<Drink>(servedDrinks);
+
+    //    // Unordered matching: check each required recipe against remaining tray drinks
+    //    foreach (DrinkRecipe recipe in orderedRecipes)
+    //    {
+    //        Drink match = remainingServed.FirstOrDefault(served => IsDrinkPerfect(served, recipe));
+
+    //        if (match != null)
+    //        {
+    //            perfectCount++;
+    //            remainingServed.Remove(match); // Consume the drink so it isn't matched twice
+    //        }
+    //    }
+
+    //    List<string> frontList;
+    //    List<string> backList;
+
+    //    if (perfectCount == orderedRecipes.Count && servedDrinks.Count == orderedRecipes.Count)
+    //    {
+    //        // All ordered drinks matched perfectly and no extra/missing drinks
+    //        frontList = currentCustomer.PerfectFrontDialogue;
+    //        backList = currentCustomer.PerfectBackDialogue;
+    //    }
+    //    else if (perfectCount == 0)
+    //    {
+    //        // All drinks wrong
+    //        frontList = currentCustomer.WrongFrontDialogue;
+    //        backList = currentCustomer.WrongBackDialogue;
+    //    }
+    //    else
+    //    {
+    //        // Partially correct order
+    //        frontList = currentCustomer.DecentFrontDialogue;
+    //        backList = currentCustomer.DecentBackDialogue;
+    //    }
+
+    //    int index = GetRandomDialogueIndex(frontList, backList);
+    //    if (index == -1)
+    //    {
+    //        if (dialogueText != null) dialogueText.text = "...";
+    //        return;
+    //    }
+
+    //    SetEndDialogueText(frontList[index], backList[index]);
+    //}
+
     public void EvaluateAndSetEndDialogue(List<Drink> servedDrinks)
     {
         if (currentCustomer == null || orderedRecipes.Count == 0) return;
@@ -297,35 +652,35 @@ public class CustomerManager : MonoBehaviour
         servedDrinks ??= new List<Drink>();
 
         int perfectCount = 0;
+        List<Drink> remainingServed = new List<Drink>(servedDrinks);
 
-        for (int i = 0; i < orderedRecipes.Count; i++)
+        // Unordered matching: check each recipe against any available drink in tray
+        foreach (DrinkRecipe recipe in orderedRecipes)
         {
-            DrinkRecipe recipe = orderedRecipes[i];
-            Drink served = i < servedDrinks.Count ? servedDrinks[i] : null;
+            Drink match = remainingServed.FirstOrDefault(served => IsDrinkPerfect(served, recipe));
 
-            if (IsDrinkPerfect(served, recipe))
+            if (match != null)
+            {
                 perfectCount++;
+                remainingServed.Remove(match); // Prevents matching the same drink twice
+            }
         }
 
         List<string> frontList;
         List<string> backList;
 
-        if (perfectCount == orderedRecipes.Count)
+        if (perfectCount == orderedRecipes.Count && servedDrinks.Count == orderedRecipes.Count)
         {
-            // all drinks correct
             frontList = currentCustomer.PerfectFrontDialogue;
             backList = currentCustomer.PerfectBackDialogue;
-            //SaveManager.saveManager.setTutorialPhase(1);
         }
         else if (perfectCount == 0)
         {
-            // all drinks wrong
             frontList = currentCustomer.WrongFrontDialogue;
             backList = currentCustomer.WrongBackDialogue;
         }
         else
         {
-            // at least one wrong, but not all
             frontList = currentCustomer.DecentFrontDialogue;
             backList = currentCustomer.DecentBackDialogue;
         }

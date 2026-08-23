@@ -6,7 +6,7 @@ public class TrayDatabase : ScriptableObject
 {
     [SerializeField] private List<Drink> savedDrinks = new List<Drink>();
     public List<Drink> SavedDrinks => savedDrinks;
-    public int MaxSlots = 1;
+    public int MaxSlots = 3;
     public void SaveDrinks(List<Drink> drinks)
     {
         savedDrinks = new List<Drink>(drinks);
