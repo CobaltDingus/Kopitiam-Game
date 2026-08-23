@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Linq;
-using System.Data.Common;
+using UnityEngine.UI;
 
 public class MixingCup : 
 // MonoBehaviour,
@@ -17,7 +17,7 @@ IPointerUpHandler
 {
     private Drink drink = new Drink();
     [SerializeField] private Ingredient waterAsset;
-    [SerializeField] private TMP_Text ingredientText;
+
     // [SerializeField] private GameObject dragCupPrefab;
     [SerializeField] private GameObject liquidObject;
     private SpriteRenderer liquidSprite;
@@ -34,6 +34,17 @@ IPointerUpHandler
     private Vector3 originalScale;
     private Coroutine bounceCoroutine;
 
+    // UI Elements
+    [SerializeField] private TMP_Text ingredientText;
+    [SerializeField] private TMP_Text stirCounterText;
+    [SerializeField] private Button stirButton;
+    private TMP_Text stirButtonText;
+    [SerializeField] private GesturePanel gesturePanel;
+
+    private bool isValidDrink = false;
+    public int stirsRequired = 4;
+    public int currentStirCount = 0;
+
     // private List<Ingredient> ingredients = new List<Ingredient>();
 
     // private void Awake()
@@ -48,6 +59,7 @@ IPointerUpHandler
         originalScale = transform.localScale;
         liquidSprite = liquidObject.GetComponent<SpriteRenderer>();
         ingredientText.text = "Mixing Cup Contents: \n\nEMPTY";
+        stirButtonText = stirButton.GetComponentInChildren<TMP_Text>();
     }
 
     public void ReceiveIngredient(Ingredient ingredient)
@@ -140,6 +152,15 @@ IPointerUpHandler
         }
 
         bounceCoroutine = StartCoroutine(Bounce());
+
+        isValidDrink = CheckDrinkValidity();
+
+        if (isValidDrink)
+        {
+            stirButton.image.color = Color.green;
+            stirButtonText.text = "Start Stirring";
+            stirButton.enabled = true;
+        }
     }
 
     // public List<Ingredient> GetIngredients()
@@ -154,6 +175,22 @@ IPointerUpHandler
         dragType = DragEnum.None;
         drink.ingredients.Clear();
         liquidObject.SetActive(false);
+        ResetUI();
+    }
+
+    public void ResetUI()
+    {
+        // stirButton
+        stirButton.image.color = Color.grey;
+        stirButton.enabled = false;
+        stirButtonText.text = "Incomplete Drink";
+
+        // stirCounter
+        stirCounterText.text = "Stirs Left " + stirsRequired;
+        currentStirCount = 0;
+
+        // gesturePanel
+        gesturePanel.DisableDetector();
     }
 
     public void AddWater()
@@ -166,7 +203,10 @@ IPointerUpHandler
             canDrag = true;
             SetSpriteColorFromHex(waterColorHex, liquidSprite);
             liquidObject.SetActive(true);
-            StirDrink();
+
+            
+
+            // StirDrink();
             // dragType = DragEnum.FinishedDrink;
         } else
         {
@@ -174,23 +214,28 @@ IPointerUpHandler
         }
     }
 
+    public void BeginStirring()
+    {
+        // stirButton
+        stirButton.image.color = Color.grey;
+        stirButton.enabled = false;
+        stirButtonText.text = "Stirring...";
+
+        // gesturePanel
+        gesturePanel.UnlockAndEnableDetector();
+    }
+
     public void StirDrink()
     {
-        drink.isStirred = true;
-        foreach (DrinkRecipe recipe in recipeBook.allRecipes)
+        currentStirCount++;
+        stirCounterText.text = "Stirs Left (" + (stirsRequired - currentStirCount) + ")";
+        if (currentStirCount == stirsRequired)
         {
-            if (drink.ingredients.Count == recipe.ingredients.Count &&
-            drink.ingredients
-            .OrderBy(i => i.Id)
-            .SequenceEqual(recipe.ingredients.OrderBy(i => i.Id)))
-            {
-                drink.drinkSprite = recipe.drinkImage;
-                testSprite = recipe.drinkImage;
-                drink.drinkName = recipe.drinkName;
-                break;
-            }
-            
+            drink.isStirred = true;
+
+            stirButtonText.text = "Ready to serve!";
         }
+
     }
 
     public override object GetData()
@@ -214,5 +259,36 @@ IPointerUpHandler
         {
             Debug.LogWarning("Invalid Hexadecimal string provided!");
         }
+    }
+
+    public Color HexToColor(string hexCode)
+    {
+        if (ColorUtility.TryParseHtmlString(hexCode, out Color newColor))
+        {
+            return newColor;
+        }
+        else
+        {
+            Debug.LogWarning("Invalid Hexadecimal string provided!");
+            return Color.clear;
+        }
+    }
+
+    public bool CheckDrinkValidity()
+    {
+        foreach (DrinkRecipe recipe in recipeBook.allRecipes)
+        {
+            if (drink.ingredients.Count == recipe.ingredients.Count &&
+            drink.ingredients
+            .OrderBy(i => i.Id)
+            .SequenceEqual(recipe.ingredients.OrderBy(i => i.Id)))
+            {
+                drink.drinkSprite = recipe.drinkImage;
+                testSprite = recipe.drinkImage;
+                drink.drinkName = recipe.drinkName;
+                return true;
+            }
+        }
+        return false;
     }
 }

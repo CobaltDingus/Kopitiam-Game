@@ -31,6 +31,9 @@ public class GesturePanel : MonoBehaviour,
     [Header("Visual Feedback")]
     [SerializeField] private RectTransform fingerIndicator;
 
+    // [Header("Mixing Cup Object")]
+    // [SerializeField] private MixingCup mixingCup;
+
     [Header("Events")]
     public UnityEvent onCircleCompleted;
     public UnityEvent onMaxCirclesReached;
@@ -76,6 +79,7 @@ public class GesturePanel : MonoBehaviour,
             fingerIndicator.gameObject.SetActive(false);
 
         UpdateRotationCenter();
+        DisableDetector();
     }
 
 

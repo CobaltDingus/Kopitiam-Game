@@ -9,4 +9,5 @@ public class DrinkRecipe : ScriptableObject
     public string drinkName;
     public List<Ingredient> ingredients;
     public Sprite drinkImage;
+    public string drinkColorHex;
 }
