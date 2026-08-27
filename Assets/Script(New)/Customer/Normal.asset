@@ -23,12 +23,12 @@ MonoBehaviour:
   variant: Normal
   startFrontDialogue:
   - 'Could I have a '
-  - ' '
-  - ' '
+  - 'One '
+  - 'You got '
   startBackDialogue:
-  - ' please?'
-  - ' please.'
-  - .
+  - please?
+  - please.
+  - here?
   perfectFrontDialogue:
   - Thank you.
   - This is delicious, Thank you!
@@ -40,12 +40,12 @@ MonoBehaviour:
   decentFrontDialogue:
   - 'Hmm, something feels off '
   decentBackDialogue:
-  - but i guess its close enough...
+  - but I guess it's close enough.
   wrongFrontDialogue:
-  - 'wrong '
-  - i think
-  - you gave me
+  - 'Uh, wrong '
+  - 'I don''t think '
+  - 'You gave me '
   wrongBackDiaogue:
-  - order
-  - 'this is wrong '
-  - the wrong order
+  - order...
+  - 'this is right... '
+  - the wrong order...?

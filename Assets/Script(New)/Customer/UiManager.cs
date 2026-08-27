@@ -162,10 +162,9 @@ public class UiManager : MonoBehaviour
 
     public void UpdateDayCount()
     {
-        
         if (timerText != null)
         {
-            string text = "DAY: ";
+            string text = "Day: ";
             dayText.text = text + SaveManager.saveManager.DayCount;
         }
     }

@@ -40,6 +40,13 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private Button tryAgain;
     [SerializeField] private Button perfect;
 
+    private int availableRecipeCount;
+
+    public void SetAvailableRecipes(int num)
+    {
+        availableRecipeCount = num;
+    }
+
     private bool canEvaluateTutorial = false;
 
     private bool isNext;
@@ -523,7 +530,8 @@ public class CustomerManager : MonoBehaviour
 
         for (int i = 0; i < drinkCount; i++)
         {
-            int randomRecipeIndex = UnityEngine.Random.Range(0, recipeBook.AllRecipes.Count);
+            int randomRecipeIndex = UnityEngine.Random.Range(0, availableRecipeCount);
+            Debug.Log(availableRecipeCount);
             orderedRecipes.Add(recipeBook.AllRecipes[randomRecipeIndex]);
         }
 
@@ -869,7 +877,7 @@ public class CustomerManager : MonoBehaviour
     private void SetDialogueText(string front, string back)
     {
         string drinkListText = string.Join(", ", orderedRecipes.Select(r => r.drinkName));
-        currentDialogueText = $"{front} {drinkListText}. {back}";
+        currentDialogueText = $"{front}{drinkListText} {back}";
 
         if (dialogueText != null)
             dialogueText.text = currentDialogueText;
@@ -877,7 +885,7 @@ public class CustomerManager : MonoBehaviour
 
     private void SetEndDialogueText(string front, string back)
     {
-        currentDialogueText = $"{front} {back}";
+        currentDialogueText = $"{front}{back}";
         if (dialogueText != null)
             dialogueText.text = currentDialogueText;
     }

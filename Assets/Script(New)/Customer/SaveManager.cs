@@ -1,3 +1,4 @@
+using System;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
@@ -72,10 +73,20 @@ public class SaveManager : MonoBehaviour
         {
             currentCustomerCount = 0;
             dayCount += 1;
+            if (favor > lastEarnedFavour)
+            {
+                maxCustomerCount++;
+            }
+            lastEarnedFavour = _favour;
             resetFavor();
             UiManager.uiManager.UpdateFavor();
             UiManager.uiManager.RestartTimer();
             UiManager.uiManager.UpdateDayCount();
+
+            if (dayCount == 2)
+            {
+                SetAvailableRecipes();
+            }
         }
     }
     public void setFavour (int num)
@@ -102,6 +113,7 @@ public class SaveManager : MonoBehaviour
     private float _currentCustomer;
     private float _maxCustomer;
     private float _favour = 0;
+    private float lastEarnedFavour = 0;
 
     
     // ================================ GETTER & SETTER ================================
@@ -138,4 +150,10 @@ public class SaveManager : MonoBehaviour
 
     }
     
+    // public static event Action<int> OnDayTwo; 
+    // ================================ JF TEST FUNCTION ================================
+    public void SetAvailableRecipes()
+    {
+        CustomerManager.Instance.SetAvailableRecipes(6);
+    }
 }

@@ -4,12 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitcher : MonoBehaviour
 {
-<<<<<<< Updated upstream
-    // void Start()
-    // {
-    //     SceneManager.LoadScene("KitchenScene", LoadSceneMode.Additive);
-    // }
-=======
 public void MainMenu()
     {
         SceneManager.LoadScene("MainMenuScene");
@@ -31,7 +25,6 @@ public void MainMenu()
     {
         SceneManager.LoadScene("CreditsScene");
     }
->>>>>>> Stashed changes
     public void LoadKitchen()
     {
         SceneManager.LoadScene("KitchenScene");
