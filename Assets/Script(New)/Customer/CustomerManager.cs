@@ -90,6 +90,8 @@ public class CustomerManager : MonoBehaviour
     private Sprite currentSprite;
     private string currentDialogueText = "";
 
+    public string CurrentDialogueText => currentDialogueText;
+
     public bool serveStatus => hasServed;
 
     void Awake()
@@ -518,7 +520,7 @@ public class CustomerManager : MonoBehaviour
             {
                 drinkName = recipe.drinkName,
                 ingredients = new List<Ingredient>(recipe.ingredients),
-                drinkSprite = recipe.drinkImage
+                // drinkSprite = recipe.drinkImage
             };
 
             trayDatabase.AddDrink(perfectDrink);

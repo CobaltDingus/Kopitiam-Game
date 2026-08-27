@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -5,7 +6,7 @@ public class SaveManager : MonoBehaviour
     private float currentCustomerCount;
 
     private float maxCustomerCount;
-    private float dayCount;
+    private int dayCount;
 
     private float baseCustomerCount = 5;
 
@@ -17,7 +18,7 @@ public class SaveManager : MonoBehaviour
 
     private bool retry;
     // getters
-    public float DayCount => dayCount;
+    public int DayCount => dayCount;
     public float MaxCustomerCount => maxCustomerCount;
 
     //public float TutorialPhase => tutorialPhase;
@@ -25,6 +26,10 @@ public class SaveManager : MonoBehaviour
     public float CurrentCustomerCount => currentCustomerCount;
 
     public bool Retry => retry;
+
+    // Progression stage stuff
+    public static event Action<int> OnDayChanged;
+
     //setters
     public void setDayCount(int num)
     {
@@ -64,7 +69,8 @@ public class SaveManager : MonoBehaviour
 
     private void NextDay()
     {
-
+        dayCount++;
+        OnDayChanged?.Invoke(dayCount);
     }
 
     private void CalculateFavor()

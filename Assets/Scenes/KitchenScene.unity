@@ -1466,12 +1466,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: canDrag
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
+      propertyPath: unlockDay
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: ingredientAsset
       value: 
       objectReference: {fileID: 11400000, guid: a71d0fe5787170a41aba78a10b8fdf6f, type: 2}
+    - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
+      propertyPath: dragPrefabSprite
+      value: 
+      objectReference: {fileID: -7130869725582434590, guid: 5697d6b9ef66c24439096945f1bb340d, type: 3}
     - target: {fileID: 7662908110568552856, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -1558,7 +1566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.22000003
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3749,7 +3757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.13
+      value: -0.09
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11345,12 +11353,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: canDrag
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
+      propertyPath: unlockDay
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: ingredientAsset
       value: 
       objectReference: {fileID: 11400000, guid: 7915fd25e44d4894eb8c74cdce023b95, type: 2}
+    - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
+      propertyPath: dragPrefabSprite
+      value: 
+      objectReference: {fileID: 1429299454952053915, guid: ccc933b77d7e00e4e8afa816325b6535, type: 3}
     - target: {fileID: 7662908110568552856, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -11433,7 +11449,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.28
+      value: 0.059999973
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15901,6 +15917,7 @@ MonoBehaviour:
   canDrag: 0
   dragPrefab: {fileID: 7387466007355910317, guid: 8e2192277c7eae84986b62cf0b985151, type: 3}
   dragPrefabSprite: {fileID: 0}
+  unlockDay: 0
 --- !u!212 &1511153120320982539
 SpriteRenderer:
   serializedVersion: 3
@@ -17374,7 +17391,6 @@ MonoBehaviour:
   waterAsset: {fileID: 11400000, guid: d1eb19e8e41ed944a8751f7cc5627f22, type: 2}
   liquidObject: {fileID: 707455588}
   recipeBook: {fileID: 11400000, guid: 2c53c2b8eccd2834fa67b11a2aa0a51d, type: 2}
-  testSprite: {fileID: 0}
   waterColorHex: '#98DCFF'
   ingredientText: {fileID: 266643288}
   stirCounterText: {fileID: 1869872439}
