@@ -23,8 +23,8 @@ public class CheckOrderButton : MonoBehaviour
 
     public void GetCurrentOrder()
     {
-        buttonText.text = UIPanel.gameObject.activeSelf ? closeText : normalText;
         UIPanel.TogglePanel();
+        buttonText.text = UIPanel.gameObject.activeSelf ? closeText : normalText;
         if (CustomerManager.Instance != null)
         {
             UIText.text = CustomerManager.Instance.CurrentDialogueText;
