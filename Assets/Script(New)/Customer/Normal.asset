@@ -16,8 +16,9 @@ MonoBehaviour:
   customerName: 
   customerSprite:
   - {fileID: -1660787362401345999, guid: ad97e5ed98853044694f0e258ba8f7ac, type: 3}
-  - {fileID: -1469128937152866181, guid: 6b540804f7ccbb1449805e46dae7e5c9, type: 3}
   - {fileID: 854029978483440082, guid: 73f35533c6a52fa4e953980a03ad68be, type: 3}
+  GoodOutComeSprite:
+  - {fileID: -1469128937152866181, guid: 6b540804f7ccbb1449805e46dae7e5c9, type: 3}
   - {fileID: 5669435767594890224, guid: 9eff3b2b97d27804595e82a80c97cd80, type: 3}
   variant: Normal
   startFrontDialogue:
