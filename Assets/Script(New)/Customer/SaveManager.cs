@@ -1,12 +1,12 @@
-using UnityEditor.ShaderGraph.Internal;
+using System;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
     private float currentCustomerCount = 0;
 
-    private float maxCustomerCount = 5;
-    private float dayCount;
+    private float maxCustomerCount;
+    private int dayCount;
 
     //private float baseCustomerCount = 5;
 
@@ -27,6 +27,10 @@ public class SaveManager : MonoBehaviour
     public float CurrentCustomerCount => currentCustomerCount;
 
     public bool Retry => retry;
+
+    // Progression stage stuff
+    public static event Action<int> OnDayChanged;
+
     //setters
     //public void setTutorialPhase(int num)
     //{
@@ -64,6 +68,8 @@ public class SaveManager : MonoBehaviour
     {
         currentCustomerCount += 1;
         CheckCustomerCountLimit();
+        // dayCount++;
+        // OnDayChanged?.Invoke(dayCount);
     }
 
     private void CheckCustomerCountLimit()

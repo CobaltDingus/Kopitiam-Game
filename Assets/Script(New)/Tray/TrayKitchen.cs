@@ -1,13 +1,17 @@
 using UnityEngine;
 using System.Linq;
-public class Tray :  
+using UnityEngine.EventSystems;
+public class TrayKitchen :  
 ExpandableUI,
-DropInterface
+DropInterface,
+IPointerDownHandler
+// IPointerUpHandler
+
 // DropDrinkInterface
 {
     public TrayDatabase trayDatabase;
     public RecipeBook recipeBook;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public UIPanel panel;
     public bool ReceiveDraggable<T>(T data)
     {
         if (validDragTypes.Contains(DragManager.CurrentlyDragging))
@@ -24,7 +28,7 @@ DropInterface
                 .OrderBy(i => i.Id)
                 .SequenceEqual(recipe.ingredients.OrderBy(i => i.Id)))
                 {
-                    drink.drinkSprite = recipe.drinkImage;
+                    // drink.drinkSprite = recipe.drinkImage;
                     drink.drinkName = recipe.drinkName;
                     break;
                 }
@@ -43,6 +47,11 @@ DropInterface
         {
             return false;
         }
+    }
+
+    public void OnPointerDown(PointerEventData pointerEventData)
+    {
+        
     }
     void Start()
     {

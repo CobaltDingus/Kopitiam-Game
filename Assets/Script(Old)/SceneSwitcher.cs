@@ -3,6 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitcher : MonoBehaviour
 {
+    // void Start()
+    // {
+    //     SceneManager.LoadScene("KitchenScene", LoadSceneMode.Additive);
+    // }
     public void LoadKitchen()
     {
         SceneManager.LoadScene("KitchenScene");

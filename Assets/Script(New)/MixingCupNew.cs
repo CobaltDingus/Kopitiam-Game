@@ -47,7 +47,7 @@ public class MixingCupNew : MonoBehaviour, DropIngredientInterface
         {
             if (compareIngredients(currentIngredients, recipe.ingredients)){
                 matchedName = recipe.drinkName;
-                matchedSprite = recipe.drinkImage;
+                // matchedSprite = recipe.drinkImage;
                 break;
             }
         }
