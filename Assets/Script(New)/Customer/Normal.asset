@@ -38,13 +38,9 @@ MonoBehaviour:
   - 
   - 
   decentFrontDialogue:
-  - I didn't order this...
-  - This is not what I odered...
-  - Wrong order buddy.
+  - 'Hmm, something feels off '
   decentBackDialogue:
-  - 
-  - 
-  - 
+  - but i guess its close enough...
   wrongFrontDialogue:
   - 'wrong '
   - i think
