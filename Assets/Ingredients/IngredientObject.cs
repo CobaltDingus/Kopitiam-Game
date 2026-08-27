@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class IngredientPrefabNew : 
+public class IngredientObject : 
     MonoBehaviour,
     // DraggableObject,
     IPointerDownHandler,
@@ -21,6 +21,9 @@ public class IngredientPrefabNew :
     [SerializeField] private Sprite dragPrefabSprite;
     private Camera cam;
     private SpriteRenderer sourceRenderer;
+
+    // Progression stage stuff
+    public int unlockDay = 0;
     
     private void Awake()
     {

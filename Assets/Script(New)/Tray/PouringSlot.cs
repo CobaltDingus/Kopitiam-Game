@@ -12,6 +12,10 @@ public class PouringSlot : DraggableObject, DropInterface
 
     private ContainerType storedContainerType;
 
+    public void SetCamera(Camera newCamera)
+    {
+        cam = newCamera;
+    }
     public bool ReceiveDraggable<T>(T draggableObject)
     {
         if (!hasContainer)

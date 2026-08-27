@@ -6,7 +6,7 @@ public class UIPanel : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        ClosePanel();
+        // ClosePanel();
     }
 
     // Update is called once per frame
@@ -31,5 +31,14 @@ public class UIPanel : MonoBehaviour
             screenOverlay.SetActive(false);
         }
         gameObject.SetActive(false);
+    }
+
+    public void TogglePanel()
+    {
+        if (screenOverlay != null)
+        {
+            screenOverlay.SetActive(!screenOverlay.activeSelf);
+        }
+        gameObject.SetActive(!gameObject.activeSelf);
     }
 }

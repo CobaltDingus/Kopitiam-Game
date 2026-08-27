@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2151781447be0b542a794c5c39be8e3b, type: 3}
-  m_Name: Teh
+  m_Name: Tea
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: ING02
   ingredientName: Teh

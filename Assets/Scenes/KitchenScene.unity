@@ -1466,12 +1466,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: canDrag
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
+      propertyPath: unlockDay
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: ingredientAsset
       value: 
       objectReference: {fileID: 11400000, guid: a71d0fe5787170a41aba78a10b8fdf6f, type: 2}
+    - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
+      propertyPath: dragPrefabSprite
+      value: 
+      objectReference: {fileID: -7130869725582434590, guid: 5697d6b9ef66c24439096945f1bb340d, type: 3}
     - target: {fileID: 7662908110568552856, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -1558,7 +1566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.22000003
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2123,7 +2131,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -100, y: 100}
+  m_AnchoredPosition: {x: -74, y: 75}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &291418183
@@ -2209,14 +2217,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.86415094, g: 0.54021156, b: 0.35707366, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: -5324699040583924645, guid: 2b19b370d4867a341880207fcdda85cc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3749,7 +3757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.13
+      value: -0.09
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6649,7 +6657,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &875252982
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8732,6 +8740,7 @@ MonoBehaviour:
   canDrag: 0
   dragPrefab: {fileID: 0}
   dragPrefabSprite: {fileID: 0}
+  cam: {fileID: 0}
   hasDragIcon: 0
   panel: {fileID: 0}
   dragHoldTime: 0.2
@@ -9137,7 +9146,7 @@ Transform:
   m_GameObject: {fileID: 1225390833}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.53, y: 0.46, z: 0}
+  m_LocalPosition: {x: 0.96, y: 0.974, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -9193,8 +9202,8 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.14509805, g: 0.23921569, b: 0.14901961, a: 1}
+  m_Sprite: {fileID: -7364869162063868226, guid: f8ea2c23e69123f49bcfb186cc7b37a7, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -9437,7 +9446,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 7}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1280364473
@@ -10571,6 +10580,7 @@ MonoBehaviour:
   canDrag: 1
   dragPrefab: {fileID: 2644886104483930854, guid: c673849107c0e564d9114a101dac7951, type: 3}
   dragPrefabSprite: {fileID: 8171114236397570565, guid: 03a1c59d777b45c46ad5473f461a9bce, type: 3}
+  cam: {fileID: 0}
   hasDragIcon: 1
   panel: {fileID: 0}
   dragHoldTime: 0.2
@@ -10680,6 +10690,7 @@ MonoBehaviour:
   validDragTypes: 03000000
   trayDatabase: {fileID: 11400000, guid: e70fa4aa059bfc74e92464fc5ba0fc27, type: 2}
   recipeBook: {fileID: 11400000, guid: 2c53c2b8eccd2834fa67b11a2aa0a51d, type: 2}
+  panel: {fileID: 0}
 --- !u!61 &1439162761
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11285,6 +11296,7 @@ MonoBehaviour:
   canDrag: 0
   dragPrefab: {fileID: 0}
   dragPrefabSprite: {fileID: 0}
+  cam: {fileID: 0}
   hasDragIcon: 0
   panel: {fileID: 0}
   dragHoldTime: 0.2
@@ -11345,12 +11357,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: canDrag
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
+      propertyPath: unlockDay
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: ingredientAsset
       value: 
       objectReference: {fileID: 11400000, guid: 7915fd25e44d4894eb8c74cdce023b95, type: 2}
+    - target: {fileID: 6338146281959929959, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
+      propertyPath: dragPrefabSprite
+      value: 
+      objectReference: {fileID: 1429299454952053915, guid: ccc933b77d7e00e4e8afa816325b6535, type: 3}
     - target: {fileID: 7662908110568552856, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -11433,7 +11453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.28
+      value: 0.059999973
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12591,8 +12611,8 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.14309004, g: 0.23773581, b: 0.14891087, a: 1}
+  m_Sprite: {fileID: -7364869162063868226, guid: f8ea2c23e69123f49bcfb186cc7b37a7, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -12689,7 +12709,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.53065443, y: 0.5210054}
+  m_Offset: {x: 0.93800116, y: 0.98632216}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -12699,7 +12719,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3.1805048, y: 3.31558}
+  m_Size: {x: 2.1626253, y: 2.2686172}
   m_EdgeRadius: 0
 --- !u!114 &1665509167
 MonoBehaviour:
@@ -12717,6 +12737,7 @@ MonoBehaviour:
   canDrag: 0
   dragPrefab: {fileID: 0}
   dragPrefabSprite: {fileID: 0}
+  cam: {fileID: 0}
   hasDragIcon: 0
   panel: {fileID: 0}
   dragHoldTime: 0.2
@@ -15901,6 +15922,7 @@ MonoBehaviour:
   canDrag: 0
   dragPrefab: {fileID: 7387466007355910317, guid: 8e2192277c7eae84986b62cf0b985151, type: 3}
   dragPrefabSprite: {fileID: 0}
+  unlockDay: 0
 --- !u!212 &1511153120320982539
 SpriteRenderer:
   serializedVersion: 3
@@ -17363,6 +17385,7 @@ MonoBehaviour:
   canDrag: 0
   dragPrefab: {fileID: 0}
   dragPrefabSprite: {fileID: 0}
+  cam: {fileID: 0}
   hasDragIcon: 0
   panel: {fileID: 439330757}
   dragHoldTime: 0.2
@@ -17374,7 +17397,6 @@ MonoBehaviour:
   waterAsset: {fileID: 11400000, guid: d1eb19e8e41ed944a8751f7cc5627f22, type: 2}
   liquidObject: {fileID: 707455588}
   recipeBook: {fileID: 11400000, guid: 2c53c2b8eccd2834fa67b11a2aa0a51d, type: 2}
-  testSprite: {fileID: 0}
   waterColorHex: '#98DCFF'
   ingredientText: {fileID: 266643288}
   stirCounterText: {fileID: 1869872439}
@@ -18500,7 +18522,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -3.758247, y: -0.14771074}
+  m_Offset: {x: -3.8530352, y: -0.19510502}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -18510,7 +18532,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.7287083, y: 1.7680951}
+  m_Size: {x: 2.581799, y: 2.2736292}
   m_EdgeRadius: 0
 --- !u!1 &8478478620723475761
 GameObject:

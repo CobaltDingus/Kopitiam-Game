@@ -20,7 +20,7 @@ public abstract class DraggableObject :
 
     [SerializeField] private GameObject dragPrefab;
     [SerializeField] private Sprite dragPrefabSprite;
-    private Camera cam;
+    public Camera cam;
     [SerializeField] private bool hasDragIcon;
     private Collider2D objectCollider;
     private Vector3 startPosition;

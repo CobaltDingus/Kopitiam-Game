@@ -23,7 +23,7 @@ public class CustomerManager : MonoBehaviour
 
     // Tutorial stuff
     [SerializeField] private List<string> tutorialDialogue;
-    private string tutorialWrongDialogue = "Thats the wrong drink, could you do it again?";
+    private string tutorialWrongDialogue = "Hmm, that's not right. Try again.";
     [SerializeField] private Sprite TutorialBoss;
 
     //
@@ -98,6 +98,8 @@ public class CustomerManager : MonoBehaviour
     private int chosenSpriteIndex;
     private string currentDialogueText = "";
     private string lastNonMatchedIngredientsText = "";
+
+    public string CurrentDialogueText => currentDialogueText;
 
     public bool serveStatus => hasServed;
 
@@ -622,7 +624,7 @@ public class CustomerManager : MonoBehaviour
             {
                 drinkName = recipe.drinkName,
                 ingredients = new List<Ingredient>(recipe.ingredients),
-                drinkSprite = recipe.drinkImage
+                // drinkSprite = recipe.drinkImage
             };
 
             trayDatabase.AddDrink(perfectDrink);

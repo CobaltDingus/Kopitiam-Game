@@ -335,8 +335,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09206d0505fd59945acd1151434ae04a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IngredientPrefabNew
-  dragPrefab: {fileID: 7387466007355910317, guid: 8e2192277c7eae84986b62cf0b985151, type: 3}
   ingredientAsset: {fileID: 0}
+  dragType: 1
+  canDrag: 1
+  dragPrefab: {fileID: 7387466007355910317, guid: 8e2192277c7eae84986b62cf0b985151, type: 3}
+  dragPrefabSprite: {fileID: 0}
+  unlockDay: 0
 --- !u!61 &8976734870389441747
 BoxCollider2D:
   m_ObjectHideFlags: 0

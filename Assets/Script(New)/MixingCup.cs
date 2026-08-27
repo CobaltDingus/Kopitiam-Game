@@ -27,8 +27,6 @@ IPointerUpHandler
     // private Camera cam;
     private SpriteRenderer sourceRenderer;
     public RecipeBook recipeBook;
-
-    public Sprite testSprite;
     public string waterColorHex = "#98DCFF";
     Color currentLiquidColor;
 
@@ -60,12 +58,22 @@ IPointerUpHandler
     
     private void Start()
     {
+        MakeEmptyCup();
+    }
+
+    public void SetCamera(Camera newCamera)
+    {
+        cam = newCamera;
+    }
+
+    public void MakeEmptyCup()
+    {
         originalScale = transform.localScale;
         liquidSprite = liquidObject.GetComponent<SpriteRenderer>();
         ingredientText.text = "Mixing Cup Contents: \n\nEMPTY";
         stirButtonText = stirButton.GetComponentInChildren<TMP_Text>();
         gesturePanelDrawArea = gesturePanel.GetComponent<Image>();
-        gesturePanelDrawArea.color = Color.white;
+        gesturePanelDrawArea.color = Color.white;  
     }
 
     public void ReceiveIngredient(Ingredient ingredient)
@@ -304,8 +312,7 @@ IPointerUpHandler
             .OrderBy(i => i.Id)
             .SequenceEqual(recipe.ingredients.OrderBy(i => i.Id)))
             {
-                drink.drinkSprite = recipe.drinkImage;
-                testSprite = recipe.drinkImage;
+                // drink.drinkSprite = recipe.drinkImage;
                 drink.drinkName = recipe.drinkName;
                 drink.colorHex = recipe.drinkColorHex;
                 return true;
