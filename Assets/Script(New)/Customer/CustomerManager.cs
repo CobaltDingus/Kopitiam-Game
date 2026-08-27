@@ -750,6 +750,7 @@ public class CustomerManager : MonoBehaviour
         {
             frontList = currentCustomer.DecentFrontDialogue;
             backList = currentCustomer.DecentBackDialogue;
+            SaveManager.saveManager.setFavour(50);
         }
         else
         {
