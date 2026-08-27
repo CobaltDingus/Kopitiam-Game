@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -24,6 +25,12 @@ public class TrayCounter :
     [SerializeField] private Sprite[] containerSprites;
     [SerializeField] private SpriteRenderer[] cupRenderers;
     [SerializeField] private SpriteRenderer[] drinkRenderers;
+    [SerializeField] private SpriteRenderer traySprite;
+
+    [SerializeField] private string normalSortingLayer = "CounterObjects";
+    [SerializeField] private string dragSortingLayer = "DragObjects";
+
+    [SerializeField] private List<SpriteRenderer> objectSprites;
 
     // public string DrinkContents => drinkText.text;
 
@@ -93,6 +100,14 @@ public class TrayCounter :
         dragOffset = transform.position - worldPos;
 
         Debug.Log("Started dragging tray");
+
+        if (objectSprites.Count > 0)
+        {
+            foreach (SpriteRenderer spriteRenderer in objectSprites)
+            {
+                spriteRenderer.sortingLayerName = dragSortingLayer;
+            }
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -144,6 +159,14 @@ public class TrayCounter :
 
         // Didn't hit a customer, return to original position
         transform.position = startPosition;
+
+        if (objectSprites.Count > 0)
+        {
+            foreach (SpriteRenderer spriteRenderer in objectSprites)
+            {
+                spriteRenderer.sortingLayerName = normalSortingLayer;
+            }
+        }
     }
 
     public Color HexToColor(string hexCode)

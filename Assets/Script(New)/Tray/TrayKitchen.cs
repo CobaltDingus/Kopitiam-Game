@@ -51,7 +51,7 @@ IPointerDownHandler
 
     public void OnPointerDown(PointerEventData pointerEventData)
     {
-        
+        panel.OpenPanel();
     }
     void Start()
     {
