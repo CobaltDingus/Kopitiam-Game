@@ -3299,12 +3299,12 @@ GameObject:
   - component: {fileID: 1172484685}
   - component: {fileID: 1172484684}
   m_Layer: 0
-  m_Name: Score
+  m_Name: Favour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1172484683
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3344,7 +3344,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'SCORE: 0'
+  m_text: 'Favour: 0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3353,8 +3353,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278683062
-  m_fontColor: {r: 0.7132075, g: 0.52099526, b: 0.025567714, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3874,7 +3874,7 @@ MonoBehaviour:
     you, I treat my employees all the same."
   - 'The only exception is your aunt, heh. '
   - Great Lets get started, make me a cup of Kopi and Kopi O.
-  - 'Kopi is made of coffee,sugar, condensed milk and water. '
+  - 'First, Lets make Kopi, its made of coffee,sugar, condensed milk and water. '
   - Nice work, Lets try another drink called Kopi O
   - 'Similar to Kopi, add coffee, sugar and water, Remember there is no condensed
     milk. '
@@ -6196,7 +6196,7 @@ MonoBehaviour:
   timerText: {fileID: 1587904075}
   dayText: {fileID: 1835435923}
   customerCountText: {fileID: 2117040012}
-  favorText: {fileID: 0}
+  favorText: {fileID: 1172484684}
   challengeMode: 0
   duration: 20
 --- !u!1 &2115047322

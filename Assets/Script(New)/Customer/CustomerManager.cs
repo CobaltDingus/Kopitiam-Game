@@ -45,6 +45,10 @@ public class CustomerManager : MonoBehaviour
     private bool isNext;
     private bool isOkay;
     private bool isTryAgain;
+    private bool isCustomerCount;
+
+    private bool isFavour;
+    
 
     public int tutorialPhase;
     private bool tutorialwrong;
@@ -53,10 +57,11 @@ public class CustomerManager : MonoBehaviour
 
     public bool tutorialComplete = false;
     //getters
-
+    public bool IsFavour => isFavour;
     public bool IsNext => isNext;
     public bool IsOkay => isOkay;
     public bool IsTryAgain => isTryAgain;
+    public bool IsCustomerCount => isCustomerCount;
 
     public Button NextButton => next;
     public Button OkayButton => okay;
@@ -106,6 +111,7 @@ public class CustomerManager : MonoBehaviour
 
     void Start()
     {
+        trayDatabase.ClearDatabase();
         //SaveManager.saveManager
         UiManager.uiManager.UpdateDayCount();
         if (currentCustomer == null)
@@ -115,8 +121,11 @@ public class CustomerManager : MonoBehaviour
             tryAgain.gameObject.SetActive(false);
             okay.gameObject.SetActive(false);
             next.gameObject.SetActive(false);
+            isNext = false;
             if (SaveManager.saveManager.DayCount == 0)
             {
+                isFavour = false;
+                isCustomerCount = false;
                 okay.gameObject.SetActive(true);
                 customerSpriteRenderer.sprite = TutorialBoss;
                 currentSprite = TutorialBoss;
@@ -126,7 +135,12 @@ public class CustomerManager : MonoBehaviour
             }
             else
             {
+                isCustomerCount = true;
+                isFavour = true;
+                UiManager.uiManager.ShowCustomerCount();
+                UiManager.uiManager.ShowFavour();
                 next.gameObject.SetActive(true);
+                isNext = true;
                 GenerateNewCustomer();
             }
         }
@@ -154,8 +168,16 @@ public class CustomerManager : MonoBehaviour
     void FindNextButton()
     {
         next = GameObject.Find("Next").GetComponent<Button>();
-        next.onClick.AddListener(GenerateNewCustomer);
-        //next.onClick.AddListener(next.GetComponent<CustomerManagerUIBridge>().OnGenerateNewCustomerClicked);
+
+        // Bind depending on serving state
+        if (hasServed)
+        {
+            SetNextButtonToNewCustomer();
+        }
+        else
+        {
+            SetNextButtonToKitchen();
+        }
     }
 
     void FindOkayButton()
@@ -189,7 +211,6 @@ public class CustomerManager : MonoBehaviour
 
     public void NextDialogue()
     {
-        // If on tutorial index 5 or 7, transition to Kitchen ONLY if the drink hasn't been served yet
         if ((tutorialPhase == 5 || tutorialPhase == 7) && SaveManager.saveManager.DayCount == 0 && !tutorialserve)
         {
             UpdateOkayButton();
@@ -197,17 +218,13 @@ public class CustomerManager : MonoBehaviour
         }
 
         tutorialPhase += 1;
-
-        // Reset served state for the new dialogue step
         hasServed = false;
 
-        // Reset tutorialserve back to false only when advancing to non-serve dialogue steps
         if (tutorialPhase != 5 && tutorialPhase != 7)
         {
             tutorialserve = false;
         }
 
-        // Populate the recipe requirements whenever moving into a recipe phase
         if (tutorialPhase == 4 || tutorialPhase == 5 || tutorialPhase == 7)
         {
             GenerateTutorialOrderOne();
@@ -217,8 +234,16 @@ public class CustomerManager : MonoBehaviour
         if (tutorialPhase >= tutorialDialogue.Count)
         {
             tutorialComplete = true;
-            okay.gameObject.SetActive(false);
-            next.gameObject.SetActive(true);
+            isCustomerCount = true;
+            isFavour = true;
+            UiManager.uiManager.ShowFavour();
+            UiManager.uiManager.UpdateFavor();
+            UiManager.uiManager.ShowCustomerCount();
+            // Force disable tutorial buttons once tutorial completes
+            if (okay != null) okay.gameObject.SetActive(false);
+            if (tryAgain != null) tryAgain.gameObject.SetActive(false);
+
+            if (next != null) next.gameObject.SetActive(true);
 
             SaveManager.saveManager.setDayCount(1);
             GenerateNewCustomer();
@@ -369,6 +394,34 @@ public class CustomerManager : MonoBehaviour
         NextDialogue();
     }
 
+    // Switches Next button behavior to enter Kitchen
+    public void SetNextButtonToKitchen()
+    {
+        if (next != null)
+        {
+            next.onClick.RemoveAllListeners();
+            next.onClick.AddListener(LoadKitchenScene);
+            next.gameObject.SetActive(true);
+        }
+    }
+
+    // Switches Next button behavior back to Generate New Customer
+    public void SetNextButtonToNewCustomer()
+    {
+        if (next != null)
+        {
+            next.onClick.RemoveAllListeners();
+            next.onClick.AddListener(GenerateNewCustomer);
+            next.gameObject.SetActive(true);
+        }
+    }
+
+    public void LoadKitchenScene()
+    {
+        SceneManager.LoadScene("KitchenScene");
+    }
+
+
     private void SetTutorialWrongState()
 {
     // --- Order Wrong ---
@@ -387,6 +440,8 @@ public class CustomerManager : MonoBehaviour
 
     public void UpdateOkayButton()
     {
+        isOkay = false;
+        isTryAgain = false;
         SceneManager.LoadScene("KitchenScene");
     }
 
@@ -402,15 +457,16 @@ public class CustomerManager : MonoBehaviour
         {
             UiManager.uiManager.RestartTimer();
         }
-        //UiManager.uiManager.RestartTimer();
 
-        SaveManager.saveManager.setDayCount(1);
-        
+        // Always ensure tutorial buttons are inactive during main gameplay loop
+        if (okay != null) okay.gameObject.SetActive(false);
+        if (tryAgain != null) tryAgain.gameObject.SetActive(false);
 
+        SaveManager.saveManager.IncrementCustomerCount();
         UiManager.uiManager.UpdateCustomerCount();
-        //SaveManager.saveManager.
+
         hasServed = false;
-        //Debug.Log("Generate Customer Button Clicked.");
+
         if (customerDatabase == null || customerDatabase.AllCustomers.Count == 0)
         {
             Debug.LogError("CustomerDatabase is empty or unassigned!");
@@ -423,17 +479,14 @@ public class CustomerManager : MonoBehaviour
             return;
         }
 
-        // clear whatever was left in the tray from the previous customer
         if (trayDatabase != null)
             trayDatabase.ClearDatabase();
 
-        // select random customer
         int randomCustomerIndex = UnityEngine.Random.Range(0, customerDatabase.AllCustomers.Count);
         currentCustomer = customerDatabase.AllCustomers[randomCustomerIndex];
 
         SetCustomerSprite();
 
-        // choose 1 to 3 drinks randomly (duplicates allowed)
         orderedRecipes.Clear();
         int drinkCount = UnityEngine.Random.Range(minDrinks, maxDrinks + 1);
 
@@ -443,11 +496,12 @@ public class CustomerManager : MonoBehaviour
             orderedRecipes.Add(recipeBook.AllRecipes[randomRecipeIndex]);
         }
 
-        // let the tray only accept as many drinks as were ordered
         if (trayDatabase != null)
             trayDatabase.MaxSlots = drinkCount;
 
         SetStartDialogue();
+
+        SetNextButtonToKitchen();
     }
 
     private void SetCustomerSprite()
@@ -541,26 +595,21 @@ public class CustomerManager : MonoBehaviour
         {
             if (tutorialPhase == 5 || tutorialPhase == 7)
             {
-                if (!canEvaluateTutorial)
-                {
-                    Debug.Log("Tutorial evaluation locked. Reach active dialogue phase first.");
-                    return;
-                }
+                if (!canEvaluateTutorial) return;
                 EvaluateTutorialOrderByName(trayDatabase.SavedDrinks);
             }
             trayDatabase.ClearDatabase();
-            return; // Exit here so non-tutorial checks don't trigger
-        }
-
-        // --- STANDARD CUSTOMER LOGIC ---
-        if (currentCustomer == null)
-        {
-            Debug.LogWarning("No current customer to serve.");
             return;
         }
 
+        // --- STANDARD CUSTOMER LOGIC ---
+        if (currentCustomer == null) return;
+
         EvaluateAndSetEndDialogue(trayDatabase.SavedDrinks);
         trayDatabase.ClearDatabase();
+
+        // CUSTOMER SERVED: Re-enable Next button with GenerateNewCustomer functionality
+        SetNextButtonToNewCustomer();
     }
 
     public void CustomerServed()
@@ -604,6 +653,7 @@ public class CustomerManager : MonoBehaviour
         {
             frontList = currentCustomer.PerfectFrontDialogue;
             backList = currentCustomer.PerfectBackDialogue;
+
         }
         else if (perfectCount == 0)
         {
@@ -616,13 +666,17 @@ public class CustomerManager : MonoBehaviour
             backList = currentCustomer.DecentBackDialogue;
         }
 
+        for (int i = 0; i < perfectCount; i++)
+        {
+            SaveManager.saveManager.setFavour(100);
+        }
+        UiManager.uiManager.UpdateFavor();
         int index = GetRandomDialogueIndex(frontList, backList);
         if (index == -1)
         {
             if (dialogueText != null) dialogueText.text = "...";
             return;
         }
-
         SetEndDialogueText(frontList[index], backList[index]);
     }
 
@@ -684,5 +738,15 @@ public class CustomerManager : MonoBehaviour
         if (dialogueText != null)
             dialogueText.text = currentDialogueText;
     }
+
+
+    // ================================ REVAMP CODES ================================
+    // [RULES]
+    // [NOTE] Do Not Change Any Codes Here Unless Needed
+    // - core variables
+    // - functions for calculation and modifying said variables
+    // - function starts with Capital
+    // - variable starts with small
+    // ================================ START ================================
 
 }

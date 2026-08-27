@@ -22,11 +22,20 @@ public class UiManager : MonoBehaviour
 
     // base var for saves
 
-    private float favor;
 
     public bool ChallengeMode => challengeMode;
 
     public bool timerStatus => isTimerRunning;
+
+    public void HideFavour()
+    {
+        favorText.gameObject.SetActive(false);
+    }
+
+    public void ShowFavour()
+    {
+        favorText.gameObject.SetActive(true);
+    }
 
     public void HideCustomerCount()
     {
@@ -174,7 +183,7 @@ public class UiManager : MonoBehaviour
 
         if (favorText != null)
         {
-            favorText.text = "FAVOR: " + favor;
+            favorText.text = "Favour: " + SaveManager.saveManager.Favour;
         }
 
     }

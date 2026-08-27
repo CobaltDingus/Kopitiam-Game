@@ -1,22 +1,24 @@
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-    private float currentCustomerCount;
+    private float currentCustomerCount = 0;
 
-    private float maxCustomerCount;
+    private float maxCustomerCount = 5;
     private float dayCount;
 
-    private float baseCustomerCount = 5;
+    //private float baseCustomerCount = 5;
 
-    private float favor;
+    private float favor = 0;
 
-    private float previousFavor;
+    //private float previousFavor;
 
     //private float tutorialPhase;
 
     private bool retry;
     // getters
+    public float Favor => favor;
     public float DayCount => dayCount;
     public float MaxCustomerCount => maxCustomerCount;
 
@@ -26,11 +28,6 @@ public class SaveManager : MonoBehaviour
 
     public bool Retry => retry;
     //setters
-    public void setDayCount(int num)
-    {
-        dayCount += num;
-        return;
-    }
     //public void setTutorialPhase(int num)
     //{
     //    tutorialPhase += num;
@@ -57,20 +54,88 @@ public class SaveManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         dayCount = 0;
     }
-    void Update()
+    public void setDayCount(int num)
     {
-        
+        dayCount += num;
     }
 
-    private void NextDay()
+    // Increments customer count and checks for day completion
+    public void IncrementCustomerCount()
     {
-
+        currentCustomerCount += 1;
+        CheckCustomerCountLimit();
     }
 
-    private void CalculateFavor()
+    private void CheckCustomerCountLimit()
     {
-
+        if (currentCustomerCount > maxCustomerCount)
+        {
+            currentCustomerCount = 0;
+            dayCount += 1;
+            resetFavor();
+            UiManager.uiManager.UpdateFavor();
+            UiManager.uiManager.RestartTimer();
+            UiManager.uiManager.UpdateDayCount();
+        }
+    }
+    public void setFavour (int num)
+    {
+        Favour += num;
     }
 
+    public void resetFavor()
+    {
+        _favour = 0;
+    }
 
+    // ================================ REVAMP CODES ================================
+    // [RULES]
+    // [NOTE] Do Not Change Any Codes Here Unless Needed
+    // - core variables
+    // - functions for calculation and modifying said variables
+    // - function starts with Capital
+    // - variable starts with small
+    // ================================ START ================================
+
+    // ================================ VARIABLES ================================
+    private float _day;
+    private float _currentCustomer;
+    private float _maxCustomer;
+    private float _favour = 0;
+
+    
+    // ================================ GETTER & SETTER ================================
+    public float Day
+    {
+        get => _day;
+        set => _day = value;
+    }
+    public float CurrentCustomer
+    {
+        get => _currentCustomer;
+        set => _currentCustomer = value;
+    }
+    public float MaxCustomer
+    {
+        get => _maxCustomer;
+        set => _maxCustomer = value;
+    }
+    public float Favour
+    {
+        get => _favour;
+        set => _favour = value;
+    }
+
+    // ================================ GENERAL FUNCTION ================================
+    public void EvaluateAndCalculateDay()
+    {
+        if (CurrentCustomer == MaxCustomer)
+        {
+            CurrentCustomer = 0;
+            Day += 1;
+            return;
+        }
+
+    }
+    
 }

@@ -16,37 +16,57 @@ public class CustomerDisplayLink : MonoBehaviour
 
         CustomerManager.Instance.RegisterDisplayReferences(customerSpriteRenderer, dialogueText);
 
-        // Standard button initializations
-        if (CustomerManager.Instance.NextButton != null)
-            CustomerManager.Instance.NextButton.gameObject.SetActive(CustomerManager.Instance.IsNext);
-
-        if (CustomerManager.Instance.TryAgainButton != null)
-            CustomerManager.Instance.TryAgainButton.gameObject.SetActive(CustomerManager.Instance.IsTryAgain);
-
-        // --- Tutorial Scene Load Handling ---
-        if (SaveManager.saveManager != null && SaveManager.saveManager.DayCount == 0)
+        // Standard Tutorial logic
+        if (SaveManager.saveManager != null && SaveManager.saveManager.DayCount == 0 && !CustomerManager.Instance.tutorialComplete)
         {
-            // Support BOTH Phase 5 and Phase 7
             if (CustomerManager.Instance.tutorialPhase == 5 || CustomerManager.Instance.tutorialPhase == 7)
             {
-                if (!CustomerManager.Instance.tutorialserve)
+                if (CustomerManager.Instance.OkayButton != null)
+                    CustomerManager.Instance.OkayButton.gameObject.SetActive(CustomerManager.Instance.tutorialserve);
+            }
+        }
+        else
+        {
+            // --- POST-TUTORIAL GAMEPLAY ---
+            // Force Okay and TryAgain buttons off everywhere after tutorial
+            if (CustomerManager.Instance.OkayButton != null)
+                CustomerManager.Instance.OkayButton.gameObject.SetActive(false);
+
+            if (CustomerManager.Instance.TryAgainButton != null)
+                CustomerManager.Instance.TryAgainButton.gameObject.SetActive(false);
+
+            // Handle Next button visibility based on serving status
+            if (CustomerManager.Instance.NextButton != null)
+            {
+                if (!CustomerManager.Instance.serveStatus)
                 {
-                    // Returned from kitchen scene: HIDE Okay button until drinks are served
-                    if (CustomerManager.Instance.OkayButton != null)
-                        CustomerManager.Instance.OkayButton.gameObject.SetActive(false);
+                    CustomerManager.Instance.NextButton.gameObject.SetActive(false);
                 }
                 else
                 {
-                    // Order has been served correctly: SHOW Okay button
-                    if (CustomerManager.Instance.OkayButton != null)
-                        CustomerManager.Instance.OkayButton.gameObject.SetActive(true);
+                    CustomerManager.Instance.NextButton.gameObject.SetActive(true);
                 }
             }
         }
-        else if (CustomerManager.Instance.tutorialComplete)
+        if (!CustomerManager.Instance.IsTryAgain)
         {
-            if (CustomerManager.Instance.NextButton != null)
-                CustomerManager.Instance.NextButton.gameObject.SetActive(true);
+            CustomerManager.Instance.TryAgainButton.gameObject.SetActive(false);
+        }
+        if (!CustomerManager.Instance.IsOkay)
+        {
+            CustomerManager.Instance.OkayButton.gameObject.SetActive(false);
+        }
+        if (!CustomerManager.Instance.IsNext)
+        {
+            CustomerManager.Instance.NextButton.gameObject.SetActive(false);
+        }
+        if (!CustomerManager.Instance.IsCustomerCount)
+        {
+            UiManager.uiManager.HideCustomerCount();
+        }
+        if (!CustomerManager.Instance.IsFavour)
+        {
+            UiManager.uiManager.HideFavour();
         }
     }
 }
