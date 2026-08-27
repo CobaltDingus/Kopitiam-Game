@@ -6,10 +6,12 @@ public class Ingredient : ScriptableObject
     [SerializeField] private string id;
     [SerializeField] private string ingredientName;
     [SerializeField] private Sprite icon;
+    [SerializeField] private bool isBaseIngredient;
 
     public string Id => id;
     public string Name => ingredientName;
     public Sprite Icon => icon;
+    public bool IsBaseIngredient => isBaseIngredient;
 
     //public string Id { get { return id; } }
     //public string Name { get { return ingredientName; } }

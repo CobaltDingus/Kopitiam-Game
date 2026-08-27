@@ -97,6 +97,7 @@ public class CustomerManager : MonoBehaviour
     private Sprite currentSprite;
     private int chosenSpriteIndex;
     private string currentDialogueText = "";
+    private string lastNonMatchedIngredientsText = "";
 
     public bool serveStatus => hasServed;
 
@@ -681,9 +682,9 @@ public class CustomerManager : MonoBehaviour
         servedDrinks ??= new List<Drink>();
 
         int perfectCount = 0;
+        bool baseIngredientMatched = false;
         List<Drink> remainingServed = new List<Drink>(servedDrinks);
 
-        // Unordered matching: check each recipe against any available drink in tray
         foreach (DrinkRecipe recipe in orderedRecipes)
         {
             Drink match = remainingServed.FirstOrDefault(served => IsDrinkPerfect(served, recipe));
@@ -691,7 +692,38 @@ public class CustomerManager : MonoBehaviour
             if (match != null)
             {
                 perfectCount++;
-                remainingServed.Remove(match); // Prevents matching the same drink twice
+                baseIngredientMatched = true;
+                remainingServed.Remove(match);
+            }
+            else
+            {
+                // Find base ingredients required by the recipe (checks both recipe.ingredients and recipe.baseIngredient)
+                List<Ingredient> baseIngredientsInRecipe = recipe.ingredients
+                    .Where(i => i != null && i.IsBaseIngredient)
+                    .ToList();
+
+                if (recipe.baseIngredient != null && recipe.baseIngredient.Count > 0)
+                {
+                    baseIngredientsInRecipe.AddRange(recipe.baseIngredient.Where(i => i != null));
+                }
+
+                // Check if any served drink contains at least one of the required base ingredients
+                foreach (Drink served in servedDrinks)
+                {
+                    if (served == null || served.ingredients == null) continue;
+
+                    bool hasMatchingBase = served.ingredients.Any(servedIng =>
+                        servedIng != null && baseIngredientsInRecipe.Any(reqBase =>
+                            string.Equals(servedIng.Id, reqBase.Id, StringComparison.OrdinalIgnoreCase)
+                        )
+                    );
+
+                    if (hasMatchingBase)
+                    {
+                        baseIngredientMatched = true;
+                        break;
+                    }
+                }
             }
         }
 
@@ -703,7 +735,6 @@ public class CustomerManager : MonoBehaviour
             frontList = currentCustomer.PerfectFrontDialogue;
             backList = currentCustomer.PerfectBackDialogue;
 
-            // Safely check if GoodOutComeSprite list has valid sprites
             if (currentCustomer.goodOutComeSprite != null && currentCustomer.goodOutComeSprite.Count > 0)
             {
                 int safeOutcomeIndex = Mathf.Clamp(chosenSpriteIndex, 0, currentCustomer.goodOutComeSprite.Count - 1);
@@ -715,18 +746,17 @@ public class CustomerManager : MonoBehaviour
                 }
             }
         }
-        else if (perfectCount == 0)
-        {
-            frontList = currentCustomer.WrongFrontDialogue;
-            backList = currentCustomer.WrongBackDialogue;
-        }
-        else
+        else if (baseIngredientMatched)
         {
             frontList = currentCustomer.DecentFrontDialogue;
             backList = currentCustomer.DecentBackDialogue;
         }
+        else
+        {
+            frontList = currentCustomer.WrongFrontDialogue;
+            backList = currentCustomer.WrongBackDialogue;
+        }
 
-        // Award favor points for each perfect drink served
         for (int i = 0; i < perfectCount; i++)
         {
             SaveManager.saveManager.setFavour(100);
@@ -760,21 +790,68 @@ public class CustomerManager : MonoBehaviour
         served ??= new List<Ingredient>();
         required ??= new List<Ingredient>();
 
-        if (served.Count != required.Count) return false;
+        List<Ingredient> remainingServed = new List<Ingredient>(served);
+        List<Ingredient> remainingRequired = new List<Ingredient>(required);
 
-        List<Ingredient> remaining = new List<Ingredient>(served);
+        List<Ingredient> nonMatchedIngredients = new List<Ingredient>();
 
-        foreach (Ingredient requiredIngredient in required)
+        // Step 1: Compare and match Base Ingredient first
+        Ingredient requiredBase = remainingRequired.FirstOrDefault(i => i != null && i.IsBaseIngredient);
+
+        if (requiredBase != null)
         {
-            Ingredient match = remaining.FirstOrDefault(i =>
-                i != null && requiredIngredient != null && i.Id == requiredIngredient.Id);
+            Ingredient servedBaseMatch = remainingServed.FirstOrDefault(s => s != null && s.Id == requiredBase.Id);
 
-            if (match == null) return false;
-
-            remaining.Remove(match);
+            if (servedBaseMatch != null)
+            {
+                Debug.Log($"[Base Match] Matched base ingredient: {requiredBase.name}");
+                remainingRequired.Remove(requiredBase);
+                remainingServed.Remove(servedBaseMatch);
+            }
+            else
+            {
+                Debug.LogWarning($"[Base Mismatch] Base ingredient mismatch or missing: {requiredBase.name}");
+                nonMatchedIngredients.Add(requiredBase);
+                remainingRequired.Remove(requiredBase);
+            }
         }
 
-        return true;
+        // Step 2: Compare and pair remaining non-base ingredients
+        foreach (Ingredient req in remainingRequired.ToList())
+        {
+            if (req == null) continue;
+
+            Ingredient match = remainingServed.FirstOrDefault(s => s != null && s.Id == req.Id);
+
+            if (match != null)
+            {
+                Debug.Log($"[Ingredient Match] Matched correct ingredient: {req.name}");
+                remainingServed.Remove(match);
+            }
+            else
+            {
+                nonMatchedIngredients.Add(req);
+            }
+        }
+
+        // Step 3: Add leftover served ingredients (extra/wrong additions)
+        nonMatchedIngredients.AddRange(remainingServed);
+
+        // Step 4: Store non-matched ingredients into a formatted string
+        if (nonMatchedIngredients.Count > 0)
+        {
+            lastNonMatchedIngredientsText = string.Join(", ", nonMatchedIngredients
+                .Where(i => i != null)
+                .Select(i => i.name));
+
+            Debug.LogWarning($"[Mismatches Detected] Non-matched ingredients: \"{lastNonMatchedIngredientsText}\"");
+        }
+        else
+        {
+            lastNonMatchedIngredientsText = "";
+        }
+
+        return nonMatchedIngredients.Count == 0;
     }
 
     private int GetRandomDialogueIndex(List<string> frontList, List<string> backList)
