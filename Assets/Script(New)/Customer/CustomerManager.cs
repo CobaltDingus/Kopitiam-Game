@@ -67,6 +67,8 @@ public class CustomerManager : MonoBehaviour
     public Button OkayButton => okay;
     public Button TryAgainButton => tryAgain;
 
+    public int chosenCustomerSlot;
+
     //setters
 
     public void setIsNext(bool status)
@@ -93,6 +95,7 @@ public class CustomerManager : MonoBehaviour
     // repainted instantly without re-rolling the customer/order/dialogue.
 
     private Sprite currentSprite;
+    private int chosenSpriteIndex;
     private string currentDialogueText = "";
 
     public bool serveStatus => hasServed;
@@ -482,8 +485,33 @@ public class CustomerManager : MonoBehaviour
         if (trayDatabase != null)
             trayDatabase.ClearDatabase();
 
-        int randomCustomerIndex = UnityEngine.Random.Range(0, customerDatabase.AllCustomers.Count);
-        currentCustomer = customerDatabase.AllCustomers[randomCustomerIndex];
+        int randomCustomerIndex;
+
+        int totalCustomers = customerDatabase.AllCustomers.Count;
+
+        // Standard cases
+        if (totalCustomers == 1)
+        {
+            randomCustomerIndex = 0;
+        }
+        else if (totalCustomers == 2)
+        {
+            // For exactly 2 customers (indices 0 and 1), flip to the alternate index guaranteed
+            randomCustomerIndex = (chosenCustomerSlot == 0) ? 1 : 0;
+        }
+        else
+        {
+            // For 3 or more customers, keep rolling until a different index is selected
+            do
+            {
+                randomCustomerIndex = UnityEngine.Random.Range(0, totalCustomers);
+            }
+            while (randomCustomerIndex == chosenCustomerSlot);
+        }
+
+        // Store the newly selected index for the next run
+        chosenCustomerSlot = randomCustomerIndex;
+        currentCustomer = customerDatabase.AllCustomers[chosenCustomerSlot];
 
         SetCustomerSprite();
 
@@ -512,8 +540,29 @@ public class CustomerManager : MonoBehaviour
             return;
         }
 
-        int spriteIndex = UnityEngine.Random.Range(0, currentCustomer.CustomerSprite.Count);
-        currentSprite = currentCustomer.CustomerSprite[spriteIndex];
+        int totalSprites = currentCustomer.CustomerSprite.Count;
+
+        if (totalSprites == 1)
+        {
+            chosenSpriteIndex = 0;
+        }
+        else if (totalSprites == 2)
+        {
+            // Toggle directly between index 0 and 1
+            chosenSpriteIndex = (chosenSpriteIndex == 0) ? 1 : 0;
+        }
+        else
+        {
+            // For 3 or more variations, keep rolling until a different sprite index is selected
+            int previousIndex = chosenSpriteIndex;
+            do
+            {
+                chosenSpriteIndex = UnityEngine.Random.Range(0, totalSprites);
+            }
+            while (chosenSpriteIndex == previousIndex);
+        }
+
+        currentSprite = currentCustomer.CustomerSprite[chosenSpriteIndex];
 
         if (customerSpriteRenderer != null)
             customerSpriteRenderer.sprite = currentSprite;
@@ -654,6 +703,17 @@ public class CustomerManager : MonoBehaviour
             frontList = currentCustomer.PerfectFrontDialogue;
             backList = currentCustomer.PerfectBackDialogue;
 
+            // Safely check if GoodOutComeSprite list has valid sprites
+            if (currentCustomer.goodOutComeSprite != null && currentCustomer.goodOutComeSprite.Count > 0)
+            {
+                int safeOutcomeIndex = Mathf.Clamp(chosenSpriteIndex, 0, currentCustomer.goodOutComeSprite.Count - 1);
+                currentSprite = currentCustomer.goodOutComeSprite[safeOutcomeIndex];
+
+                if (customerSpriteRenderer != null)
+                {
+                    customerSpriteRenderer.sprite = currentSprite;
+                }
+            }
         }
         else if (perfectCount == 0)
         {
@@ -666,17 +726,20 @@ public class CustomerManager : MonoBehaviour
             backList = currentCustomer.DecentBackDialogue;
         }
 
+        // Award favor points for each perfect drink served
         for (int i = 0; i < perfectCount; i++)
         {
             SaveManager.saveManager.setFavour(100);
         }
         UiManager.uiManager.UpdateFavor();
+
         int index = GetRandomDialogueIndex(frontList, backList);
         if (index == -1)
         {
             if (dialogueText != null) dialogueText.text = "...";
             return;
         }
+
         SetEndDialogueText(frontList[index], backList[index]);
     }
 

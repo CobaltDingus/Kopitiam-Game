@@ -8,6 +8,7 @@ public class CustomerData : ScriptableObject
     [SerializeField] private string id;
     [SerializeField] private string customerName;
     [SerializeField] private List<Sprite> customerSprite;
+    [SerializeField] private List<Sprite> GoodOutComeSprite;
     //[SerializeField] private Sprite customerSprite;
     [SerializeField] private string variant;
 
@@ -28,6 +29,7 @@ public class CustomerData : ScriptableObject
     public string Id => id;
     public string CustomerName => customerName;
     public List<Sprite> CustomerSprite => customerSprite;
+    public List<Sprite> goodOutComeSprite => GoodOutComeSprite;
 
     public string Variant => variant;
 
