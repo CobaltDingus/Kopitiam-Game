@@ -23,7 +23,7 @@ public class CustomerManager : MonoBehaviour
 
     // Tutorial stuff
     [SerializeField] private List<string> tutorialDialogue;
-    private string tutorialWrongDialogue = "Thats the wrong drink, could you do it again?";
+    private string tutorialWrongDialogue = "Hmm, that's not right. Try again.";
     [SerializeField] private Sprite TutorialBoss;
 
     //

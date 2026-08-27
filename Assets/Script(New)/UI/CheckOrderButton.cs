@@ -5,6 +5,9 @@ using UnityEngine.UI;
 public class CheckOrderButton : MonoBehaviour
 {
     [SerializeField] private UIPanel UIPanel;
+    [SerializeField] private TextMeshProUGUI buttonText;
+    [SerializeField] private string normalText;
+    [SerializeField] private string closeText;
     private TextMeshProUGUI UIText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,6 +23,7 @@ public class CheckOrderButton : MonoBehaviour
 
     public void GetCurrentOrder()
     {
+        buttonText.text = UIPanel.gameObject.activeSelf ? closeText : normalText;
         UIPanel.TogglePanel();
         if (CustomerManager.Instance != null)
         {
