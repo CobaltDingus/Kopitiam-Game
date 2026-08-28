@@ -173,7 +173,7 @@ public class UiManager : MonoBehaviour
     {
         if (customerCountText != null)
         {
-            customerCountText.text = "CUSTOMER: " + SaveManager.saveManager.CurrentCustomerCount.ToString() + "/" + SaveManager.saveManager.MaxCustomerCount.ToString();
+            customerCountText.text = "Customer: " + SaveManager.saveManager.CurrentCustomerCount.ToString() + "/" + SaveManager.saveManager.MaxCustomerCount.ToString();
         }
     }
 

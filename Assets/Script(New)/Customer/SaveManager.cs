@@ -1,5 +1,3 @@
-using System;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -54,6 +52,7 @@ public class SaveManager : MonoBehaviour
         saveManager = this;
         DontDestroyOnLoad(gameObject);
         dayCount = 0;
+        SetAvailableRecipes(2);
     }
     public void setDayCount(int num)
     {
@@ -85,7 +84,7 @@ public class SaveManager : MonoBehaviour
 
             if (dayCount == 2)
             {
-                SetAvailableRecipes();
+                SetAvailableRecipes(6);
             }
         }
     }
@@ -152,8 +151,8 @@ public class SaveManager : MonoBehaviour
     
     // public static event Action<int> OnDayTwo; 
     // ================================ JF TEST FUNCTION ================================
-    public void SetAvailableRecipes()
+    public void SetAvailableRecipes(int num)
     {
-        CustomerManager.Instance.SetAvailableRecipes(6);
+        CustomerManager.Instance.SetAvailableRecipes(num);
     }
 }

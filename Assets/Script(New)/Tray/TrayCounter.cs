@@ -153,6 +153,13 @@ public class TrayCounter :
 
                 // Reset tray position
                 transform.position = startPosition;
+                if (objectSprites.Count > 0)
+                {
+                    foreach (SpriteRenderer spriteRenderer in objectSprites)
+                    {
+                        spriteRenderer.sortingLayerName = normalSortingLayer;
+                    }
+                }
                 return;
             }
         }

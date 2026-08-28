@@ -263,6 +263,7 @@ IPointerUpHandler
             drink.isStirred = true;
 
             stirButtonText.text = "Ready to serve!";
+            stirButton.image.color = Color.green;
         }
 
     }
@@ -319,5 +320,17 @@ IPointerUpHandler
             }
         }
         return false;
+    }
+
+    public void StirButtonClick()
+    {
+        if (!drink.isStirred)
+        {
+            BeginStirring();
+        }
+        else
+        {
+
+        }
     }
 }

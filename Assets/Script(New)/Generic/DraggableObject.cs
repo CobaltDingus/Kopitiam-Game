@@ -27,6 +27,8 @@ public abstract class DraggableObject :
     private Vector3 dragOffset;
 
     [SerializeField] private UIPanel panel;
+
+    public UIPanel Panel => panel;
     // [SerializeField] private UIPanel overlay;
 
     [SerializeField] private float dragHoldTime = 0.2f;
