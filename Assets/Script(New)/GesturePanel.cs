@@ -79,7 +79,7 @@ public class GesturePanel : MonoBehaviour,
             fingerIndicator.gameObject.SetActive(false);
 
         UpdateRotationCenter();
-        DisableDetector();
+        // DisableDetector();
     }
 
 

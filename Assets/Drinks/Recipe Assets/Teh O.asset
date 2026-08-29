@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Teh O
   m_EditorClassIdentifier: Assembly-CSharp::DrinkRecipe
   id: DRI04
-  drinkName: Teh
+  drinkName: Teh O
   ingredients:
   - {fileID: 11400000, guid: 7915fd25e44d4894eb8c74cdce023b95, type: 2}
   - {fileID: 11400000, guid: 97dcfa2128b4dc544bc272fad994c61a, type: 2}

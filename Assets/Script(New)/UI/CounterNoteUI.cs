@@ -28,6 +28,8 @@ public class CounterNoteUI : MonoBehaviour
                 // button.image.gameObject.SetActive(true);
                 // text.gameObject.SetActive(true);
                 text.text = "Note from uncle";
+                text.color = Color.white;
+                button.image.color = Color.red;
             }
             else
             {

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Tea
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: ING02
-  ingredientName: Teh
+  ingredientName: Tea
   icon: {fileID: 0}
+  isBaseIngredient: 0

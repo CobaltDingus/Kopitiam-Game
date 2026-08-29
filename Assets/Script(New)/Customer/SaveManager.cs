@@ -4,7 +4,7 @@ public class SaveManager : MonoBehaviour
 {
     private float currentCustomerCount = 0;
 
-    private float maxCustomerCount = 5;
+    private float maxCustomerCount = 3;
     private float dayCount;
 
     //private float baseCustomerCount = 5;
@@ -72,11 +72,11 @@ public class SaveManager : MonoBehaviour
         {
             currentCustomerCount = 0;
             dayCount += 1;
-            if (favor > lastEarnedFavour)
-            {
-                maxCustomerCount++;
-            }
-            lastEarnedFavour = _favour;
+            // if (favor > lastEarnedFavour)
+            // {
+            //     maxCustomerCount++;
+            // }
+            // lastEarnedFavour = _favour;
             resetFavor();
             UiManager.uiManager.UpdateFavor();
             UiManager.uiManager.RestartTimer();
@@ -85,6 +85,7 @@ public class SaveManager : MonoBehaviour
             if (dayCount == 2)
             {
                 SetAvailableRecipes(6);
+                maxCustomerCount = 5;
             }
         }
     }

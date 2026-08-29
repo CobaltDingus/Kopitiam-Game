@@ -176,9 +176,19 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Note from Uncle:\n\nWah, not bad ah you? Now you can try serving Teh and
-    Uilo. It's the same as Kopi but with Tea or Uilo powder. \n\nIf all this you
-    can do, maybe I let you do more next time."
+  m_text: 'Note from Uncle:
+
+
+    Wah, not bad ah you? Now you can try serving Teh
+    and Uilo. It''s the same as Kopi but with Tea or Uilo powder instead of Coffee.
+
+
+    Tea
+    is the red one and Uilo is the green one.
+
+
+    If all this you can do, maybe
+    I let you do more next time.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -205,8 +215,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1152,12 +1162,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 349159670}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.0572, y: 2.49, z: 0}
-  m_LocalScale: {x: 7.49417, y: 2.853912, z: 1.5426552}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 177.6981, y: 215.08278, z: -7774.076}
+  m_LocalScale: {x: 647.3361, y: 246.517, z: 133.25244}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1797581467}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &349835959
 GameObject:
@@ -4229,8 +4239,9 @@ MonoBehaviour:
   - 'First, let''s make Kopi. Kopi is made with coffee, sugar, condensed milk and
     water. '
   - Not bad, let's try another drink called Kopi O.
-  - Kopi O is just Kopi but the 'O' means no condensed milk.
-  - "Alright, I\u2019ll let you serve 5 customers for today, don\u2019t mess this
+  - Kopi O is just Kopi but the 'O' means no condensed milk. Just put coffee and
+    sugar with water.
+  - "Alright, I\u2019ll let you serve 3 customers for today, don\u2019t mess this
     up ah!"
   TutorialBoss: {fileID: -6248741079362886434, guid: fb730fb58019a604f8e2223953a42332, type: 3}
   minDrinks: 1
@@ -4696,11 +4707,11 @@ Transform:
   m_GameObject: {fileID: 1474063006}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0015310481, y: -0.0024773225, z: 0.15958266, w: 0.9871803}
-  m_LocalPosition: {x: -0.99, y: 1.6399999, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -85.51484, y: 141.66093, z: -7774.076}
+  m_LocalScale: {x: 86.378624, y: 86.378624, z: 86.37862}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1797581467}
   m_LocalEulerAnglesHint: {x: 0.218, y: -0.252, z: 18.365}
 --- !u!1 &1480739755
 GameObject:
@@ -6480,6 +6491,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1474063008}
+  - {fileID: 349159672}
   - {fileID: 371707624}
   - {fileID: 127503683}
   - {fileID: 1070728937}
@@ -9007,8 +9020,6 @@ SceneRoots:
   - {fileID: 1480739758}
   - {fileID: 1524433579}
   - {fileID: 1066563749}
-  - {fileID: 349159672}
-  - {fileID: 1474063008}
   - {fileID: 2055916237}
   - {fileID: 1495328582}
   - {fileID: 1797581467}

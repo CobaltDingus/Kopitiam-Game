@@ -815,13 +815,13 @@ public class CustomerManager : MonoBehaviour
 
             if (servedBaseMatch != null)
             {
-                Debug.Log($"[Base Match] Matched base ingredient: {requiredBase.name}");
+                Debug.Log($"[Base Match] Matched base ingredient: {requiredBase.Name}");
                 remainingRequired.Remove(requiredBase);
                 remainingServed.Remove(servedBaseMatch);
             }
             else
             {
-                Debug.LogWarning($"[Base Mismatch] Base ingredient mismatch or missing: {requiredBase.name}");
+                Debug.LogWarning($"[Base Mismatch] Base ingredient mismatch or missing: {requiredBase.Name}");
                 nonMatchedIngredients.Add(requiredBase);
                 remainingRequired.Remove(requiredBase);
             }

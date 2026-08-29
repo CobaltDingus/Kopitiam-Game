@@ -41,6 +41,7 @@ IPointerUpHandler
     [SerializeField] private GesturePanel gesturePanel;
 
     private Image gesturePanelDrawArea;
+    [SerializeField] Image gesturePanelDrawAreaOverlay;
 
     private bool isValidDrink = false;
     public int stirsRequired = 4;
@@ -171,9 +172,10 @@ IPointerUpHandler
 
         if (isValidDrink)
         {
-            stirButton.image.color = Color.green;
-            stirButtonText.text = "Start Stirring";
+            // stirButton.image.color = Color.green;
+            stirButtonText.text = "Start stirring";
             stirButton.enabled = true;
+            EnableStirring();
         }
     }
 
@@ -207,6 +209,8 @@ IPointerUpHandler
         gesturePanel.DisableDetector();
         gesturePanelDrawArea.color = Color.white;
         currentLiquidColor = Color.white;
+        gesturePanelDrawAreaOverlay.gameObject.SetActive(true);
+        stirButton.interactable = false;
     }
 
     public void AddWater()
@@ -233,14 +237,15 @@ IPointerUpHandler
         }
     }
 
-    public void BeginStirring()
+    public void EnableStirring()
     {
         // stirButton
         stirButton.image.color = Color.grey;
-        stirButton.enabled = false;
-        stirButtonText.text = "Stirring...";
+        stirButton.interactable = false;
+        stirButtonText.text = "Start stirring!";
 
         // gesturePanel
+        gesturePanelDrawAreaOverlay.gameObject.SetActive(false);
         gesturePanel.UnlockAndEnableDetector();
     }
 
@@ -264,6 +269,9 @@ IPointerUpHandler
 
             stirButtonText.text = "Ready to serve!";
             stirButton.image.color = Color.green;
+            stirButton.interactable = true;
+            
+            // stirButton.image.color = Color.green;
         }
 
     }
@@ -324,13 +332,13 @@ IPointerUpHandler
 
     public void StirButtonClick()
     {
-        if (!drink.isStirred)
-        {
-            BeginStirring();
-        }
-        else
-        {
+        // if (!drink.isStirred)
+        // {
+        //     BeginStirring();
+        // }
+        // else
+        // {
 
-        }
+        // }
     }
 }
