@@ -45,3 +45,18 @@ public void MainMenu()
     }
 }
 
+public class PauseWindow : MonoBehaviour
+{
+    [SerializeField] private GameObject PauseMenu;
+    public void PauseGame()
+    {
+        PauseMenu.SetActive(true);
+        Time.timeScale = 0;
+    }
+    public void ResumeGame()
+    {
+        PauseMenu.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+}
