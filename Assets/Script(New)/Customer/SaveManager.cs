@@ -1,10 +1,12 @@
 using UnityEngine;
+using System;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
     private float currentCustomerCount = 0;
 
-    private float maxCustomerCount = 3;
+    private float maxCustomerCount = 1;
     private float dayCount;
 
     //private float baseCustomerCount = 5;
@@ -53,6 +55,8 @@ public class SaveManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         dayCount = 0;
         SetAvailableRecipes(2);
+
+        // SceneManager.sceneLoaded += OnSceneLoaded;
     }
     public void setDayCount(int num)
     {
@@ -70,23 +74,25 @@ public class SaveManager : MonoBehaviour
     {
         if (currentCustomerCount > maxCustomerCount)
         {
-            currentCustomerCount = 0;
-            dayCount += 1;
-            // if (favor > lastEarnedFavour)
-            // {
-            //     maxCustomerCount++;
-            // }
-            // lastEarnedFavour = _favour;
-            resetFavor();
-            UiManager.uiManager.UpdateFavor();
-            UiManager.uiManager.RestartTimer();
-            UiManager.uiManager.UpdateDayCount();
+            Debug.Log("check customer count limit");
+            EndCurrentDay();
+            // currentCustomerCount = 0;
+            // dayCount += 1;
+            // // if (favor > lastEarnedFavour)
+            // // {
+            // //     maxCustomerCount++;
+            // // }
+            // // lastEarnedFavour = _favour;
+            // resetFavor();
+            // UiManager.uiManager.UpdateFavor();
+            // UiManager.uiManager.RestartTimer();
+            // UiManager.uiManager.UpdateDayCount();
 
-            if (dayCount == 2)
-            {
-                SetAvailableRecipes(6);
-                maxCustomerCount = 5;
-            }
+            // if (dayCount == 2)
+            // {
+            //     SetAvailableRecipes(6);
+            //     maxCustomerCount = 5;
+            // }
         }
     }
     public void setFavour (int num)
@@ -109,33 +115,60 @@ public class SaveManager : MonoBehaviour
     // ================================ START ================================
 
     // ================================ VARIABLES ================================
-    private float _day;
-    private float _currentCustomer;
-    private float _maxCustomer;
-    private float _favour = 0;
-    private float lastEarnedFavour = 0;
+    private int _day;
+    private int _currentCustomer;
+    private int _maxCustomer;
+    private int _favour = 0;
+    private int _lastEarnedFavour = 0;
+    private int _correctOrders;
+    private int _partialOrders;
+    private int _wrongOrders;
 
     
     // ================================ GETTER & SETTER ================================
-    public float Day
+    public int Day
     {
         get => _day;
         set => _day = value;
     }
-    public float CurrentCustomer
+    public int CurrentCustomer
     {
         get => _currentCustomer;
         set => _currentCustomer = value;
     }
-    public float MaxCustomer
+    public int MaxCustomer
     {
         get => _maxCustomer;
         set => _maxCustomer = value;
     }
-    public float Favour
+    public int Favour
     {
         get => _favour;
         set => _favour = value;
+    }
+
+    public int CorrectOrders
+    {
+        get => _correctOrders;
+        set => _correctOrders = value;
+    }
+
+    public int PartialOrders
+    {
+        get => _partialOrders;
+        set => _partialOrders = value;
+    }
+
+    public int WrongOrders
+    {
+        get => _wrongOrders;
+        set => _wrongOrders = value;
+    }
+
+    public int LastEarnedFavour
+    {
+        get => _lastEarnedFavour;
+        set => _lastEarnedFavour = value;
     }
 
     // ================================ GENERAL FUNCTION ================================
@@ -150,10 +183,56 @@ public class SaveManager : MonoBehaviour
 
     }
     
-    // public static event Action<int> OnDayTwo; 
     // ================================ JF TEST FUNCTION ================================
     public void SetAvailableRecipes(int num)
     {
         CustomerManager.Instance.SetAvailableRecipes(num);
     }
+    public static event Action OnDayEnd;
+    // [SerializeField] private SummaryPanel summaryPanel;
+
+    public void EndCurrentDay()
+    {
+        Debug.Log("EndDay");
+        LastEarnedFavour = Favour;
+        OnDayEnd?.Invoke();
+        // summaryPanel.ShowSummary();
+        currentCustomerCount = 0;
+        dayCount += 1;
+        // if (favor > lastEarnedFavour)
+        // {
+        //     maxCustomerCount++;
+        // }
+        // lastEarnedFavour = _favour;
+        resetFavor();
+        UiManager.uiManager.UpdateFavor();
+        UiManager.uiManager.RestartTimer();
+        UiManager.uiManager.UpdateDayCount();
+
+        if (dayCount == 2)
+        {
+            SetAvailableRecipes(6);
+            maxCustomerCount = 5;
+        }
+
+        UiManager.uiManager.IsTimerRunning = false;
+    }
+
+    public void StartNextDay()
+    {
+        UiManager.uiManager.IsTimerRunning = true;
+    }
+
+    // void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    // {
+    //     if (scene.name == "CounterScene")
+    //     {
+    //         FindSummaryPanel();
+    //     }
+    // }
+
+    // void FindSummaryPanel()
+    // {
+    //     summaryPanel = GameObject.Find("NormalDaySummary").GetComponent<SummaryPanel>();
+    // }
 }

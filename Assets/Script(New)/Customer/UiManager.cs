@@ -16,6 +16,12 @@ public class UiManager : MonoBehaviour
     [SerializeField] private bool challengeMode;
     private bool isTimerRunning;
 
+    public bool IsTimerRunning
+    {
+        get => isTimerRunning;
+        set => isTimerRunning = value;
+    }
+
     private float timeElapsed;
     private float timeRemaining;
     [SerializeField] private float duration = 20f;
@@ -185,5 +191,10 @@ public class UiManager : MonoBehaviour
             favorText.text = "Favour: " + SaveManager.saveManager.Favour;
         }
 
+    }
+
+    public void DisplaySummary()
+    {
+        
     }
 }

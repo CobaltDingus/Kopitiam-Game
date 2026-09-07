@@ -129,7 +129,6 @@ public class CustomerManager : MonoBehaviour
         UiManager.uiManager.UpdateDayCount();
         if (currentCustomer == null)
         {
-            //GenerateNewCustomer();
             tutorialwrong = false;
             tryAgain.gameObject.SetActive(false);
             okay.gameObject.SetActive(false);
@@ -755,17 +754,20 @@ public class CustomerManager : MonoBehaviour
                     customerSpriteRenderer.sprite = currentSprite;
                 }
             }
+            SaveManager.saveManager.CorrectOrders++;
         }
         else if (baseIngredientMatched)
         {
             frontList = currentCustomer.DecentFrontDialogue;
             backList = currentCustomer.DecentBackDialogue;
             SaveManager.saveManager.setFavour(50);
+            SaveManager.saveManager.PartialOrders++;
         }
         else
         {
             frontList = currentCustomer.WrongFrontDialogue;
             backList = currentCustomer.WrongBackDialogue;
+            SaveManager.saveManager.WrongOrders++;
         }
 
         for (int i = 0; i < perfectCount; i++)
