@@ -110,6 +110,8 @@ public class CustomerManager : MonoBehaviour
 
     public bool serveStatus => hasServed;
 
+    public static event Action OnNewCustomer;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -540,6 +542,8 @@ public class CustomerManager : MonoBehaviour
         SetStartDialogue();
 
         SetNextButtonToKitchen();
+
+        OnNewCustomer?.Invoke();
     }
 
     private void SetCustomerSprite()

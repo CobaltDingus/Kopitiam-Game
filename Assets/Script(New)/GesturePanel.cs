@@ -141,11 +141,11 @@ public class GesturePanel : MonoBehaviour,
 
         CurrentFingerScreenPosition = screenPos;
 
-        if (!IsInsideDrawArea(screenPos))
-        {
-            EndDrawing();
-            return;
-        }
+        // if (!IsInsideDrawArea(screenPos))
+        // {
+        //     EndDrawing();
+        //     return;
+        // }
 
         UpdateDrawing(screenPos);
     }

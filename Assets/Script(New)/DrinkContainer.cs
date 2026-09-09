@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
 
@@ -11,23 +13,25 @@ public enum ContainerType
     Cold,
     Takeaway
 }
-public class DrinkContainer: DraggableObject
+public class DrinkContainer: 
+MonoBehaviour,
+IPointerDownHandler
+// DraggableObject
 {
     public ContainerType containerType;
     public Sprite containerSprite;
-    // private Drink containerData;
-    public override object GetData()
-    {
-        return this;
-    }
-    public override void AfterDropFunctions()
-    {
-        return;
-    }
-    // public Ingredient cupType;
-    //OLD CODE
-    //public List<Ingredient> ingredients = new();
+    [SerializeField] PouringSlot pouringSlot;
 
-    // public Color displayColor;
-    // public string displayName;
+    // public object GetData()
+    // {
+    //     return this;
+    // }
+    // public void AfterDropFunctions()
+    // {
+    //     return;
+    // }
+    public void OnPointerDown(PointerEventData eventData) 
+    {
+        pouringSlot.ReceiveDraggable(this);
+    }
 }

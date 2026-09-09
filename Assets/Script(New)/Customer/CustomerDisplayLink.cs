@@ -1,10 +1,42 @@
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 public class CustomerDisplayLink : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer customerSpriteRenderer;
     [SerializeField] private TMP_Text dialogueText;
+
+    [SerializeField] private float slideDuration = 0.5f;
+    [SerializeField] private float startYOffset = -800f; // how far below screen to start
+
+    [SerializeField] private Transform customerTransform;
+    private Vector3 onscreenWorldPos;
+
+    void OnEnable()
+    {
+        CustomerManager.OnNewCustomer += SlideIn;
+    }
+
+    void OnDisable()
+    {
+        CustomerManager.OnNewCustomer -= SlideIn;
+    }
+
+    void Awake()
+    {
+        onscreenWorldPos = customerTransform.position;
+        SlideIn();
+    }
+
+    public void SlideIn()
+    {
+        Vector3 startPos = onscreenWorldPos + Vector3.down * 5f; // world units, tune this
+        customerTransform.position = startPos;
+
+        customerTransform.DOMove(onscreenWorldPos, slideDuration)
+            .SetEase(Ease.OutBack);
+    }
 
     void Start()
     {

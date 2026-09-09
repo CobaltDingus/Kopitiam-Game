@@ -7,7 +7,8 @@ public class SaveManager : MonoBehaviour
     private float currentCustomerCount = 0;
 
     private float maxCustomerCount = 1;
-    private float dayCount;
+    private int dayCount;
+    public int DayCount => dayCount;
 
     //private float baseCustomerCount = 5;
 
@@ -20,7 +21,7 @@ public class SaveManager : MonoBehaviour
     private bool retry;
     // getters
     public float Favor => favor;
-    public float DayCount => dayCount;
+    
     public float MaxCustomerCount => maxCustomerCount;
 
     //public float TutorialPhase => tutorialPhase;
@@ -189,6 +190,7 @@ public class SaveManager : MonoBehaviour
         CustomerManager.Instance.SetAvailableRecipes(num);
     }
     public static event Action OnDayEnd;
+    public static event Action<int> OnDayStart;
     // [SerializeField] private SummaryPanel summaryPanel;
 
     public void EndCurrentDay()
@@ -221,6 +223,9 @@ public class SaveManager : MonoBehaviour
     public void StartNextDay()
     {
         UiManager.uiManager.IsTimerRunning = true;
+        OnDayStart?.Invoke(dayCount);
+
+
     }
 
     // void OnSceneLoaded(Scene scene, LoadSceneMode mode)

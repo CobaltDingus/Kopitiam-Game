@@ -3001,7 +3001,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &439330753
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3303,11 +3303,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7662908110568552856, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.12
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 7662908110568552856, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.68
+      value: 0.76
       objectReference: {fileID: 0}
     - target: {fileID: 7662908110568552856, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -3371,7 +3371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.09
+      value: -4.19
       objectReference: {fileID: 0}
     - target: {fileID: 9059795921193814048, guid: 40becfc49bbe0ae41a53bb59a8f5687d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8167,8 +8167,8 @@ Transform:
   m_GameObject: {fileID: 1225390833}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.96, y: 0.974, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 1.21, y: 1.19, z: 0}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 875252982}
@@ -9684,19 +9684,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b368c3c612292354190e91e0bb881794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrinkContainer
-  dragType: 2
-  canDrag: 1
-  dragPrefab: {fileID: 2644886104483930854, guid: c673849107c0e564d9114a101dac7951, type: 3}
-  dragPrefabSprite: {fileID: 8171114236397570565, guid: 03a1c59d777b45c46ad5473f461a9bce, type: 3}
-  cam: {fileID: 0}
-  hasDragIcon: 1
-  panel: {fileID: 0}
-  dragHoldTime: 0.2
-  normalSortingLayer: CounterObjects
-  dragSortingLayer: DragObjects
-  objectSprites: []
   containerType: 1
   containerSprite: {fileID: 8171114236397570565, guid: 03a1c59d777b45c46ad5473f461a9bce, type: 3}
+  pouringSlot: {fileID: 1147802149}
 --- !u!61 &1423645423
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9770,7 +9760,7 @@ Transform:
   m_GameObject: {fileID: 1439162758}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.87, y: -4.54, z: 5}
+  m_LocalPosition: {x: 0, y: -4.54, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11616,7 +11606,7 @@ Transform:
   m_GameObject: {fileID: 1645970869}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.2, y: -0.69, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -11769,7 +11759,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.93800116, y: 0.98632216}
+  m_Offset: {x: 1.2568884, y: 1.1856265}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -11779,7 +11769,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.1626253, y: 2.2686172}
+  m_Size: {x: 2.8003998, y: 2.6672258}
   m_EdgeRadius: 0
 --- !u!114 &1665509167
 MonoBehaviour:
@@ -11934,7 +11924,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -49.86992, y: -46.548748}
+  m_AnchoredPosition: {x: -49.86992, y: -46.54875}
   m_SizeDelta: {x: -96.25, y: -99.0975}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1676418430
@@ -13699,7 +13689,7 @@ GameObject:
   - component: {fileID: 1957702594}
   - component: {fileID: 1957702593}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Stir Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13893,7 +13883,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 84.72371, y: 728.52484}
+  m_AnchoredPosition: {x: 84.723694, y: 728.52484}
   m_SizeDelta: {x: 3.7916, y: 2.5002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1986164940
@@ -14245,7 +14235,7 @@ Transform:
   m_GameObject: {fileID: 2021022138}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.8, z: 0}
+  m_LocalPosition: {x: 0, y: -0.67, z: 0}
   m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -14611,8 +14601,8 @@ Transform:
   m_GameObject: {fileID: 2112718279}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.09, z: -5}
-  m_LocalScale: {x: 1.4, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -0.17, z: -5}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1870800392}
