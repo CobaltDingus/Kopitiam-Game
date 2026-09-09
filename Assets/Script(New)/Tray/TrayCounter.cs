@@ -143,13 +143,26 @@ public class TrayCounter :
 
             if (customer != null)
             {
-                if (CustomerManager.Instance.serveStatus)
+                // OLD SCRIPT ---START---
+                //if (CustomerManager.Instance.serveStatus)
+                //{
+                //    transform.position = startPosition;
+                //    return;
+                //}
+                //CustomerManager.Instance.CustomerServed();
+                //CustomerManager.Instance.ServeOrder();
+                // OLD SCRIPT ---END---
+
+
+                // NEW SCRIPT ---START---
+                if(ReworkedCustomerManager.instance.CurrentCounterState != ReworkedCustomerManager.CounterState.ServingOrder)
                 {
                     transform.position = startPosition;
                     return;
                 }
-                CustomerManager.Instance.CustomerServed();
-                CustomerManager.Instance.ServeOrder();
+                ReworkedCustomerManager.instance.ProcessOrder();
+                // NEW SCRIPT ---END---
+
 
                 // Reset tray position
                 transform.position = startPosition;

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab74ece8a89d1ff45ad3922f0af1e6d3, type: 3}
+  m_Name: Tourist
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerData
+  id: 
+  customerName: 
+  customerSprite:
+  - {fileID: 0}
+  GoodOutComeSprite:
+  - {fileID: 0}
+  variant: 
+  startFrontDialogue:
+  - 
+  startBackDialogue:
+  - 
+  perfectFrontDialogue:
+  - 
+  perfectBackDialgue:
+  - 
+  decentFrontDialogue:
+  - 
+  decentBackDialogue:
+  - 
+  wrongFrontDialogue:
+  - 
+  wrongBackDiaogue:
+  - 
