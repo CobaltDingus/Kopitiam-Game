@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomerDatabase
   allCustomers:
   - {fileID: 11400000, guid: 77545e49d5c3d6e4fa2b3350af0b0aa5, type: 2}
+  _allTouristCustomer:
+  - {fileID: 11400000, guid: 4d52eeb9c6036e641bf3a2e4cc574a51, type: 2}
+  _allSleepDeprivedCustomer:
+  - {fileID: 11400000, guid: 9ec7ebbefd614e449aca93d65d7cbadb, type: 2}

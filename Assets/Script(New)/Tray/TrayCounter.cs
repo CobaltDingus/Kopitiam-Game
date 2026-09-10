@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TrayCounter : 
+public class TrayCounter :
     MonoBehaviour,
     IPointerDownHandler,
     IDragHandler,
@@ -18,8 +18,6 @@ public class TrayCounter :
     private Vector3 startPosition;
     private Vector3 dragOffset;
 
-    // [SerializeField] private TMP_Text drinkText;
-
     private Collider2D trayCollider;
     private Camera cam;
     [SerializeField] private Sprite[] containerSprites;
@@ -32,30 +30,8 @@ public class TrayCounter :
 
     [SerializeField] private List<SpriteRenderer> objectSprites;
 
-    // public string DrinkContents => drinkText.text;
-
     void Update()
     {
-        GameObject[] slots =
-        {
-            slotOne,
-            slotTwo,
-            slotThree
-        };
-
-        // for (int i = 0; i < slots.Length; i++)
-        // {
-        //     SpriteRenderer spriteRenderer = slots[i].GetComponentInChildren<SpriteRenderer>();
-
-        //     if (i < trayDatabase.SavedDrinks.Count)
-        //     {
-        //         spriteRenderer.sprite = trayDatabase.SavedDrinks[i].drinkSprite;
-        //     }
-        //     else
-        //     {
-        //         spriteRenderer.sprite = null;
-        //     }
-        // }
         for (int i = 0; i < cupRenderers.Length; i++)
         {
             if (i < trayDatabase.SavedDrinks.Count)
@@ -64,7 +40,7 @@ public class TrayCounter :
                 {
                     cupRenderers[i].sprite = containerSprites[0];
                 }
-                
+
                 drinkRenderers[i].color = HexToColor(trayDatabase.SavedDrinks[i].colorHex);
                 drinkRenderers[i].enabled = true;
             }
@@ -98,8 +74,6 @@ public class TrayCounter :
         trayCollider.enabled = false;
 
         dragOffset = transform.position - worldPos;
-
-        Debug.Log("Started dragging tray");
 
         if (objectSprites.Count > 0)
         {
@@ -138,31 +112,26 @@ public class TrayCounter :
 
         foreach (Collider2D hit in hits)
         {
-            // Searches the hit collider AND its parent objects for CustomerDisplayLink
-            CustomerDisplayLink customer = hit.GetComponentInParent<CustomerDisplayLink>();
+            ReworkedCustomerDisplayLink customer = hit.GetComponentInParent<ReworkedCustomerDisplayLink>();
 
             if (customer != null)
             {
-                // OLD SCRIPT ---START---
-                //if (CustomerManager.Instance.serveStatus)
-                //{
-                //    transform.position = startPosition;
-                //    return;
-                //}
-                //CustomerManager.Instance.CustomerServed();
-                //CustomerManager.Instance.ServeOrder();
-                // OLD SCRIPT ---END---
-
-
-                // NEW SCRIPT ---START---
-                if(ReworkedCustomerManager.instance.CurrentCounterState != ReworkedCustomerManager.CounterState.ServingOrder)
+                // ONLY allow serving when explicitly in ServingOrder state
+                if (ReworkedCustomerManager.instance.CurrentCounterState != ReworkedCustomerManager.CounterState.ServingOrder)
                 {
                     transform.position = startPosition;
+                    if (objectSprites.Count > 0)
+                    {
+                        foreach (SpriteRenderer spriteRenderer in objectSprites)
+                        {
+                            spriteRenderer.sortingLayerName = normalSortingLayer;
+                        }
+                    }
                     return;
                 }
-                ReworkedCustomerManager.instance.ProcessOrder();
-                // NEW SCRIPT ---END---
 
+                // Process the order (this handles evaluation and showing the Next button)
+                ReworkedCustomerManager.instance.ProcessOrder();
 
                 // Reset tray position
                 transform.position = startPosition;

@@ -41,19 +41,19 @@ public class SummaryPanel : UIPanel
 
     public void UpdateText()
     {
-        Debug.Log(SaveManager.saveManager.DayCount);
-        dayCompleteTMP.text = "Day " + SaveManager.saveManager.DayCount + " Complete!";
-        customersServedTMP.text = "Customers Served: " + SaveManager.saveManager.MaxCustomerCount.ToString();
+        Debug.Log(ReworkedSaveManager.instance.Day);
+        dayCompleteTMP.text = "Day " + ReworkedSaveManager.instance.Day + " Complete!";
+        customersServedTMP.text = "Customers Served: " + ReworkedSaveManager.instance.MaxCustomer.ToString();
         // Change customer count to total drink counts across all orders when that is made
-        correctServedTMP.text = "Correct Orders: " + SaveManager.saveManager.CorrectOrders + " / " + SaveManager.saveManager.MaxCustomerCount;
-        partialServedTMP.text = "Partially Correct Orders: " + SaveManager.saveManager.PartialOrders + " / " + SaveManager.saveManager.MaxCustomerCount;
-        wrongServedTMP.text = "Wrong Orders: " + SaveManager.saveManager.WrongOrders + " / " + SaveManager.saveManager.MaxCustomerCount;
-        favourEarnedTMP.text = "Favour Earned: " + SaveManager.saveManager.LastEarnedFavour.ToString();
+        correctServedTMP.text = "Correct Orders: " + ReworkedSaveManager.instance.CorrectOrders + " / " + ReworkedSaveManager.instance.MaxCustomer;
+        partialServedTMP.text = "Partially Correct Orders: " + ReworkedSaveManager.instance.PartialOrders + " / " + ReworkedSaveManager.instance.MaxCustomer;
+        wrongServedTMP.text = "Wrong Orders: " + ReworkedSaveManager.instance.WrongOrders + " / " + ReworkedSaveManager.instance.MaxCustomer;
+        favourEarnedTMP.text = "Favour Earned: " + ReworkedSaveManager.instance.PreviousFavour.ToString();
     }
 
     public void ProceedNextDay()
     {
         ClosePanel();
-        SaveManager.saveManager.StartNextDay();
+        ReworkedSaveManager.instance.StartNextDay();
     }
 }

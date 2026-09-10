@@ -19,3 +19,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bc62210cbbe0c074c97e919270784329, type: 2}
   - {fileID: 11400000, guid: 26a75bf892524114c8e52d8af2437106, type: 2}
   - {fileID: 11400000, guid: 27fb300da3e529c4aaff12a6c5a783bf, type: 2}
+  _touristUniqueRecipe:
+  - {fileID: 11400000, guid: 9b3ef01474759fb49b4163596b4c47a9, type: 2}

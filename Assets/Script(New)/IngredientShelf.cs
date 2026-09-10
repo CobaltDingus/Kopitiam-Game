@@ -13,7 +13,7 @@ public class IngredientShelf : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SaveManager.saveManager != null && SaveManager.saveManager.DayCount >= 2)
+        if (ReworkedSaveManager.instance != null && ReworkedSaveManager.instance.Day >= 2)
         {
             teaObject.gameObject.SetActive(true);
             uiloObject.gameObject.SetActive(true);       

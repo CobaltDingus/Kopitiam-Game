@@ -1,28 +1,24 @@
+using System;
 using UnityEngine;
 
 public class ReworkedSaveManager : MonoBehaviour
 {
     // ================================ REVAMP CODES ================================
-    // [RULES]
-    // [NOTE] Do Not Change Any Codes Here Unless Needed
-    // - core variables
-    // - functions for calculation and modifying said variables
-    // - function starts with Capital
-    // - variable starts with small
-    // ================================ START ================================
     public static ReworkedSaveManager instance { get; private set; }
+
     // ================================ VARIABLES ================================
     private int _day;
     private int _currentCustomer;
-    private int _maxCustomer;
+    private int _maxCustomer = 3;
     private int _favour = 0;
     private int _previousFavour;
     private int _maxEvent = 1;
     private int _currentEvent;
-    private int _tutorialPhase;
+    private int _tutorialPhase = 0;
     private int _previousIndex;
-
-    //private float lastEarnedFavour = 0;
+    private int _correctOrders;
+    private int _partialOrders;
+    private int _wrongOrders;
 
     // ================================ GETTER & SETTER ================================
     public int Day
@@ -75,6 +71,25 @@ public class ReworkedSaveManager : MonoBehaviour
         get => _previousIndex;
         set => _previousIndex = value;
     }
+
+    public int CorrectOrders
+    {
+        get => _correctOrders;
+        set => _correctOrders = value;
+    }
+
+    public int PartialOrders
+    {
+        get => _partialOrders;
+        set => _partialOrders = value;
+    }
+
+    public int WrongOrders
+    {
+        get => _wrongOrders;
+        set => _wrongOrders = value;
+    }
+
     // ================================ AWAKE START UPDATE ================================
     void Awake()
     {
@@ -87,29 +102,21 @@ public class ReworkedSaveManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    void Start()
+    {
+        _tutorialPhase = 0;
+        Day = 0;
+        CurrentEvent = MaxEvent;
+        SetAvailableRecipes(2);
+    }
+
     // ================================ GENERAL FUNCTION ================================
     public void EvaluateAndCalculateDay()
     {
-        if (CurrentCustomer == MaxCustomer)
+        if (CurrentCustomer >= MaxCustomer)
         {
-            CurrentCustomer = 0;
-            Day += 1;
-
-            EvaluateAndCalculateFavour();
-
-            ReworkedUIManager.instance.UpdateFavourDisplayText();
-            ReworkedUIManager.instance.RestartTimer();
-            ReworkedUIManager.instance.UpdateDayDisplayText();
-
-            if (Day == 2)
-            {
-                SetAvailableRecipes(6);
-                MaxCustomer = 5;
-            }
-            //return;
+            EndCurrentDay();
         }
-
-
     }
 
     public void EvaluateAndCalculateFavour()
@@ -124,22 +131,11 @@ public class ReworkedSaveManager : MonoBehaviour
             {
                 float diff = _favour - _previousFavour;
                 int remainder = (int)diff / 100;
-                if (remainder == 0)
-                {
-                    _maxCustomer += 1;
-                }
-                else
-                {
-                    _maxCustomer += remainder;
-                }
+                _maxCustomer += (remainder == 0) ? 1 : remainder;
             }
             else if (_favour < _previousFavour)
             {
-                // simple version
-                _maxCustomer = 5;
-
-                //complex (start)
-                int diff = (int)_previousFavour - (int)_favour;
+                int diff = _previousFavour - _favour;
                 int remainder = diff / 100;
                 if (remainder == 0)
                 {
@@ -147,11 +143,7 @@ public class ReworkedSaveManager : MonoBehaviour
                 }
                 else
                 {
-                    if (remainder > _maxCustomer)
-                    {
-                        _maxCustomer = 5;
-                    }
-                    else if (_maxCustomer - remainder < 5)
+                    if (remainder > _maxCustomer || _maxCustomer - remainder < 5)
                     {
                         _maxCustomer = 5;
                     }
@@ -160,18 +152,74 @@ public class ReworkedSaveManager : MonoBehaviour
                         _maxCustomer -= remainder;
                     }
                 }
-                //complex (end)
             }
         }
         _previousFavour = _favour;
         _favour = 0;
-
     }
 
-    // public static event Action<int> OnDayTwo; 
     // ================================ JF TEST FUNCTION ================================
     public void SetAvailableRecipes(int num)
     {
-        CustomerManager.Instance.SetAvailableRecipes(num);
+        if (ReworkedCustomerManager.instance != null)
+        {
+            ReworkedCustomerManager.instance.SetAvailableRecipes(num);
+        }
+    }
+
+    public static event Action OnDayEnd;
+    public static event Action<int> OnDayStart;
+
+    public void EndCurrentDay()
+    {
+        Debug.Log("EndDay");
+
+        // Calculate favour scaling before clearing variables
+        EvaluateAndCalculateFavour();
+
+        _currentCustomer = 0;
+        Day += 1;
+
+        if (Day >= 2)
+        {
+            SetAvailableRecipes(6);
+        }
+        else
+        {
+            SetAvailableRecipes(2);
+        }
+
+        if (ReworkedUIManager.instance != null)
+        {
+            ReworkedUIManager.instance.UpdateFavourDisplayText();
+            ReworkedUIManager.instance.RestartTimer();
+            ReworkedUIManager.instance.UpdateDayDisplayText();
+            ReworkedUIManager.instance.UpdateCustomerDisplayText();
+            ReworkedUIManager.instance.IsTimerRunning = false;
+        }
+
+        // Triggers Day Summary Panel / events
+        OnDayEnd?.Invoke();
+    }
+
+    public void StartNextDay()
+    {
+        // Reset order trackers for the new day
+        CorrectOrders = 0;
+        PartialOrders = 0;
+        WrongOrders = 0;
+
+        if (ReworkedUIManager.instance != null)
+        {
+            ReworkedUIManager.instance.IsTimerRunning = true;
+        }
+
+        OnDayStart?.Invoke(Day);
+
+        // Generate the first customer of the new day
+        if (ReworkedCustomerManager.instance != null)
+        {
+            ReworkedCustomerManager.instance.GenerateCustomer();
+        }
     }
 }

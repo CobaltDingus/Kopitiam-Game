@@ -25,10 +25,10 @@ public class CheckOrderButton : MonoBehaviour
     {
         UIPanel.TogglePanel();
         buttonText.text = UIPanel.gameObject.activeSelf ? closeText : normalText;
-        if (CustomerManager.Instance != null)
+        if (ReworkedCustomerManager.instance != null)
         {
-            UIText.text = CustomerManager.Instance.CurrentDialogueText;
-            Debug.Log(CustomerManager.Instance.CurrentDialogueText);   
+            UIText.text = ReworkedCustomerManager.instance.CurrentDialogue;
+            Debug.Log(ReworkedCustomerManager.instance.CurrentDialogue);   
         }
         else
         {
