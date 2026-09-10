@@ -23,7 +23,7 @@ public class SummaryPanel : UIPanel
     }
     void Start()
     {
-        // saveManager = SaveManager.saveManager;
+        // saveManager = ReworkedSaveManager.instance;
     }
 
     // Update is called once per frame
@@ -44,26 +44,26 @@ public class SummaryPanel : UIPanel
         int diff = FavourDiff();
         string sign = diff > 0 ? "+" : "";
 
-        Debug.Log(SaveManager.saveManager.DayCount);
-        dayCompleteTMP.text = "Day " + SaveManager.saveManager.DayCount + " Complete!";
-        customersServedTMP.text = "Customers Served: " + SaveManager.saveManager.MaxCustomerCount.ToString();
+        Debug.Log(ReworkedSaveManager.instance.Day);
+        dayCompleteTMP.text = "Day " + ReworkedSaveManager.instance.Day + " Complete!";
+        customersServedTMP.text = "Customers Served: " + ReworkedSaveManager.instance.MaxCustomer.ToString();
         // Change customer count to total drink counts across all orders when that is made
-        correctServedTMP.text = "Correct Orders: " + SaveManager.saveManager.CorrectOrders + " / " + SaveManager.saveManager.MaxCustomerCount;
-        partialServedTMP.text = "Partially Correct Orders: " + SaveManager.saveManager.PartialOrders + " / " + SaveManager.saveManager.MaxCustomerCount;
-        wrongServedTMP.text = "Wrong Orders: " + SaveManager.saveManager.WrongOrders + " / " + SaveManager.saveManager.MaxCustomerCount;
-        favourEarnedTMP.text = "Favour Earned: " + SaveManager.saveManager.Favour.ToString() + " (" + sign + diff + ")";
+        correctServedTMP.text = "Correct Orders: " + ReworkedSaveManager.instance.CorrectOrders + " / " + ReworkedSaveManager.instance.MaxCustomer;
+        partialServedTMP.text = "Partially Correct Orders: " + ReworkedSaveManager.instance.PartialOrders + " / " + ReworkedSaveManager.instance.MaxCustomer;
+        wrongServedTMP.text = "Wrong Orders: " + ReworkedSaveManager.instance.WrongOrders + " / " + ReworkedSaveManager.instance.MaxCustomer;
+        favourEarnedTMP.text = "Favour Earned: " + ReworkedSaveManager.instance.Favour.ToString() + " (" + sign + diff + ")";
     }
 
     
 
     public int FavourDiff()
     {
-        return SaveManager.saveManager.Favour - SaveManager.saveManager.LastEarnedFavour;
+        return ReworkedSaveManager.instance.Favour - ReworkedSaveManager.instance.PreviousFavour;
     }
 
     public void ProceedNextDay()
     {
         ClosePanel();
-        SaveManager.saveManager.StartNextDay();
+        ReworkedSaveManager.instance.StartNextDay();
     }
 }

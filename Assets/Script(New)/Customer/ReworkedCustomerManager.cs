@@ -1,7 +1,7 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,17 +9,8 @@ using UnityEngine.UI;
 
 public class ReworkedCustomerManager : MonoBehaviour
 {
-    // ================================ REVAMP CODES ================================
-    // [RULES]
-    // [NOTE] Do Not Change Any Codes Here Unless Needed
-    // - core variables
-    // - functions for calculation and modifying said variables
-    // - function starts with Capital
-    // - variable starts with small
-    // ==================================== START ====================================
     public static ReworkedCustomerManager instance { get; private set; }
-    [Header("Revamp Scripts and Database")]
-    // ================================== GENERAL VARIABLES ==================================
+
     [Header("Database (Revamp)")]
     [SerializeField] private CustomerDatabase _customerDatabase;
     [SerializeField] private RecipeBook _recipeBook;
@@ -30,23 +21,18 @@ public class ReworkedCustomerManager : MonoBehaviour
     [SerializeField] private TMP_Text _dialogueText;
 
     [Header("Buttons")]
-    private Button _nextButton;
-    private Button _okayButton;
-    private Button _retryButton;
-
-    // testing button
-    private Button _perfectButton;
+    [SerializeField] private Button _nextButton;
+    [SerializeField] private Button _okayButton;
+    [SerializeField] private Button _retryButton;
 
     [Header("General Variables (Revamp)")]
-
-    private int _minDrink = 1;
-    private int _maxDrink = 1;
-    private int _chosenCustomerSlot;
+    [SerializeField] private int _minDrink = 1;
+    [SerializeField] private int _maxDrink = 1;
     private int _chosenSpriteIndex;
+    private int _availableRecipeCount;
     private string _currentDialogueText = "";
     private string _lastNonMatchedIngredientText = "";
 
-    // handles variables
     public enum GameplayState
     {
         Tutorial,
@@ -54,19 +40,16 @@ public class ReworkedCustomerManager : MonoBehaviour
         DaySummary
     }
 
-    // handles setActive
     public enum CounterState
     {
-        // Tutorial //
         ReadDialogue,
         TakingOrder,
         ServingOrder,
         RedoOrder,
-
     }
 
-    [SerializeField] public CounterState CurrentCounterState;
-    [SerializeField] public GameplayState CurrentGameplayState;
+    public CounterState CurrentCounterState;
+    public GameplayState CurrentGameplayState;
 
     Scene counterScene;
 
@@ -74,15 +57,14 @@ public class ReworkedCustomerManager : MonoBehaviour
     private Sprite _currentSprite;
     private List<DrinkRecipe> orderedRecipes = new();
 
-    // ================================== TUTORIAL VARIABLE ==================================
     [Header("Tutorial Variables (Revamp)")]
-    private Sprite _tutorialSprite;
-    private List<string> _tutorialDialogue;
+    [SerializeField] private Sprite _tutorialSprite;
+    [SerializeField] private List<string> _tutorialDialogue;
     private string _tutorialWrongOrderDialogue = "Hmm, that's not right. Try again.";
-    // ================================ GETTER & SETTER ================================
-    // TBC
+    [SerializeField] private bool skip;
 
-    // ================================ AWAKE START UPDATE ================================
+    public string CurrentDialogue => _currentDialogueText;
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -99,77 +81,103 @@ public class ReworkedCustomerManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
         counterScene = SceneManager.GetActiveScene();
 
-        bool Skip = false;
-        if (Skip)
-        {
-            // skip tutorial
-            CurrentGameplayState = GameplayState.GeneralGameplay;
-            CurrentCounterState = CounterState.TakingOrder;
-        }
-        else
-        {
-            // set up Tutorial Start
-            CurrentGameplayState = GameplayState.Tutorial;
-            CurrentCounterState = CounterState.ReadDialogue;
-        }
-
-        EvaluateAndUpdateGameplayState();
-        EvaluateAndUpdateCounterState();
-
-    }
-
-    void Update()
-    {
-
-    }
-
-    // =============================================================================================
-    // ================================ SCENE LOADING & SAVE BUTTON ================================
-    // =============================================================================================
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        // change name if needed
-        if(scene.name == "CounterScene")
+        if (counterScene.name == "CounterScene")
         {
             FindNextButton();
             FindOkayButton();
             FindRetryButton();
-            FindPerfectButton();
-            return;
+        }
+        if (skip)
+        {
+            ReworkedSaveManager.instance.Day = 1;
+        }
+
+        if (_availableRecipeCount <= 0)
+        {
+            _availableRecipeCount = 2;
+        }
+
+        if (ReworkedSaveManager.instance != null && ReworkedSaveManager.instance.Day == 0)
+        {
+            ReworkedSaveManager.instance.TutorialPhase = 0;
+            CurrentGameplayState = GameplayState.Tutorial;
+            CurrentCounterState = CounterState.ReadDialogue;
+            LoadTutorialDialogue();
+        }
+        else
+        {
+            CurrentGameplayState = GameplayState.GeneralGameplay;
+            GenerateCustomer();
+        }
+
+        EvaluateAndUpdateGameplayState();
+        EvaluateAndUpdateCounterState();
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "CounterScene")
+        {
+            FindNextButton();
+            FindOkayButton();
+            FindRetryButton();
+
+            if (CurrentCounterState == CounterState.TakingOrder)
+            {
+                CurrentCounterState = CounterState.ServingOrder;
+            }
+
+            EvaluateAndUpdateGameplayState();
+            EvaluateAndUpdateCounterState();
         }
     }
 
     void FindNextButton()
     {
-        _nextButton = GameObject.Find("Next").GetComponent<Button>();
-        _nextButton.onClick.AddListener(GenerateCustomer);
+        GameObject nextObj = GameObject.Find("Next");
+        if (nextObj != null)
+        {
+            _nextButton = nextObj.GetComponent<Button>();
+            _nextButton.onClick.RemoveAllListeners();
+            if (CurrentCounterState == CounterState.ServingOrder)
+            {
+                _nextButton.onClick.AddListener(GenerateCustomer);
+            }
+            else
+            {
+                _nextButton.onClick.AddListener(ToKitchen);
+            }
+        }
     }
 
     void FindOkayButton()
     {
-        _okayButton = GameObject.Find("Okay").GetComponent<Button>();
-        _okayButton.onClick.AddListener(NextDialogue);
-    }
-
-    void FindPerfectButton()
-    {
-        _perfectButton = GameObject.Find("Perfect").GetComponent<Button>();
+        GameObject okayObj = GameObject.Find("Okay");
+        if (okayObj != null)
+        {
+            _okayButton = okayObj.GetComponent<Button>();
+            _okayButton.onClick.RemoveAllListeners();
+            _okayButton.onClick.AddListener(NextDialogue);
+        }
     }
 
     void FindRetryButton()
     {
-        _retryButton = GameObject.Find("TryAgain").GetComponent<Button>();
-        _retryButton.onClick.RemoveAllListeners();
-        _retryButton.onClick.AddListener(PreviousDialogue);
+        GameObject retryObj = GameObject.Find("TryAgain");
+        if (retryObj != null)
+        {
+            _retryButton = retryObj.GetComponent<Button>();
+            _retryButton.onClick.RemoveAllListeners();
+            _retryButton.onClick.AddListener(PreviousDialogue);
+        }
     }
-    // ====================================================================================
+
     // ================================ TUTORIAL FUNCTIONS ================================
-    // ====================================================================================
     public void GenerateTutorialOrder()
     {
         orderedRecipes.Clear();
 
-        if (ReworkedSaveManager.instance.TutorialPhase == 5)
+        if (ReworkedSaveManager.instance.TutorialPhase == 4 || ReworkedSaveManager.instance.TutorialPhase == 5)
         {
             DrinkRecipe kopi = _recipeBook.AllRecipes.FirstOrDefault(r =>
                 string.Equals(r.drinkName, "Kopi", StringComparison.OrdinalIgnoreCase));
@@ -186,60 +194,71 @@ public class ReworkedCustomerManager : MonoBehaviour
                 orderedRecipes.Add(kopiO);
         }
     }
+
     public void NextDialogue()
     {
-        if ((ReworkedSaveManager.instance.TutorialPhase == 5 || ReworkedSaveManager.instance.TutorialPhase == 7) 
+        if ((ReworkedSaveManager.instance.TutorialPhase == 5 || ReworkedSaveManager.instance.TutorialPhase == 7)
             && ReworkedSaveManager.instance.Day == 0 && CurrentGameplayState == GameplayState.Tutorial)
         {
-            
+            GenerateTutorialOrder();
+            ToKitchen();
             CurrentCounterState = CounterState.ServingOrder;
             EvaluateAndUpdateCounterState();
-
             return;
         }
+
         ReworkedSaveManager.instance.TutorialPhase += 1;
-        if (ReworkedSaveManager.instance.TutorialPhase == 5 || ReworkedSaveManager.instance.TutorialPhase == 7)
+
+        if (ReworkedSaveManager.instance.TutorialPhase == 4 || ReworkedSaveManager.instance.TutorialPhase == 5 || ReworkedSaveManager.instance.TutorialPhase == 7)
         {
             GenerateTutorialOrder();
         }
-        if(ReworkedSaveManager.instance.TutorialPhase >= _tutorialDialogue.Count)
+
+        if (ReworkedSaveManager.instance.TutorialPhase >= _tutorialDialogue.Count)
         {
             ReworkedSaveManager.instance.Day = 1;
-            // set and update
             CurrentGameplayState = GameplayState.GeneralGameplay;
             EvaluateAndUpdateGameplayState();
+
+            if (ReworkedUIManager.instance != null)
+            {
+                ReworkedUIManager.instance.RestartTimer();
+                ReworkedUIManager.instance.UpdateDayDisplayText();
+            }
+
+            GenerateCustomer();
+            return;
         }
         LoadTutorialDialogue();
+
+        CurrentCounterState = CounterState.ReadDialogue;
+        EvaluateAndUpdateCounterState();
     }
 
     public void LoadTutorialDialogue()
     {
+        if (_tutorialDialogue == null || _dialogueText == null) return;
 
-        if (ReworkedSaveManager.instance.TutorialPhase == 5 || ReworkedSaveManager.instance.TutorialPhase == 7)
-        {
-            
-        }
-        if (_tutorialDialogue != null && ReworkedSaveManager.instance.TutorialPhase < _tutorialDialogue.Count)
-        {
-            _currentDialogueText = _tutorialDialogue[ReworkedSaveManager.instance.TutorialPhase];
-        }
+        int phase = ReworkedSaveManager.instance.TutorialPhase;
+        if (phase < 0 || phase >= _tutorialDialogue.Count) return;
 
-        if (_dialogueText != null)
-        {
-            _dialogueText.text = _currentDialogueText;
-        }
+        _currentDialogueText = _tutorialDialogue[phase];
+        _dialogueText.text = _currentDialogueText;
     }
 
     public void PreviousDialogue()
     {
-        ReworkedSaveManager.instance.TutorialPhase -= 1;
         LoadTutorialDialogue();
-        return;
+        CurrentCounterState = CounterState.ReadDialogue;
+        EvaluateAndUpdateCounterState();
     }
 
     public void SetTutorialWrong()
     {
         _currentDialogueText = _tutorialWrongOrderDialogue;
+        if (_dialogueText != null)
+            _dialogueText.text = _currentDialogueText;
+
         CurrentCounterState = CounterState.RedoOrder;
         EvaluateAndUpdateCounterState();
     }
@@ -274,76 +293,82 @@ public class ReworkedCustomerManager : MonoBehaviour
                 return;
             }
         }
-        NextDialogue();
+
+        ReworkedSaveManager.instance.TutorialPhase += 1;
+
+        if (ReworkedSaveManager.instance.TutorialPhase >= _tutorialDialogue.Count)
+        {
+            ReworkedSaveManager.instance.Day = 1;
+            CurrentGameplayState = GameplayState.GeneralGameplay;
+            EvaluateAndUpdateGameplayState();
+
+            if (ReworkedUIManager.instance != null)
+            {
+                ReworkedUIManager.instance.RestartTimer();
+                ReworkedUIManager.instance.UpdateDayDisplayText();
+            }
+
+            GenerateCustomer();
+            return;
+        }
+
+        LoadTutorialDialogue();
+        CurrentCounterState = CounterState.ReadDialogue;
+        EvaluateAndUpdateCounterState();
     }
 
-
     // ================================ GENERAL FUNCTIONS ================================
-    // handles setActive
     public void EvaluateAndUpdateCounterState()
     {
+        if (_okayButton == null || _nextButton == null || _retryButton == null)
+            return;
+
         switch (CurrentCounterState)
         {
             case CounterState.ReadDialogue:
-                // set up Button Displays
                 _okayButton.gameObject.SetActive(true);
                 _nextButton.gameObject.SetActive(false);
-                _perfectButton.gameObject.SetActive(false);
                 _retryButton.gameObject.SetActive(false);
-
                 break;
 
             case CounterState.TakingOrder:
-                // set up Button Displays
                 _okayButton.gameObject.SetActive(false);
-                _nextButton.gameObject.SetActive(false);
-                _perfectButton.gameObject.SetActive(false);
                 _retryButton.gameObject.SetActive(false);
+
                 if (CurrentGameplayState == GameplayState.Tutorial)
                 {
                     _okayButton.gameObject.SetActive(true);
-                    // update button function
-                    _okayButton.onClick.RemoveAllListeners();
-                    _okayButton.onClick.AddListener(ToKitchen);
+                    _nextButton.gameObject.SetActive(false);
                 }
                 else if (CurrentGameplayState == GameplayState.GeneralGameplay)
                 {
                     _nextButton.gameObject.SetActive(true);
-                    // update button function
                     _nextButton.onClick.RemoveAllListeners();
                     _nextButton.onClick.AddListener(ToKitchen);
                 }
-
                 break;
 
             case CounterState.ServingOrder:
-                // gameObject set.Active here
-                // set up Button Displays
                 _okayButton.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(false);
-                _perfectButton.gameObject.SetActive(false);
                 _retryButton.gameObject.SetActive(false);
-
                 break;
 
             case CounterState.RedoOrder:
-                // set up Button Displays
                 _okayButton.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(false);
-                _perfectButton.gameObject.SetActive(false);
                 _retryButton.gameObject.SetActive(true);
                 break;
-
         }
     }
 
-    // handles variables
     public void EvaluateAndUpdateGameplayState()
     {
+        if (ReworkedUIManager.instance == null) return;
+
         switch (CurrentGameplayState)
         {
             case GameplayState.Tutorial:
-                // set up Tutorial UI Display
                 ReworkedUIManager.instance.CustomerCountText.gameObject.SetActive(false);
                 ReworkedUIManager.instance.TimerText.gameObject.SetActive(false);
                 ReworkedUIManager.instance.DayText.gameObject.SetActive(true);
@@ -351,54 +376,82 @@ public class ReworkedCustomerManager : MonoBehaviour
 
                 if (ReworkedSaveManager.instance.Day == 0)
                 {
+                    if (_customerSpriteRenderer != null)
+                        _customerSpriteRenderer.sprite = _tutorialSprite;
 
+                    _currentSprite = _tutorialSprite;
+                    GenerateTutorialOrder();
+                    LoadTutorialDialogue();
                 }
                 break;
 
             case GameplayState.GeneralGameplay:
-                // set up GeneralGameplay UI Display
                 ReworkedUIManager.instance.CustomerCountText.gameObject.SetActive(true);
                 ReworkedUIManager.instance.TimerText.gameObject.SetActive(true);
                 ReworkedUIManager.instance.DayText.gameObject.SetActive(true);
                 ReworkedUIManager.instance.FavourText.gameObject.SetActive(true);
-                
+
+                ReworkedUIManager.instance.UpdateCustomerDisplayText();
+                ReworkedUIManager.instance.UpdateFavourDisplayText();
+                ReworkedUIManager.instance.UpdateDayDisplayText();
                 break;
 
             case GameplayState.DaySummary:
-                // set up Daysummary UI Display
                 ReworkedUIManager.instance.CustomerCountText.gameObject.SetActive(false);
                 ReworkedUIManager.instance.TimerText.gameObject.SetActive(false);
                 ReworkedUIManager.instance.DayText.gameObject.SetActive(false);
                 ReworkedUIManager.instance.FavourText.gameObject.SetActive(false);
-
                 break;
         }
     }
 
+    public float GetEventSpawnChance()
+    {
+        if (ReworkedSaveManager.instance == null || ReworkedSaveManager.instance.CurrentEvent <= 0)
+            return 0f;
+
+        int remainingCustomers = ReworkedSaveManager.instance.MaxCustomer - ReworkedSaveManager.instance.CurrentCustomer;
+
+        if (remainingCustomers <= 0)
+            return 1f;
+
+        float chance = (float)ReworkedSaveManager.instance.CurrentEvent / remainingCustomers;
+        return Mathf.Clamp01(chance);
+    }
+
     public void GenerateCustomer()
     {
-        //int RandomCustomerIndex;
-        int DayRemain = ReworkedSaveManager.instance.CurrentCustomer - ReworkedSaveManager.instance.MaxCustomer;
-        // checks to see if there is any available "event"
-        if (ReworkedSaveManager.instance.CurrentEvent != 0)
+        //if (ReworkedUIManager.instance != null)
+        //{
+        //    ReworkedUIManager.instance.IsTimerRunning = true;
+        //    if (ReworkedUIManager.instance.ChallengeMode)
+        //    {
+        //        ReworkedUIManager.instance.RestartTimer();
+        //    }
+        //}
+
+        if (ReworkedUIManager.instance != null)
         {
-            // gacha machine
-            int TempNum = RandomIndex(ReworkedSaveManager.instance.MaxCustomer);
-            if(TempNum == 1)
+            ReworkedUIManager.instance.RestartTimer();
+        }
+
+        if (_trayDatabase != null)
+            _trayDatabase.ClearDatabase();
+
+        if (ReworkedSaveManager.instance != null && ReworkedSaveManager.instance.CurrentEvent > 0)
+        {
+            float spawnChance = GetEventSpawnChance();
+            int remainingCustomers = ReworkedSaveManager.instance.MaxCustomer - ReworkedSaveManager.instance.CurrentCustomer;
+
+            Debug.Log($"[Event System] Remaining: {remainingCustomers} | Current Event: {ReworkedSaveManager.instance.CurrentEvent} | Spawn Chance: {spawnChance * 100f}%");
+
+            if (UnityEngine.Random.value <= spawnChance)
             {
-                // load special customer then deduct by 1 and break
-                // [total event type -1 ] (0 = tourist, 1 = SleepDeprived)
-                int EventNum = RandomIndex(1);
-                GenerateSpecialCustomer(EventNum);
-            }
-            else if (DayRemain == ReworkedSaveManager.instance.CurrentEvent)
-            {
-                int EventNum = RandomIndex(1);
-                GenerateSpecialCustomer(EventNum);
+                int eventNum = UnityEngine.Random.Range(0, 1);
+                GenerateSpecialCustomer(eventNum);
             }
             else
             {
-                // load basic customer
                 GenerateNormalCustomer();
             }
         }
@@ -406,87 +459,227 @@ public class ReworkedCustomerManager : MonoBehaviour
         {
             GenerateNormalCustomer();
         }
-        
+
+        SetStartDialogue();
+        CurrentCounterState = CounterState.TakingOrder;
+        EvaluateAndUpdateCounterState();
     }
 
     public void GenerateSpecialCustomer(int eventNum)
     {
-        int TotalCustomer;
+        CustomerData selectedData = null;
+
+        if (eventNum == 0 && _customerDatabase != null && _customerDatabase.AllTouristCustomer != null && _customerDatabase.AllTouristCustomer.Count > 0)
+        {
+            int chosenIndex = RandomIndex(_customerDatabase.AllTouristCustomer.Count);
+            selectedData = _customerDatabase.AllTouristCustomer[chosenIndex];
+        }
+        else if (eventNum == 1 && _customerDatabase != null && _customerDatabase.AllSleepDeprivedCustomer != null && _customerDatabase.AllSleepDeprivedCustomer.Count > 0)
+        {
+            int chosenIndex = RandomIndex(_customerDatabase.AllSleepDeprivedCustomer.Count);
+            selectedData = _customerDatabase.AllSleepDeprivedCustomer[chosenIndex];
+        }
+
+        // Check if selected special customer has valid sprites and dialogues
+        bool isValidCustomer = selectedData != null &&
+                               selectedData.CustomerSprite != null && selectedData.CustomerSprite.Count > 0 &&
+                               selectedData.StartFrontDialogue != null && selectedData.StartFrontDialogue.Count > 0 &&
+                               selectedData.StartBackDialogue != null && selectedData.StartBackDialogue.Count > 0;
+
+        if (!isValidCustomer)
+        {
+            Debug.LogWarning("[ReworkedCustomerManager] Special customer data missing sprites or dialogues. Falling back to normal customer.");
+            GenerateNormalCustomer();
+            return;
+        }
+
+        _currentCustomer = selectedData;
+        SetCustomerSprite();
+
         if (eventNum == 0)
-        {
-            // load Special customer Tourist
-            TotalCustomer = _customerDatabase.AllTouristCustomer.Count;
-            int ChosenIndex = RandomIndex(TotalCustomer);
+            PopulateTouristCustomerOrders();
+        else
+            PopulateCustomerOrders();
 
-            // can add a condition to keep on reroll here for chosenIndex
-            // if want unique customer consecutively
-            _currentCustomer = _customerDatabase.AllTouristCustomer[ChosenIndex];
-            SetCustomerSprite();
-
-
-        }
-        else if (eventNum == 1)
-        {
-            // load Special customer SleepDeprived
-            TotalCustomer = _customerDatabase.AllSleepDeprivedCustomer.Count;
-        }
-        // add more "else if" if there is more variation
-        
+        if (ReworkedSaveManager.instance != null)
+            ReworkedSaveManager.instance.CurrentEvent--;
     }
 
     public void GenerateNormalCustomer()
     {
-        // ltr change AllCustomers to NormalCustomer
+        if (_customerDatabase == null || _customerDatabase.AllCustomers == null || _customerDatabase.AllCustomers.Count == 0) return;
+
         int TotalCustomer = _customerDatabase.AllCustomers.Count;
+        int ChosenIndex = RandomIndex(TotalCustomer);
+        _currentCustomer = _customerDatabase.AllCustomers[ChosenIndex];
+        SetCustomerSprite();
+
+        PopulateCustomerOrders();
+    }
+
+    private void PopulateCustomerOrders()
+    {
+        orderedRecipes.Clear();
+        int drinkCount = UnityEngine.Random.Range(_minDrink, _maxDrink + 1);
+
+        int limit = (_availableRecipeCount > 0 && _availableRecipeCount <= _recipeBook.AllRecipes.Count)
+            ? _availableRecipeCount
+            : _recipeBook.AllRecipes.Count;
+
+        for (int i = 0; i < drinkCount; i++)
+        {
+            int randomRecipeIndex = RandomIndex(limit);
+            orderedRecipes.Add(_recipeBook.AllRecipes[randomRecipeIndex]);
+        }
+
+        if (_trayDatabase != null)
+            _trayDatabase.MaxSlots = drinkCount;
+    }
+
+    private void PopulateTouristCustomerOrders()
+    {
+        if (_recipeBook == null || _recipeBook.TouristUniqueRecipe == null || _recipeBook.TouristUniqueRecipe.Count == 0)
+        {
+            Debug.LogWarning("[ReworkedCustomerManager] TouristUniqueRecipe list is empty or unassigned. Falling back to AllRecipes.");
+            PopulateCustomerOrders();
+            return;
+        }
+
+        orderedRecipes.Clear();
+        int drinkCount = UnityEngine.Random.Range(_minDrink, _maxDrink + 1);
+
+        for (int i = 0; i < drinkCount; i++)
+        {
+            int limit = _recipeBook.TouristUniqueRecipe.Count;
+            int randomRecipeIndex = RandomIndex(limit);
+            orderedRecipes.Add(_recipeBook.TouristUniqueRecipe[randomRecipeIndex]);
+        }
+
+        if (_trayDatabase != null)
+            _trayDatabase.MaxSlots = drinkCount;
     }
 
     public int RandomIndex(int maxNum)
     {
-        int index = UnityEngine.Random.Range(0, maxNum);
-        return index;
+        if (maxNum <= 0) return 0;
+        return UnityEngine.Random.Range(0, maxNum);
     }
 
     public void SetCustomerSprite()
     {
+        if (_currentCustomer == null || _currentCustomer.CustomerSprite == null) return;
+
         int TotalSprites = _currentCustomer.CustomerSprite.Count;
+        if (TotalSprites <= 0) return;
 
+        int newIndex = RandomIndex(TotalSprites);
 
+        if (TotalSprites > 1 && ReworkedSaveManager.instance != null)
+        {
+            int guard = 0;
+            while (newIndex == ReworkedSaveManager.instance.PreviousIndex && guard < 10)
+            {
+                newIndex = RandomIndex(TotalSprites);
+                guard++;
+            }
+        }
+
+        if (ReworkedSaveManager.instance != null)
+            ReworkedSaveManager.instance.PreviousIndex = newIndex;
+
+        _chosenSpriteIndex = newIndex;
+        _currentSprite = _currentCustomer.CustomerSprite[newIndex];
+
+        if (_customerSpriteRenderer != null)
+        {
+            _customerSpriteRenderer.sprite = _currentSprite;
+        }
     }
 
     public void SetStartDialogue()
     {
+        if (_currentCustomer == null) return;
 
+        int index = GetRandomDialogueIndex(_currentCustomer.StartFrontDialogue, _currentCustomer.StartBackDialogue);
+        if (index == -1)
+        {
+            if (_dialogueText != null) _dialogueText.text = "...";
+            return;
+        }
+
+        string front = _currentCustomer.StartFrontDialogue[index];
+        string back = _currentCustomer.StartBackDialogue[index];
+
+        SetDialogueText(front, back);
+    }
+
+    public void SetAvailableRecipes(int num)
+    {
+        _availableRecipeCount = num;
+    }
+
+    private void SetDialogueText(string front, string back)
+    {
+        string drinkListText = string.Join(", ", orderedRecipes.Select(r => r.drinkName));
+        _currentDialogueText = $"{front}{drinkListText} {back}";
+
+        if (_dialogueText != null)
+            _dialogueText.text = _currentDialogueText;
     }
 
     public void ProcessOrder()
     {
-        if(CurrentGameplayState == GameplayState.Tutorial)
+        if (ReworkedUIManager.instance != null)
+            ReworkedUIManager.instance.IsTimerRunning = false;
+
+        if (CurrentGameplayState == GameplayState.Tutorial)
         {
             EvaluateTutorialOrder(_trayDatabase.SavedDrinks);
             _trayDatabase.ClearDatabase();
-            // set and update
-            CurrentCounterState = CounterState.ReadDialogue;
-            EvaluateAndUpdateCounterState();
             return;
         }
         else
         {
             EvaluateGeneralOrder(_trayDatabase.SavedDrinks);
             _trayDatabase.ClearDatabase();
-            // set and update
-            CurrentCounterState = CounterState.TakingOrder;
-            EvaluateAndUpdateCounterState();
+
+            ReworkedSaveManager.instance.CurrentCustomer += 1;
+
+            if (ReworkedUIManager.instance != null)
+                ReworkedUIManager.instance.UpdateCustomerDisplayText();
+
+            CurrentCounterState = CounterState.ReadDialogue;
+
+            if (ReworkedSaveManager.instance.CurrentCustomer >= ReworkedSaveManager.instance.MaxCustomer)
+            {
+                ReworkedSaveManager.instance.EvaluateAndCalculateDay();
+            }
+            else
+            {
+                if (_okayButton != null) _okayButton.gameObject.SetActive(false);
+                if (_retryButton != null) _retryButton.gameObject.SetActive(false);
+                if (_nextButton != null)
+                {
+                    _nextButton.gameObject.SetActive(true);
+                    _nextButton.onClick.RemoveAllListeners();
+                    _nextButton.onClick.AddListener(GenerateCustomer);
+                }
+            }
             return;
         }
     }
-    
+
     public void EvaluateGeneralOrder(List<Drink> ServedDrink)
     {
+        if (_currentCustomer == null || orderedRecipes.Count == 0) return;
+
+        ServedDrink ??= new List<Drink>();
+
         int PerfectCount = 0;
         bool BaseIngredientMatched = false;
         List<Drink> RemainingServed = new List<Drink>(ServedDrink);
 
-        foreach(DrinkRecipe recipe in orderedRecipes)
+        foreach (DrinkRecipe recipe in orderedRecipes)
         {
             Drink match = RemainingServed.FirstOrDefault(served => IsDrinkPerfect(served, recipe));
 
@@ -498,7 +691,6 @@ public class ReworkedCustomerManager : MonoBehaviour
             }
             else
             {
-                // Find base ingredients required by the recipe (checks both recipe.ingredients and recipe.baseIngredient)
                 List<Ingredient> baseIngredientsInRecipe = recipe.ingredients
                     .Where(i => i != null && i.IsBaseIngredient)
                     .ToList();
@@ -508,7 +700,6 @@ public class ReworkedCustomerManager : MonoBehaviour
                     baseIngredientsInRecipe.AddRange(recipe.baseIngredient.Where(i => i != null));
                 }
 
-                // Check if any served drink contains at least one of the required base ingredients
                 foreach (Drink served in ServedDrink)
                 {
                     if (served == null || served.ingredients == null) continue;
@@ -546,30 +737,34 @@ public class ReworkedCustomerManager : MonoBehaviour
                     _customerSpriteRenderer.sprite = _currentSprite;
                 }
             }
+            ReworkedSaveManager.instance.CorrectOrders++;
         }
         else if (BaseIngredientMatched)
         {
             frontList = _currentCustomer.DecentFrontDialogue;
             backList = _currentCustomer.DecentBackDialogue;
-            // ltr change this to var
             ReworkedSaveManager.instance.Favour += 50;
+            ReworkedSaveManager.instance.PartialOrders++;
         }
         else
         {
             frontList = _currentCustomer.WrongFrontDialogue;
             backList = _currentCustomer.WrongBackDialogue;
+            ReworkedSaveManager.instance.WrongOrders++;
         }
 
         for (int i = 0; i < PerfectCount; i++)
         {
-            ReworkedSaveManager.instance.Favour += 50;
+            ReworkedSaveManager.instance.Favour += 100;
         }
-        ReworkedUIManager.instance.UpdateFavourDisplayText();
 
-        //int index = GetRandomDialogueIndex(frontList, backList);
-        int MaxIndex = Mathf.Min(frontList.Count, backList.Count);
-        int index = RandomIndex(MaxIndex);
-        if (index == -1)
+        if (ReworkedUIManager.instance != null)
+            ReworkedUIManager.instance.UpdateFavourDisplayText();
+
+        int maxIndex = Mathf.Min(frontList?.Count ?? 0, backList?.Count ?? 0);
+        int index = RandomIndex(maxIndex);
+
+        if (index < 0 || maxIndex == 0)
         {
             if (_dialogueText != null) _dialogueText.text = "...";
             return;
@@ -605,7 +800,6 @@ public class ReworkedCustomerManager : MonoBehaviour
 
         List<Ingredient> nonMatchedIngredients = new List<Ingredient>();
 
-        // Step 1: Compare and match Base Ingredient first
         Ingredient requiredBase = remainingRequired.FirstOrDefault(i => i != null && i.IsBaseIngredient);
 
         if (requiredBase != null)
@@ -614,19 +808,16 @@ public class ReworkedCustomerManager : MonoBehaviour
 
             if (servedBaseMatch != null)
             {
-                Debug.Log($"[Base Match] Matched base ingredient: {requiredBase.Name}");
                 remainingRequired.Remove(requiredBase);
                 remainingServed.Remove(servedBaseMatch);
             }
             else
             {
-                Debug.LogWarning($"[Base Mismatch] Base ingredient mismatch or missing: {requiredBase.Name}");
                 nonMatchedIngredients.Add(requiredBase);
                 remainingRequired.Remove(requiredBase);
             }
         }
 
-        // Step 2: Compare and pair remaining non-base ingredients
         foreach (Ingredient req in remainingRequired.ToList())
         {
             if (req == null) continue;
@@ -635,7 +826,6 @@ public class ReworkedCustomerManager : MonoBehaviour
 
             if (match != null)
             {
-                Debug.Log($"[Ingredient Match] Matched correct ingredient: {req.name}");
                 remainingServed.Remove(match);
             }
             else
@@ -644,17 +834,13 @@ public class ReworkedCustomerManager : MonoBehaviour
             }
         }
 
-        // Step 3: Add leftover served ingredients (extra/wrong additions)
         nonMatchedIngredients.AddRange(remainingServed);
 
-        // Step 4: Store non-matched ingredients into a formatted string
         if (nonMatchedIngredients.Count > 0)
         {
             _lastNonMatchedIngredientText = string.Join(", ", nonMatchedIngredients
                 .Where(i => i != null)
                 .Select(i => i.name));
-
-            Debug.LogWarning($"[Mismatches Detected] Non-matched ingredients: \"{_lastNonMatchedIngredientText}\"");
         }
         else
         {
@@ -664,15 +850,24 @@ public class ReworkedCustomerManager : MonoBehaviour
         return nonMatchedIngredients.Count == 0;
     }
 
+    private int GetRandomDialogueIndex(List<string> frontList, List<string> backList)
+    {
+        if (frontList == null || backList == null || frontList.Count == 0 || backList.Count == 0)
+            return -1;
+
+        int maxIndex = Mathf.Min(frontList.Count, backList.Count);
+        return UnityEngine.Random.Range(0, maxIndex);
+    }
+
     public void RegisterDisplayReferences(SpriteRenderer spriteRenderer, TMP_Text text)
     {
         _customerSpriteRenderer = spriteRenderer;
         _dialogueText = text;
 
-        if (_customerSpriteRenderer != null)
+        if (_customerSpriteRenderer != null && _currentSprite != null)
             _customerSpriteRenderer.sprite = _currentSprite;
 
-        if (_dialogueText != null)
+        if (_dialogueText != null && !string.IsNullOrEmpty(_currentDialogueText))
             _dialogueText.text = _currentDialogueText;
     }
 }

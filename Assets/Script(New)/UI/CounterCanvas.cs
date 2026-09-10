@@ -12,14 +12,14 @@ public class CounterCanvas : MonoBehaviour
 
     void OnEnable()
     {
-        SaveManager.OnDayEnd += ShowSummary;
-        SaveManager.OnDayStart += ShowNote;
+        ReworkedSaveManager.OnDayEnd += ShowSummary;
+        ReworkedSaveManager.OnDayStart += ShowNote;
     }
 
     void OnDisable()
     {
-        SaveManager.OnDayEnd -= ShowSummary;
-        SaveManager.OnDayStart -= ShowNote;    
+        ReworkedSaveManager.OnDayEnd -= ShowSummary;
+        ReworkedSaveManager.OnDayStart -= ShowNote;    
     }
 
     // Update is called once per frame

@@ -12,26 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab74ece8a89d1ff45ad3922f0af1e6d3, type: 3}
   m_Name: Tourist
   m_EditorClassIdentifier: Assembly-CSharp::CustomerData
-  id: 
+  id: C002
   customerName: 
   customerSprite:
-  - {fileID: 0}
+  - {fileID: -6248741079362886434, guid: fb730fb58019a604f8e2223953a42332, type: 3}
   GoodOutComeSprite:
-  - {fileID: 0}
-  variant: 
+  - {fileID: -6248741079362886434, guid: fb730fb58019a604f8e2223953a42332, type: 3}
+  variant: Tourist
   startFrontDialogue:
-  - 
+  - 'Hello Hello, i heard theres a  '
   startBackDialogue:
-  - 
+  - available
   perfectFrontDialogue:
-  - 
+  - 'Woah, this '
   perfectBackDialgue:
-  - 
+  - is nice
   decentFrontDialogue:
-  - 
+  - I mean...
   decentBackDialogue:
-  - 
+  - its ok i guess
   wrongFrontDialogue:
-  - 
+  - isnt this the
   wrongBackDiaogue:
-  - 
+  - usual

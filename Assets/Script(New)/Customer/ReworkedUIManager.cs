@@ -69,6 +69,10 @@ public class ReworkedUIManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
+    void Start()
+    {
+        RestartTimer();
+    }
 
     void Update()
     {
@@ -85,29 +89,34 @@ public class ReworkedUIManager : MonoBehaviour
                 _timeRemaining = 0;
                 _isTimerRunning = false;
                 UpdateTimerDisplayText(_timeRemaining);
-                
+
+                if (ReworkedCustomerManager.instance != null)
+                {
+                    ReworkedCustomerManager.instance.GenerateCustomer();
+                    RestartTimer();
+                }
             }
         }
         else
         {
+            if (!_isTimerRunning) return;
             _timeElapsed += Time.deltaTime;
-
+            UpdateTimerDisplayText(_timeElapsed);
         }
     }
 
     // ================================ GENERAL FUNCTION ================================
     public void RestartTimer()
     {
+        _isTimerRunning = true;
         if (_challengeMode)
         {
             _timeRemaining = _duration;
-            _isTimerRunning = true;
             UpdateTimerDisplayText(_timeRemaining);
         }
         else
         {
             _timeElapsed = 0f;
-            _isTimerRunning = true;
             UpdateTimerDisplayText(_timeElapsed);
         }
     }
@@ -119,24 +128,26 @@ public class ReworkedUIManager : MonoBehaviour
 
         if (_timerText != null)
         {
-            // true : false
-            string text = _challengeMode ? "Time Reamining " : "Time Elapsed ";
+            string text = _challengeMode ? "Time Remaining " : "Time Elapsed ";
             _timerText.text = text + string.Format("{0:00}:{1:00}", minutes, seconds);
         }
     }
 
     public void UpdateDayDisplayText()
     {
-        _dayText.text = "Day: " + ReworkedSaveManager.instance.Day;
+        if (_dayText != null && ReworkedSaveManager.instance != null)
+            _dayText.text = "Day: " + ReworkedSaveManager.instance.Day;
     }
 
     public void UpdateCustomerDisplayText()
     {
-        _customerCountText.text = "Customer: " + ReworkedSaveManager.instance.CurrentCustomer.ToString() + "/" + ReworkedSaveManager.instance.MaxCustomer.ToString();
+        if (_customerCountText != null && ReworkedSaveManager.instance != null)
+            _customerCountText.text = "Customer: " + ReworkedSaveManager.instance.CurrentCustomer.ToString() + "/" + ReworkedSaveManager.instance.MaxCustomer.ToString();
     }
 
     public void UpdateFavourDisplayText()
     {
-        _favourText.text = "Favour: " + ReworkedSaveManager.instance.Favour;
+        if (_favourText != null && ReworkedSaveManager.instance != null)
+            _favourText.text = "Favour: " + ReworkedSaveManager.instance.Favour;
     }
 }
