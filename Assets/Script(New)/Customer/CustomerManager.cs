@@ -23,7 +23,7 @@ public class CustomerManager : MonoBehaviour
 
     // Tutorial stuff
     [SerializeField] private List<string> tutorialDialogue;
-    private string tutorialWrongDialogue = "Hmm, that's not right. Try again.";
+    private string tutorialWrongDialogue = "Aduh! Try again!";
     [SerializeField] private Sprite TutorialBoss;
 
     //
@@ -471,6 +471,8 @@ public class CustomerManager : MonoBehaviour
         {
             UiManager.uiManager.RestartTimer();
         }
+        UiManager.uiManager.RestartTimer();
+        UiManager.uiManager.IsTimerRunning = true;
 
         // Always ensure tutorial buttons are inactive during main gameplay loop
         if (okay != null) okay.gameObject.SetActive(false);

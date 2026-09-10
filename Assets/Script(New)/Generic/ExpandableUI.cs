@@ -8,6 +8,10 @@ public class ExpandableUI : MonoBehaviour
     [SerializeField] protected GameObject inactiveObject;
     [SerializeField] protected GameObject activeObject;
     [SerializeField] protected Vector3 activeOffset;
+    [SerializeField] protected Transform activeTransform;
+    [SerializeField] protected Transform inactiveTransform;
+    private Vector3 activePositionStored;
+    private Vector3 inactivePositionStored;
 
     [SerializeField] protected List<DragEnum> validDragTypes;
 
@@ -27,6 +31,8 @@ public class ExpandableUI : MonoBehaviour
 
     protected virtual void Awake()
     {
+        activePositionStored = activeTransform.position;
+        inactivePositionStored = inactiveTransform.position;
         // spriteRenderer = GetComponent<SpriteRenderer>();
         // originalPosition = transform.localPosition;
         // SetActiveState(false);
@@ -40,13 +46,16 @@ public class ExpandableUI : MonoBehaviour
         //     active ? originalPosition + activeOffset : originalPosition;
         if (validDragTypes.Contains(dragType))
         {
-            activeObject.SetActive(true);
-            inactiveObject.SetActive(false);
+            // activeObject.SetActive(true);
+            // inactiveObject.SetActive(false);
+            inactiveObject.transform.position = activePositionStored;
         }
         else
         {
-            activeObject.SetActive(false);
-            inactiveObject.SetActive(true);
+            // activeObject.SetActive(false);
+            // inactiveObject.SetActive(true);
+            // inactiveObject.transform.position += activeOffset;
+            inactiveObject.transform.position = inactivePositionStored;
         }
     }
 

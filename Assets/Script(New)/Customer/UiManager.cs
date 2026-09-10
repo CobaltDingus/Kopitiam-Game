@@ -112,8 +112,11 @@ public class UiManager : MonoBehaviour
         }
         else
         {
-            timeElapsed += Time.deltaTime;
-            UpdateTimerDisplayCountUp(timeElapsed);
+            if (isTimerRunning)
+            {
+                timeElapsed += Time.deltaTime;
+                UpdateTimerDisplayCountUp(timeElapsed);
+            }
         }
     }
 
@@ -124,7 +127,7 @@ public class UiManager : MonoBehaviour
 
         if (timerText != null)
         {
-            string word = "Time Elapsed ";
+            string word = "Time Elapsed: ";
             timerText.text = word + string.Format("{0:00}:{1:00}", minutes, seconds);
         }
     }

@@ -41,6 +41,9 @@ public class SummaryPanel : UIPanel
 
     public void UpdateText()
     {
+        int diff = FavourDiff();
+        string sign = diff > 0 ? "+" : "";
+
         Debug.Log(SaveManager.saveManager.DayCount);
         dayCompleteTMP.text = "Day " + SaveManager.saveManager.DayCount + " Complete!";
         customersServedTMP.text = "Customers Served: " + SaveManager.saveManager.MaxCustomerCount.ToString();
@@ -48,7 +51,14 @@ public class SummaryPanel : UIPanel
         correctServedTMP.text = "Correct Orders: " + SaveManager.saveManager.CorrectOrders + " / " + SaveManager.saveManager.MaxCustomerCount;
         partialServedTMP.text = "Partially Correct Orders: " + SaveManager.saveManager.PartialOrders + " / " + SaveManager.saveManager.MaxCustomerCount;
         wrongServedTMP.text = "Wrong Orders: " + SaveManager.saveManager.WrongOrders + " / " + SaveManager.saveManager.MaxCustomerCount;
-        favourEarnedTMP.text = "Favour Earned: " + SaveManager.saveManager.LastEarnedFavour.ToString();
+        favourEarnedTMP.text = "Favour Earned: " + SaveManager.saveManager.Favour.ToString() + " (" + sign + diff + ")";
+    }
+
+    
+
+    public int FavourDiff()
+    {
+        return SaveManager.saveManager.Favour - SaveManager.saveManager.LastEarnedFavour;
     }
 
     public void ProceedNextDay()

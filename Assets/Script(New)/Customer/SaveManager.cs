@@ -206,26 +206,36 @@ public class SaveManager : MonoBehaviour
         //     maxCustomerCount++;
         // }
         // lastEarnedFavour = _favour;
-        resetFavor();
-        UiManager.uiManager.UpdateFavor();
+        
+        
         UiManager.uiManager.RestartTimer();
         UiManager.uiManager.UpdateDayCount();
 
         if (dayCount == 2)
         {
             SetAvailableRecipes(6);
-            maxCustomerCount = 5;
+            maxCustomerCount = 2;
         }
+
+        ResetOrderStats();
 
         UiManager.uiManager.IsTimerRunning = false;
     }
 
     public void StartNextDay()
     {
+        resetFavor();
+        UiManager.uiManager.UpdateFavor();
         UiManager.uiManager.IsTimerRunning = true;
+        // UiManager.uiManager.IsTimerRunning = true;
         OnDayStart?.Invoke(dayCount);
+    }
 
-
+    public void ResetOrderStats()
+    {
+        CorrectOrders = 0;
+        PartialOrders = 0;
+        WrongOrders = 0;
     }
 
     // void OnSceneLoaded(Scene scene, LoadSceneMode mode)
