@@ -20,4 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26a75bf892524114c8e52d8af2437106, type: 2}
   - {fileID: 11400000, guid: 27fb300da3e529c4aaff12a6c5a783bf, type: 2}
   _touristUniqueRecipe:
-  - {fileID: 11400000, guid: 9b3ef01474759fb49b4163596b4c47a9, type: 2}
+  - {fileID: 11400000, guid: a3811a3d226c6d747a084385dbf47392, type: 2}
+  - {fileID: 11400000, guid: e01435b7bf7b19847b64fce840d6c57c, type: 2}
+  - {fileID: 11400000, guid: c31b1884b2459da4aa98e415d7a72a79, type: 2}
+  - {fileID: 11400000, guid: 38aeaba0d53871e4ab8a5b8d1e376a1f, type: 2}

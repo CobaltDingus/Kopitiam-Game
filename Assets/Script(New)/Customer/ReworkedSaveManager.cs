@@ -12,7 +12,7 @@ public class ReworkedSaveManager : MonoBehaviour
     private int _maxCustomer = 3;
     private int _favour = 0;
     private int _previousFavour;
-    private int _maxEvent = 1;
+    private int _maxEvent = 0;
     private int _currentEvent;
     private int _tutorialPhase = 0;
     private int _previousIndex;
@@ -174,44 +174,53 @@ public class ReworkedSaveManager : MonoBehaviour
     {
         Debug.Log("EndDay");
 
-        // Calculate favour scaling before clearing variables
-        EvaluateAndCalculateFavour();
-
-        _currentCustomer = 0;
-        Day += 1;
-
-        if (Day >= 2)
-        {
-            SetAvailableRecipes(6);
-        }
-        else
-        {
-            SetAvailableRecipes(2);
-        }
-
         if (ReworkedUIManager.instance != null)
         {
-            ReworkedUIManager.instance.UpdateFavourDisplayText();
-            ReworkedUIManager.instance.RestartTimer();
-            ReworkedUIManager.instance.UpdateDayDisplayText();
-            ReworkedUIManager.instance.UpdateCustomerDisplayText();
             ReworkedUIManager.instance.IsTimerRunning = false;
         }
 
-        // Triggers Day Summary Panel / events
+        // Opens Summary Panel while Day, MaxCustomer, and Favour are still set to the completed day's values
         OnDayEnd?.Invoke();
     }
 
     public void StartNextDay()
     {
-        // Reset order trackers for the new day
+        // Calculate favour & customer count for the NEW day
+        EvaluateAndCalculateFavour();
+
+        // Transition to the next day
+        Day += 1;
+        _currentCustomer = 0;
+
+        // Configure recipes and events based on current Day
+        if (Day >= 2)
+        {
+            SetAvailableRecipes(10);
+            if (MaxEvent == 0)
+            {
+                MaxEvent = 1; // Day 2+ allows 1 event customer
+            }
+        }
+        else
+        {
+            SetAvailableRecipes(2);
+            MaxEvent = 0; // Day 1 allows 0 event customers
+        }
+
+        // Reset remaining events for the new day
+        CurrentEvent = MaxEvent;
+
+        // Reset daily order trackers
         CorrectOrders = 0;
         PartialOrders = 0;
         WrongOrders = 0;
 
         if (ReworkedUIManager.instance != null)
         {
-            ReworkedUIManager.instance.IsTimerRunning = true;
+            ReworkedUIManager.instance.UpdateFavourDisplayText();
+            ReworkedUIManager.instance.UpdateDayDisplayText();
+            ReworkedUIManager.instance.UpdateCustomerDisplayText();
+            ReworkedUIManager.instance.RestartTimer();
         }
 
         OnDayStart?.Invoke(Day);
