@@ -5557,6 +5557,7 @@ MonoBehaviour:
   _nextButton: {fileID: 1539991132}
   _okayButton: {fileID: 1280370342}
   _retryButton: {fileID: 171077751}
+  _kitchenButton: {fileID: 127503685}
   _minDrink: 1
   _maxDrink: 1
   CurrentCounterState: 1

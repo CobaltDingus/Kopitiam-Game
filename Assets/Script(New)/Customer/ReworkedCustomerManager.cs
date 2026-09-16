@@ -24,6 +24,7 @@ public class ReworkedCustomerManager : MonoBehaviour
     [SerializeField] private Button _nextButton;
     [SerializeField] private Button _okayButton;
     [SerializeField] private Button _retryButton;
+    [SerializeField] private Button _kitchenButton;
 
     [Header("General Variables (Revamp)")]
     [SerializeField] private int _minDrink = 1;
@@ -329,11 +330,13 @@ public class ReworkedCustomerManager : MonoBehaviour
                 _okayButton.gameObject.SetActive(true);
                 _nextButton.gameObject.SetActive(false);
                 _retryButton.gameObject.SetActive(false);
+                _kitchenButton.targetGraphic.canvasRenderer.SetAlpha(0.5f);
                 break;
 
             case CounterState.TakingOrder:
                 _okayButton.gameObject.SetActive(false);
                 _retryButton.gameObject.SetActive(false);
+                _kitchenButton.targetGraphic.canvasRenderer.SetAlpha(0.5f);
 
                 if (CurrentGameplayState == GameplayState.Tutorial)
                 {
@@ -352,12 +355,14 @@ public class ReworkedCustomerManager : MonoBehaviour
                 _okayButton.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(false);
                 _retryButton.gameObject.SetActive(false);
+                _kitchenButton.targetGraphic.canvasRenderer.SetAlpha(1f);
                 break;
 
             case CounterState.RedoOrder:
                 _okayButton.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(false);
                 _retryButton.gameObject.SetActive(true);
+                _kitchenButton.targetGraphic.canvasRenderer.SetAlpha(0.5f);
                 break;
         }
     }

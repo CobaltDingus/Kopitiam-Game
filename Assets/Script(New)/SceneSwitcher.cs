@@ -27,7 +27,10 @@ public void MainMenu()
     }
     public void LoadKitchen()
     {
-        SceneManager.LoadScene("KitchenScene");
+        if(ReworkedCustomerManager.instance.CurrentCounterState == ReworkedCustomerManager.CounterState.ServingOrder)
+        {
+            SceneManager.LoadScene("KitchenScene");
+        }
     }
 
     public void LoadCounter()

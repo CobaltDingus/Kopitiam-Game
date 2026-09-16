@@ -10,7 +10,11 @@ public class ReworkedSaveManager : MonoBehaviour
     private int _day;
     private int _currentCustomer;
     private int _maxCustomer = 3;
+    private int _customerMin = 3;
+    private int _customerCap = 20;
+    private int _currentFavourPercentage = 0;
     private int _favour = 0;
+    private int _previousFavourPercentage = 0;
     private int _previousFavour;
     private int _maxEvent = 0;
     private int _currentEvent;
@@ -121,40 +125,102 @@ public class ReworkedSaveManager : MonoBehaviour
 
     public void EvaluateAndCalculateFavour()
     {
-        if (_previousFavour == 0)
+        int total = _maxCustomer * 100;
+        _currentFavourPercentage = (int)((_favour / total) * 100f);
+
+        if (_currentFavourPercentage > _previousFavourPercentage)
         {
-            _maxCustomer = 5;
+            int diff = _currentFavourPercentage - _previousFavourPercentage;
+            if (diff > 50)
+            {
+                _maxCustomer += 2;
+                if (_maxCustomer > _customerCap)
+                {
+                    _maxCustomer = _customerCap;
+                }
+                int totale = (int)_maxCustomer / _customerMin;
+                _maxEvent = totale;
+            }
+            else
+            {
+                _maxCustomer += 1;
+                if (_maxCustomer > _customerCap)
+                {
+                    _maxCustomer = _customerCap;
+                }
+                int totale = (int)_maxCustomer / _customerMin;
+                _maxEvent = totale;
+            }
+        }
+        else if(_currentFavourPercentage == _previousFavourPercentage)
+        {
+            if(_maxCustomer == _customerCap)
+            {
+                _maxCustomer = _customerCap;
+            }
+            // if same but maxCustomer is not capped then remain the same maxCustomer
         }
         else
         {
-            if (_favour > _previousFavour)
+            int diff = _previousFavourPercentage - _currentFavourPercentage;
+            if (diff > 50)
             {
-                float diff = _favour - _previousFavour;
-                int remainder = (int)diff / 100;
-                _maxCustomer += (remainder == 0) ? 1 : remainder;
+                _maxCustomer -= 2;
+                if (_maxCustomer < _customerMin)
+                {
+                    _maxCustomer = _customerMin;
+                }
+                _maxEvent = 0;
             }
-            else if (_favour < _previousFavour)
+            else
             {
-                int diff = _previousFavour - _favour;
-                int remainder = diff / 100;
-                if (remainder == 0)
+                _maxCustomer -= 1;
+                if (_maxCustomer < _customerMin)
                 {
-                    _maxCustomer -= 1;
+                    _maxCustomer = _customerMin;
                 }
-                else
-                {
-                    if (remainder > _maxCustomer || _maxCustomer - remainder < 5)
-                    {
-                        _maxCustomer = 5;
-                    }
-                    else
-                    {
-                        _maxCustomer -= remainder;
-                    }
-                }
+                _maxEvent = 0;
             }
         }
+
+        //if (_day == 1)
+        //{
+        //    _maxCustomer = 5;
+        //}
+        //else
+        //{
+        //    // old
+        //    if (_favour > _previousFavour)
+        //    {
+        //        int diff = _favour - _previousFavour;
+        //        int remainder = diff / 100;
+        //        _maxCustomer += (remainder == 0) ? 1 : remainder;
+        //    }
+        //    else if (_favour < _previousFavour)
+        //    {
+
+        //        int diff = _previousFavour - _favour;
+        //        int remainder = diff / 100;
+        //        if (remainder == 0)
+        //        {
+        //            _maxCustomer -= 1;
+        //        }
+        //        else
+        //        {
+        //            if (remainder > _maxCustomer || _maxCustomer - remainder < 5)
+        //            {
+        //                _maxCustomer = 5;
+        //            }
+        //            else
+        //            {
+        //                _maxCustomer -= remainder;
+        //            }
+        //        }
+        //    }
+        //}
         _previousFavour = _favour;
+        _previousFavourPercentage = _currentFavourPercentage;
+        _currentFavourPercentage = 0;
         _favour = 0;
     }
 
