@@ -327,6 +327,19 @@ IPointerUpHandler
                 return true;
             }
         }
+        foreach (DrinkRecipe recipe in recipeBook.TouristUniqueRecipe)
+        {
+            if (drink.ingredients.Count == recipe.ingredients.Count &&
+            drink.ingredients
+            .OrderBy(i => i.Id)
+            .SequenceEqual(recipe.ingredients.OrderBy(i => i.Id)))
+            {
+                // drink.drinkSprite = recipe.drinkImage;
+                drink.drinkName = recipe.drinkName;
+                drink.colorHex = recipe.drinkColorHex;
+                return true;
+            }
+        }
         return false;
     }
 

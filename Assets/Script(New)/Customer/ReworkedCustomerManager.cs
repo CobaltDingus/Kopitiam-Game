@@ -691,6 +691,7 @@ public class ReworkedCustomerManager : MonoBehaviour
             }
             else
             {
+                // Collect all required base ingredients for this recipe
                 List<Ingredient> baseIngredientsInRecipe = recipe.ingredients
                     .Where(i => i != null && i.IsBaseIngredient)
                     .ToList();
@@ -700,20 +701,37 @@ public class ReworkedCustomerManager : MonoBehaviour
                     baseIngredientsInRecipe.AddRange(recipe.baseIngredient.Where(i => i != null));
                 }
 
-                foreach (Drink served in ServedDrink)
+                // Verify that ALL required base ingredients are matched
+                if (baseIngredientsInRecipe.Count > 0)
                 {
-                    if (served == null || served.ingredients == null) continue;
-
-                    bool hasMatchingBase = served.ingredients.Any(servedIng =>
-                        servedIng != null && baseIngredientsInRecipe.Any(reqBase =>
-                            string.Equals(servedIng.Id, reqBase.Id, StringComparison.OrdinalIgnoreCase)
-                        )
-                    );
-
-                    if (hasMatchingBase)
+                    foreach (Drink served in ServedDrink)
                     {
-                        BaseIngredientMatched = true;
-                        break;
+                        if (served == null || served.ingredients == null) continue;
+
+                        List<Ingredient> remainingServedIngredients = new List<Ingredient>(served.ingredients);
+                        bool allBasesMatch = true;
+
+                        foreach (Ingredient reqBase in baseIngredientsInRecipe)
+                        {
+                            Ingredient matchedBase = remainingServedIngredients.FirstOrDefault(s =>
+                                s != null && string.Equals(s.Id, reqBase.Id, StringComparison.OrdinalIgnoreCase));
+
+                            if (matchedBase != null)
+                            {
+                                remainingServedIngredients.Remove(matchedBase); // Consume matched ingredient
+                            }
+                            else
+                            {
+                                allBasesMatch = false; // Missing a required base ingredient
+                                break;
+                            }
+                        }
+
+                        if (allBasesMatch)
+                        {
+                            BaseIngredientMatched = true;
+                            break;
+                        }
                     }
                 }
             }
