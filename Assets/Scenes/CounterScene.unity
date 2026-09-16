@@ -1163,7 +1163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 144368544}
-  - component: {fileID: 144368543}
+  - component: {fileID: 144368545}
   m_Layer: 0
   m_Name: SaveManager
   m_TagString: Untagged
@@ -1171,18 +1171,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &144368543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144368542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0372749410f9e5479eda2861b85d4ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
 --- !u!4 &144368544
 Transform:
   m_ObjectHideFlags: 0
@@ -1198,6 +1186,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &144368545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144368542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc037c22fd4221e4db28eb974d624c0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReworkedSaveManager
 --- !u!1 &171077748
 GameObject:
   m_ObjectHideFlags: 0
@@ -1296,7 +1296,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1258560204}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CustomerManager, Assembly-CSharp
         m_MethodName: GoBackPreviousDialogue
         m_Mode: 1
@@ -1380,7 +1380,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -16.075792, y: 0.5}
+  m_AnchoredPosition: {x: -16.075792, y: 0.3}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &249350135
@@ -1706,7 +1706,7 @@ GameObject:
   - component: {fileID: 349159672}
   - component: {fileID: 349159671}
   m_Layer: 0
-  m_Name: Circle (1)
+  m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1780,12 +1780,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 349159670}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 177.6981, y: 215.08278, z: -7774.076}
-  m_LocalScale: {x: 647.3361, y: 246.517, z: 133.25244}
+  m_LocalRotation: {x: -0, y: -0, z: -0.0000000068962436, w: 1}
+  m_LocalPosition: {x: 177.69818, y: 215.0828, z: -7774.0767}
+  m_LocalScale: {x: 647.33606, y: 246.517, z: 133.25246}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1797581467}
+  m_Father: {fileID: 628162888}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &349835959
 GameObject:
@@ -2122,7 +2122,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &389344424
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2197,7 +2197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &426438973
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2617,6 +2617,43 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 616988336}
   m_CullTransparentMesh: 1
+--- !u!1 &628162887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 628162888}
+  m_Layer: 5
+  m_Name: DialogueBubble
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &628162888
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628162887}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1474063008}
+  - {fileID: 349159672}
+  m_Father: {fileID: 1797581467}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &649724912
 GameObject:
   m_ObjectHideFlags: 0
@@ -2811,7 +2848,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Favour: 1000'
+  m_text: 'Favour:  0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3172,7 +3209,7 @@ GameObject:
   - component: {fileID: 731234699}
   - component: {fileID: 731234698}
   - component: {fileID: 731234701}
-  - component: {fileID: 731234702}
+  - component: {fileID: 731234703}
   m_Layer: 0
   m_Name: Customer
   m_TagString: Untagged
@@ -3301,7 +3338,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5.53, y: 9.64}
   m_EdgeRadius: 0
---- !u!114 &731234702
+--- !u!114 &731234703
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3310,11 +3347,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 731234697}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a8269917df38b942a6ed52020858681, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c15963c2ede70549955746cd8b6dd0d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CustomerDisplayLink
-  customerSpriteRenderer: {fileID: 731234698}
-  dialogueText: {fileID: 371707622}
+  m_EditorClassIdentifier: Assembly-CSharp::ReworkedCustomerDisplayLink
+  _customerSpriteRenderer: {fileID: 731234698}
+  _dialogueText: {fileID: 371707622}
   slideDuration: 0.5
   startYOffset: -800
   customerTransform: {fileID: 731234699}
@@ -4389,98 +4426,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1060754921}
   m_CullTransparentMesh: 1
---- !u!1 &1066563747
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1066563749}
-  - component: {fileID: 1066563748}
-  m_Layer: 0
-  m_Name: Counter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!212 &1066563748
-SpriteRenderer:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1066563747}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.02641511, g: 0.02641511, b: 0.02641511, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
-  m_BlendShapeWeights: []
---- !u!4 &1066563749
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1066563747}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.17, y: -3.6462, z: 9}
-  m_LocalScale: {x: 23.27375, y: 2.772229, z: 3.1708}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1070728936
 GameObject:
   m_ObjectHideFlags: 0
@@ -4579,7 +4524,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1258560204}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CustomerManager, Assembly-CSharp
         m_MethodName: ServePerfectDrinksForTesting
         m_Mode: 1
@@ -4870,7 +4815,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -10.38, y: 0.50000393}
+  m_AnchoredPosition: {x: -10.38, y: 0.3}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1103178865
@@ -5510,7 +5455,7 @@ MonoBehaviour:
             just Milo, Water, and some Ice.
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2055916235}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TMPro.TextMeshPro, Unity.TextMeshPro
         m_MethodName: set_text
         m_Mode: 5
@@ -5569,7 +5514,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1258560205}
-  - component: {fileID: 1258560204}
+  - component: {fileID: 1258560206}
   m_Layer: 0
   m_Name: CustomerManager
   m_TagString: Untagged
@@ -5577,49 +5522,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1258560204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258560203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a969a7d60972516489b261f98a400b57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CustomerManager
-  customerDatabase: {fileID: 11400000, guid: 706d2a1b1db0d904c8584ee650fda5cb, type: 2}
-  recipeBook: {fileID: 11400000, guid: 2c53c2b8eccd2834fa67b11a2aa0a51d, type: 2}
-  trayDatabase: {fileID: 11400000, guid: e70fa4aa059bfc74e92464fc5ba0fc27, type: 2}
-  customerSpriteRenderer: {fileID: 731234698}
-  dialogueText: {fileID: 371707622}
-  tutorialDialogue:
-  - Ah boy, I heard from your father that you were looking for a job, and that maybe
-    I could hire you to work here temporarily.
-  - Good lah. Time for you to experience the real world before you get too sheltered.
-  - "Now you may be my nephew, but don\u2019t go thinking that I will go soft on
-    you, I treat my employees all the same."
-  - 'The only exception is your aunt, heh. '
-  - Let's get started. You'll make two drinks for me.
-  - 'First, let''s make Kopi. Kopi is made with coffee, sugar, condensed milk and
-    water. '
-  - Not bad, let's try another drink called Kopi O.
-  - Kopi O is just Kopi but the 'O' means no condensed milk. Just put coffee and
-    sugar with water.
-  - "Alright, I\u2019ll let you serve 3 customers for today, don\u2019t mess this
-    up ah!"
-  TutorialBoss: {fileID: -6248741079362886434, guid: fb730fb58019a604f8e2223953a42332, type: 3}
-  minDrinks: 1
-  maxDrinks: 1
-  next: {fileID: 1539991132}
-  okay: {fileID: 1280370342}
-  tryAgain: {fileID: 171077751}
-  perfect: {fileID: 0}
-  tutorialPhase: 0
-  tutorialserve: 0
-  tutorialComplete: 0
-  chosenCustomerSlot: 0
 --- !u!4 &1258560205
 Transform:
   m_ObjectHideFlags: 0
@@ -5635,6 +5537,47 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1258560206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1258560203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e57f5fde20b7c41a4d0a19fd170c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReworkedCustomerManager
+  _customerDatabase: {fileID: 11400000, guid: 706d2a1b1db0d904c8584ee650fda5cb, type: 2}
+  _recipeBook: {fileID: 11400000, guid: 2c53c2b8eccd2834fa67b11a2aa0a51d, type: 2}
+  _trayDatabase: {fileID: 11400000, guid: e70fa4aa059bfc74e92464fc5ba0fc27, type: 2}
+  _customerSpriteRenderer: {fileID: 731234698}
+  _dialogueText: {fileID: 371707622}
+  _nextButton: {fileID: 1539991132}
+  _okayButton: {fileID: 1280370342}
+  _retryButton: {fileID: 171077751}
+  _minDrink: 1
+  _maxDrink: 1
+  CurrentCounterState: 1
+  CurrentGameplayState: 1
+  _tutorialSprite: {fileID: -6248741079362886434, guid: fb730fb58019a604f8e2223953a42332, type: 3}
+  _tutorialDialogue:
+  - Ah boy, I heard from your father that you were looking for a job, and that maybe
+    I could hire you to work here temporarily.
+  - Good lah. Time for you to experience the real world before you get too sheltered.
+  - "Now you may be my nephew, but don\u2019t go thinking that I will go soft on
+    you, I treat my employees all the same."
+  - 'The only exception is your aunt, heh. '
+  - Let's get started. You'll make two drinks for me.
+  - 'First, let''s make Kopi. Kopi is made with coffee, sugar, condensed milk and
+    water. '
+  - Not bad, let's try another drink called Kopi O.
+  - Kopi O is just Kopi but the 'O' means no condensed milk. Just put coffee and
+    sugar with water.
+  - "Alright, I\u2019ll let you serve 3 customers for today, don\u2019t mess this
+    up ah!"
+  skip: 0
 --- !u!1 &1258569668
 GameObject:
   m_ObjectHideFlags: 0
@@ -5867,7 +5810,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1258560204}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CustomerManager, Assembly-CSharp
         m_MethodName: NextDialogue
         m_Mode: 1
@@ -6736,11 +6679,11 @@ Transform:
   m_GameObject: {fileID: 1474063006}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0015310481, y: -0.0024773225, z: 0.15958266, w: 0.9871803}
-  m_LocalPosition: {x: -85.51484, y: 141.66093, z: -7774.076}
-  m_LocalScale: {x: 86.378624, y: 86.378624, z: 86.37862}
+  m_LocalPosition: {x: -85.51484, y: 141.66093, z: -7774.0767}
+  m_LocalScale: {x: 86.378624, y: 86.37863, z: 86.37862}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1797581467}
+  m_Father: {fileID: 628162888}
   m_LocalEulerAnglesHint: {x: 0.218, y: -0.252, z: 18.365}
 --- !u!1 &1480739755
 GameObject:
@@ -6908,7 +6851,7 @@ GameObject:
   - component: {fileID: 1495328581}
   - component: {fileID: 1495328580}
   - component: {fileID: 1495328579}
-  - component: {fileID: 1495328578}
+  - component: {fileID: 1495328583}
   m_Layer: 5
   m_Name: TopBar Canvas
   m_TagString: Untagged
@@ -6916,24 +6859,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1495328578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1495328577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15054208fae6c0e4c8362fc9fb7eeed9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TemporaryUIScript
-  timerText: {fileID: 1778872539}
-  dayText: {fileID: 249350135}
-  customerCountText: {fileID: 1103178865}
-  favorText: {fileID: 662281868}
-  challengeMode: 0
-  duration: 20
 --- !u!114 &1495328579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7018,6 +6943,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1495328583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495328577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3938483893d9ca24daf954730b7b0336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReworkedUIManager
+  _timerText: {fileID: 1778872539}
+  _dayText: {fileID: 249350135}
+  _customerCountText: {fileID: 1103178865}
+  _favourText: {fileID: 662281868}
 --- !u!1 &1524433578
 GameObject:
   m_ObjectHideFlags: 0
@@ -7442,7 +7383,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 0
-      - m_Target: {fileID: 1258560204}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CustomerManager, Assembly-CSharp
         m_MethodName: GenerateNewCustomer
         m_Mode: 1
@@ -8437,7 +8378,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1258560204}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CustomerManager, Assembly-CSharp
         m_MethodName: ServePerfectDrinksForTesting
         m_Mode: 1
@@ -8960,8 +8901,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1474063008}
-  - {fileID: 349159672}
+  - {fileID: 628162888}
   - {fileID: 371707624}
   - {fileID: 127503683}
   - {fileID: 1070728937}
@@ -9646,7 +9586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.79607844}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9808,187 +9748,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2021495632}
   m_CullTransparentMesh: 1
---- !u!1 &2055916234
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2055916237}
-  - component: {fileID: 2055916236}
-  - component: {fileID: 2055916235}
-  m_Layer: 0
-  m_Name: Score
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &2055916235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055916234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshPro
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 'SCORE: 0'
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4278683062
-  m_fontColor: {r: 0.7132075, g: 0.52099526, b: 0.025567714, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 0
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 5.2805977, y: 0, z: -2.2490222, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  _SortingLayer: 0
-  _SortingLayerID: 0
-  _SortingOrder: 0
-  m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 2055916236}
-  m_maskType: 0
---- !u!23 &2055916236
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055916234}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!224 &2055916237
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055916234}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -10.95, y: 4.48}
-  m_SizeDelta: {x: 6.3543, y: 1.0688}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2056616028
 GameObject:
   m_ObjectHideFlags: 0
@@ -12015,8 +11774,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1480739758}
   - {fileID: 1524433579}
-  - {fileID: 1066563749}
-  - {fileID: 2055916237}
   - {fileID: 1495328582}
   - {fileID: 1797581467}
   - {fileID: 1539051251}

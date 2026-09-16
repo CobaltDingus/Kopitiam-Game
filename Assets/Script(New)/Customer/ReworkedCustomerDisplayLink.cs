@@ -25,7 +25,6 @@ public class ReworkedCustomerDisplayLink : MonoBehaviour
     void Awake()
     {
         onscreenWorldPos = customerTransform.position;
-        SlideIn();
     }
     void Start()
     {
