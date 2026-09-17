@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: ING01
   ingredientName: Coffee
-  icon: {fileID: -86707141971402925, guid: c7df9830fb16d28408fed0a2ead1162b, type: 3}
+  icon: {fileID: -9099911674440506468, guid: 8763472038fcaf041aa99fb9309a4172, type: 3}
+  isBaseIngredient: 0

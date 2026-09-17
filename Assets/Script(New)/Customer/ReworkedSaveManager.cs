@@ -246,6 +246,8 @@ public class ReworkedSaveManager : MonoBehaviour
     public static event Action OnDayEnd;
     public static event Action<int> OnDayStart;
 
+    [SerializeField] private DrinksDatabase drinksDatabase;
+
     public void EndCurrentDay()
     {
         Debug.Log("EndDay");
@@ -271,7 +273,8 @@ public class ReworkedSaveManager : MonoBehaviour
         // Configure recipes and events based on current Day
         if (Day >= 2)
         {
-            SetAvailableRecipes(10);
+            // SetAvailableRecipes(10);
+            drinksDatabase.UnlockDrinks(Day);
             if (MaxEvent == 0)
             {
                 MaxEvent = 1; // Day 2+ allows 1 event customer
@@ -279,7 +282,7 @@ public class ReworkedSaveManager : MonoBehaviour
         }
         else
         {
-            SetAvailableRecipes(2);
+            // SetAvailableRecipes(2);
             MaxEvent = 0; // Day 1 allows 0 event customers
         }
 

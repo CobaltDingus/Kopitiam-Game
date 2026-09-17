@@ -23,8 +23,7 @@ public class CheckOrderButton : MonoBehaviour
 
     public void GetCurrentOrder()
     {
-        UIPanel.TogglePanel();
-        buttonText.text = UIPanel.gameObject.activeSelf ? closeText : normalText;
+
         if (ReworkedCustomerManager.instance != null)
         {
             UIText.text = ReworkedCustomerManager.instance.CurrentDialogue;
@@ -34,5 +33,11 @@ public class CheckOrderButton : MonoBehaviour
         {
             Debug.Log("No CustomerManager found");
         }
+    }
+
+    public void TogglePanel()
+    {
+        UIPanel.TogglePanel();
+        buttonText.text = UIPanel.gameObject.activeSelf ? closeText : normalText;
     }
 }

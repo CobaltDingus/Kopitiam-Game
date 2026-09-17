@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: ING05
   ingredientName: Evaporated Milk
-  icon: {fileID: 0}
+  icon: {fileID: -42116026334767669, guid: 5891aa66bce65ee4fbbe6c1309c7075f, type: 3}
+  isBaseIngredient: 0

@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: ING06
   ingredientName: Condensed Milk
-  icon: {fileID: 0}
+  icon: {fileID: 5162864528154971961, guid: cbd1fa400ca218b40ab19d3fe91c2d66, type: 3}
+  isBaseIngredient: 0

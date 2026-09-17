@@ -95,6 +95,7 @@ public class ReworkedCustomerManager : MonoBehaviour
             FindNextButton();
             FindOkayButton();
             FindRetryButton();
+            FindKitchenButton();
         }
         if (skip)
         {
@@ -130,6 +131,7 @@ public class ReworkedCustomerManager : MonoBehaviour
             FindNextButton();
             FindOkayButton();
             FindRetryButton();
+            FindKitchenButton();
 
             if (CurrentCounterState == CounterState.TakingOrder)
             {
@@ -178,6 +180,17 @@ public class ReworkedCustomerManager : MonoBehaviour
             _retryButton = retryObj.GetComponent<Button>();
             _retryButton.onClick.RemoveAllListeners();
             _retryButton.onClick.AddListener(PreviousDialogue);
+        }
+    }
+
+    void FindKitchenButton()
+    {
+        GameObject kitchenObj = GameObject.Find("KitchenButton");
+        if (kitchenObj != null)
+        {
+            _kitchenButton = kitchenObj.GetComponent<Button>();
+            // _retryButton.onClick.RemoveAllListeners();
+            // _retryButton.onClick.AddListener(PreviousDialogue);
         }
     }
 

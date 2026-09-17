@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: ING02
   ingredientName: Tea
-  icon: {fileID: 0}
+  icon: {fileID: -3070273842284801829, guid: ddaf8390f276f0a4283b8d1ef60ac7ae, type: 3}
   isBaseIngredient: 0

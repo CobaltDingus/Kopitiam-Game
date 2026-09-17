@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: ING03
   ingredientName: Uilo
-  icon: {fileID: 0}
+  icon: {fileID: -8490028303422418611, guid: 5b8051a20087367468bc43481083a18c, type: 3}
   isBaseIngredient: 0

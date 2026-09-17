@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   id: ING04
   ingredientName: Sugar
-  icon: {fileID: 0}
+  icon: {fileID: 943231683519144238, guid: 6994bf44501a3474197cc7aaedcc3bb0, type: 3}
+  isBaseIngredient: 0

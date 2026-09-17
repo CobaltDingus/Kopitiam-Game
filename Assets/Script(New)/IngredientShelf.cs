@@ -1,23 +1,41 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class IngredientShelf : MonoBehaviour
 {
-    [SerializeField] IngredientObject teaObject;
-    [SerializeField] IngredientObject uiloObject;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] List<IngredientObject> shelfIngredients;
+
+    void OnEnable()
+    {
+        // ReworkedSaveManager.OnDayStart += UnlockIngredientDay;
+        UnlockIngredientDay();
+    }
+
+    void OnDisable()
+    {
+        // ReworkedSaveManager.OnDayStart -= UnlockIngredientDay;
+    }
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (ReworkedSaveManager.instance != null && ReworkedSaveManager.instance.Day >= 2)
+
+    }
+
+    private void UnlockIngredientDay()
+    {
+        foreach (IngredientObject ingObj in shelfIngredients)
         {
-            teaObject.gameObject.SetActive(true);
-            uiloObject.gameObject.SetActive(true);       
-            
+            if (ingObj == null) continue;
+
+            if (ReworkedSaveManager.instance && ReworkedSaveManager.instance.Day >= ingObj.unlockDay )
+            {
+                ingObj.gameObject.SetActive(true);
+            }
         }
     }
 }
