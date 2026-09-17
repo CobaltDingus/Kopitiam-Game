@@ -64,8 +64,16 @@ public class ReworkedCustomerManager : MonoBehaviour
     private string _tutorialWrongOrderDialogue = "Hmm, that's not right. Try again.";
     [SerializeField] private bool skip;
 
-    public string CurrentDialogue => _currentDialogueText;
+    // ================================ GETTER & SETTER ================================
 
+    public string CurrentDialogue => _currentDialogueText;
+    public int MaxDrink
+    {
+        get => _maxDrink;
+        set => _maxDrink = value;
+    }
+
+    // ================================ AWAKE START UPDATE ================================
     void Awake()
     {
         if (instance != null && instance != this)

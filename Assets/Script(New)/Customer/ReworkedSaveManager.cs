@@ -218,6 +218,16 @@ public class ReworkedSaveManager : MonoBehaviour
         //        }
         //    }
         //}
+
+        if (_maxCustomer >= 10)
+        {
+            ReworkedCustomerManager.instance.MaxDrink = 2;
+        }
+        else if (_maxCustomer >= 15)
+        {
+            ReworkedCustomerManager.instance.MaxDrink = 3;
+        }
+
         _previousFavour = _favour;
         _previousFavourPercentage = _currentFavourPercentage;
         _currentFavourPercentage = 0;
