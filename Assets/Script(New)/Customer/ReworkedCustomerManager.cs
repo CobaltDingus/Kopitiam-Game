@@ -535,6 +535,8 @@ public class ReworkedCustomerManager : MonoBehaviour
         orderedRecipes.Clear();
         int drinkCount = UnityEngine.Random.Range(_minDrink, _maxDrink + 1);
 
+        ReworkedSaveManager.instance.CurrentTotalFavour += drinkCount * 100;
+
         int limit = (_availableRecipeCount > 0 && _availableRecipeCount <= _recipeBook.AllRecipes.Count)
             ? _availableRecipeCount
             : _recipeBook.AllRecipes.Count;
@@ -560,6 +562,8 @@ public class ReworkedCustomerManager : MonoBehaviour
 
         orderedRecipes.Clear();
         int drinkCount = UnityEngine.Random.Range(_minDrink, _maxDrink + 1);
+
+        ReworkedSaveManager.instance.CurrentTotalFavour += drinkCount * 100;
 
         for (int i = 0; i < drinkCount; i++)
         {
@@ -688,73 +692,117 @@ public class ReworkedCustomerManager : MonoBehaviour
 
         ServedDrink ??= new List<Drink>();
 
-        int PerfectCount = 0;
-        bool BaseIngredientMatched = false;
-        List<Drink> RemainingServed = new List<Drink>(ServedDrink);
+        int totalFavourGained = 0;
+        int perfectCount = 0;
+        int decentCount = 0;
+        int wrongCount = 0;
+
+        List<Drink> remainingServed = new List<Drink>(ServedDrink);
 
         foreach (DrinkRecipe recipe in orderedRecipes)
         {
-            Drink match = RemainingServed.FirstOrDefault(served => IsDrinkPerfect(served, recipe));
+            // 1. Check for Perfect Drink Match (+100 Favour)
+            Drink perfectMatch = remainingServed.FirstOrDefault(served => IsDrinkPerfect(served, recipe));
 
-            if (match != null)
+            if (perfectMatch != null)
             {
-                PerfectCount++;
-                BaseIngredientMatched = true;
-                RemainingServed.Remove(match);
+                perfectCount++;
+                totalFavourGained += 100;
+                remainingServed.Remove(perfectMatch);
+                continue;
             }
-            else
+
+            // 2. Check for Decent Drink Match (Base Ingredients Match) (+50 Favour)
+            List<Ingredient> baseIngredientsInRecipe = recipe.ingredients
+                .Where(i => i != null && i.IsBaseIngredient)
+                .ToList();
+
+            if (recipe.baseIngredient != null && recipe.baseIngredient.Count > 0)
             {
-                // Collect all required base ingredients for this recipe
-                List<Ingredient> baseIngredientsInRecipe = recipe.ingredients
-                    .Where(i => i != null && i.IsBaseIngredient)
-                    .ToList();
+                baseIngredientsInRecipe.AddRange(recipe.baseIngredient.Where(i => i != null));
+            }
 
-                if (recipe.baseIngredient != null && recipe.baseIngredient.Count > 0)
-                {
-                    baseIngredientsInRecipe.AddRange(recipe.baseIngredient.Where(i => i != null));
-                }
+            Drink decentMatch = null;
 
-                // Verify that ALL required base ingredients are matched
-                if (baseIngredientsInRecipe.Count > 0)
+            if (baseIngredientsInRecipe.Count > 0)
+            {
+                foreach (Drink served in remainingServed)
                 {
-                    foreach (Drink served in ServedDrink)
+                    if (served == null || served.ingredients == null) continue;
+
+                    List<Ingredient> remainingServedIngredients = new List<Ingredient>(served.ingredients);
+                    bool allBasesMatch = true;
+
+                    foreach (Ingredient reqBase in baseIngredientsInRecipe)
                     {
-                        if (served == null || served.ingredients == null) continue;
+                        Ingredient matchedBase = remainingServedIngredients.FirstOrDefault(s =>
+                            s != null && string.Equals(s.Id, reqBase.Id, StringComparison.OrdinalIgnoreCase));
 
-                        List<Ingredient> remainingServedIngredients = new List<Ingredient>(served.ingredients);
-                        bool allBasesMatch = true;
-
-                        foreach (Ingredient reqBase in baseIngredientsInRecipe)
+                        if (matchedBase != null)
                         {
-                            Ingredient matchedBase = remainingServedIngredients.FirstOrDefault(s =>
-                                s != null && string.Equals(s.Id, reqBase.Id, StringComparison.OrdinalIgnoreCase));
-
-                            if (matchedBase != null)
-                            {
-                                remainingServedIngredients.Remove(matchedBase); // Consume matched ingredient
-                            }
-                            else
-                            {
-                                allBasesMatch = false; // Missing a required base ingredient
-                                break;
-                            }
+                            remainingServedIngredients.Remove(matchedBase);
                         }
-
-                        if (allBasesMatch)
+                        else
                         {
-                            BaseIngredientMatched = true;
+                            allBasesMatch = false;
                             break;
                         }
                     }
+
+                    if (allBasesMatch)
+                    {
+                        decentMatch = served;
+                        break;
+                    }
                 }
+            }
+
+            if (decentMatch != null)
+            {
+                decentCount++;
+                totalFavourGained += 50;
+                remainingServed.Remove(decentMatch);
+            }
+            else
+            {
+                // 3. Completely Wrong Drink (+0 Favour)
+                wrongCount++;
             }
         }
 
+        // Any leftover unrequested drinks served are treated as wrong drinks
+        if (remainingServed.Count > 0)
+        {
+            wrongCount += remainingServed.Count;
+        }
+
+        // Apply calculated Favour points
+        ReworkedSaveManager.instance.Favour += totalFavourGained;
+
+        if (ReworkedUIManager.instance != null)
+            ReworkedUIManager.instance.UpdateFavourDisplayText();
+
+        // Determine dialogue & outcome state by lowest performing drink
         List<string> frontList;
         List<string> backList;
 
-        if (PerfectCount == orderedRecipes.Count && ServedDrink.Count == orderedRecipes.Count)
+        if (wrongCount > 0)
         {
+            // Lowest performance: Wrong
+            frontList = _currentCustomer.WrongFrontDialogue;
+            backList = _currentCustomer.WrongBackDialogue;
+            ReworkedSaveManager.instance.WrongOrders++;
+        }
+        else if (decentCount > 0)
+        {
+            // Lowest performance: Decent
+            frontList = _currentCustomer.DecentFrontDialogue;
+            backList = _currentCustomer.DecentBackDialogue;
+            ReworkedSaveManager.instance.PartialOrders++;
+        }
+        else
+        {
+            // Lowest performance: Perfect (All drinks perfect)
             frontList = _currentCustomer.PerfectFrontDialogue;
             backList = _currentCustomer.PerfectBackDialogue;
 
@@ -770,27 +818,6 @@ public class ReworkedCustomerManager : MonoBehaviour
             }
             ReworkedSaveManager.instance.CorrectOrders++;
         }
-        else if (BaseIngredientMatched)
-        {
-            frontList = _currentCustomer.DecentFrontDialogue;
-            backList = _currentCustomer.DecentBackDialogue;
-            ReworkedSaveManager.instance.Favour += 50;
-            ReworkedSaveManager.instance.PartialOrders++;
-        }
-        else
-        {
-            frontList = _currentCustomer.WrongFrontDialogue;
-            backList = _currentCustomer.WrongBackDialogue;
-            ReworkedSaveManager.instance.WrongOrders++;
-        }
-
-        for (int i = 0; i < PerfectCount; i++)
-        {
-            ReworkedSaveManager.instance.Favour += 100;
-        }
-
-        if (ReworkedUIManager.instance != null)
-            ReworkedUIManager.instance.UpdateFavourDisplayText();
 
         int maxIndex = Mathf.Min(frontList?.Count ?? 0, backList?.Count ?? 0);
         int index = RandomIndex(maxIndex);

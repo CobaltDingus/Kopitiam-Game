@@ -12,6 +12,7 @@ public class ReworkedSaveManager : MonoBehaviour
     private int _maxCustomer = 3;
     private int _customerMin = 3;
     private int _customerCap = 20;
+    private int _currentTotalFavour = 0;
     private int _currentFavourPercentage = 0;
     private int _favour = 0;
     private int _previousFavourPercentage = 0;
@@ -93,6 +94,11 @@ public class ReworkedSaveManager : MonoBehaviour
         get => _wrongOrders;
         set => _wrongOrders = value;
     }
+    public int CurrentTotalFavour
+    {
+        get => _currentTotalFavour;
+        set => _currentTotalFavour = value;
+    }
 
     // ================================ AWAKE START UPDATE ================================
     void Awake()
@@ -125,8 +131,8 @@ public class ReworkedSaveManager : MonoBehaviour
 
     public void EvaluateAndCalculateFavour()
     {
-        int total = _maxCustomer * 100;
-        _currentFavourPercentage = (int)((_favour / total) * 100f);
+        //int total = _maxCustomer * 100;
+        _currentFavourPercentage = (int)((_favour / _currentTotalFavour) * 100f);
 
         if (_currentFavourPercentage > _previousFavourPercentage)
         {
@@ -232,6 +238,7 @@ public class ReworkedSaveManager : MonoBehaviour
         _previousFavourPercentage = _currentFavourPercentage;
         _currentFavourPercentage = 0;
         _favour = 0;
+        _currentTotalFavour = 0;
     }
 
     // ================================ JF TEST FUNCTION ================================
