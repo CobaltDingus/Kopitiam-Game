@@ -144,7 +144,7 @@ public class ReworkedSaveManager : MonoBehaviour
                 {
                     _maxCustomer = _customerCap;
                 }
-                int totale = (int)_maxCustomer / _customerMin;
+                int totale = (int)_maxCustomer / 5;
                 _maxEvent = totale;
             }
             else
@@ -154,7 +154,7 @@ public class ReworkedSaveManager : MonoBehaviour
                 {
                     _maxCustomer = _customerCap;
                 }
-                int totale = (int)_maxCustomer / _customerMin;
+                int totale = (int)_maxCustomer / 5;
                 _maxEvent = totale;
             }
         }
