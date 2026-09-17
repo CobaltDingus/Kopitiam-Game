@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2476e73a118a2094f96d56ada78d34d7, type: 3}
+  m_Name: Ais Limau
+  m_EditorClassIdentifier: Assembly-CSharp::DrinkRecipe
+  id: 
+  drinkName: Ais Limau
+  ingredients:
+  - {fileID: 11400000, guid: dfd58927ec5c0fa48a67b4130c7f2f15, type: 2}
+  - {fileID: 11400000, guid: 93452f8c9e8b12f498bb2d4e4c29b7db, type: 2}
+  - {fileID: 11400000, guid: c79a75e93356e1f488d1b9961dce036f, type: 2}
+  - {fileID: 11400000, guid: 97dcfa2128b4dc544bc272fad994c61a, type: 2}
+  baseIngredient:
+  - {fileID: 11400000, guid: c79a75e93356e1f488d1b9961dce036f, type: 2}
+  drinkColorHex: '#74ccf4'
