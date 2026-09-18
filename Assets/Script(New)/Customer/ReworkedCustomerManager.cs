@@ -33,6 +33,7 @@ public class ReworkedCustomerManager : MonoBehaviour
     private int _availableRecipeCount;
     private string _currentDialogueText = "";
     private string _lastNonMatchedIngredientText = "";
+    private bool _isUniqueCustomer = false;
 
     public enum GameplayState
     {
@@ -493,6 +494,7 @@ public class ReworkedCustomerManager : MonoBehaviour
 
     public void GenerateSpecialCustomer(int eventNum)
     {
+        _isUniqueCustomer = true;
         CustomerData selectedData = null;
 
         if (eventNum == 0 && _customerDatabase != null && _customerDatabase.AllTouristCustomer != null && _customerDatabase.AllTouristCustomer.Count > 0)
@@ -533,6 +535,7 @@ public class ReworkedCustomerManager : MonoBehaviour
 
     public void GenerateNormalCustomer()
     {
+        _isUniqueCustomer = false;
         if (_customerDatabase == null || _customerDatabase.AllCustomers == null || _customerDatabase.AllCustomers.Count == 0) return;
 
         int TotalCustomer = _customerDatabase.AllCustomers.Count;
@@ -720,7 +723,14 @@ public class ReworkedCustomerManager : MonoBehaviour
             if (perfectMatch != null)
             {
                 perfectCount++;
-                totalFavourGained += 100;
+                if (_isUniqueCustomer)
+                {
+                    totalFavourGained += 200;
+                }
+                else
+                {
+                    totalFavourGained += 100;
+                }
                 remainingServed.Remove(perfectMatch);
                 continue;
             }
@@ -773,7 +783,14 @@ public class ReworkedCustomerManager : MonoBehaviour
             if (decentMatch != null)
             {
                 decentCount++;
-                totalFavourGained += 50;
+                if (_isUniqueCustomer)
+                {
+                    totalFavourGained += 100;
+                }
+                else
+                {
+                    totalFavourGained += 50;
+                }
                 remainingServed.Remove(decentMatch);
             }
             else
