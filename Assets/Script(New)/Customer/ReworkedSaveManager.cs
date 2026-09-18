@@ -160,11 +160,32 @@ public class ReworkedSaveManager : MonoBehaviour
         }
         else if(_currentFavourPercentage == _previousFavourPercentage)
         {
-            if(_maxCustomer == _customerCap)
+
+            if (_currentFavourPercentage >= 85)
             {
-                _maxCustomer = _customerCap;
+                _maxCustomer += 2;
+                if (_maxCustomer < _customerMin)
+                {
+                    _maxCustomer = _customerMin;
+                }
+
             }
-            // if same but maxCustomer is not capped then remain the same maxCustomer
+            else if (_currentFavourPercentage >= 50)
+            {
+                _maxCustomer += 1;
+                if (_maxCustomer < _customerMin)
+                {
+                    _maxCustomer = _customerMin;
+                }
+            }
+            else
+            {
+                _maxCustomer -= 1;
+                if (_maxCustomer < _customerMin)
+                {
+                    _maxCustomer = _customerMin;
+                }
+            }
         }
         else
         {
