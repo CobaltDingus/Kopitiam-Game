@@ -878,7 +878,6 @@ GameObject:
   - component: {fileID: 174967857}
   - component: {fileID: 174967856}
   - component: {fileID: 174967859}
-  - component: {fileID: 174967858}
   m_Layer: 5
   m_Name: ResumreButton
   m_TagString: Untagged
@@ -943,19 +942,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 174967854}
   m_CullTransparentMesh: 1
---- !u!114 &174967858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 174967854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1ad3d61b6ae09d4d975e68bf46bdadf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIPanel
-  screenOverlay: {fileID: 0}
 --- !u!114 &174967859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -999,7 +985,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 174967856}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 649723194}
+        m_TargetAssemblyTypeName: UIPanel, Assembly-CSharp
+        m_MethodName: TogglePanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &207427149
 GameObject:
   m_ObjectHideFlags: 0
@@ -3359,6 +3357,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomerDisplayLink
   customerSpriteRenderer: {fileID: 731234698}
   dialogueText: {fileID: 371707622}
+  slideDuration: 0.5
+  startYOffset: -800
+  customerTransform: {fileID: 0}
 --- !u!1 &738535695
 GameObject:
   m_ObjectHideFlags: 0
@@ -3618,9 +3619,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1527265312002079972, guid: fe2df715b5714b1499d9a3088e52cc3a, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 1e1da14b12f5c724482da800ca50ad66, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4678,7 +4679,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 5942298840853925026, guid: fe2df715b5714b1499d9a3088e52cc3a, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: ce2d3044b5895c34ebb6aa1863b8023b, type: 3}
+  m_Resource: {fileID: 8300000, guid: d8bd4e7c02064144798150e6048b3346, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
@@ -7184,6 +7185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1709889290}
   - component: {fileID: 1709889291}
+  - component: {fileID: 1709889292}
   m_Layer: 5
   m_Name: SoundSlider
   m_TagString: Untagged
@@ -7263,7 +7265,32 @@ MonoBehaviour:
   m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1709889292}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: ChangeVolume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1709889292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709889289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44b9a11a2dd12c40ab4be916426199c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  AudioSlider: {fileID: 1709889291}
 --- !u!1 &1716341620
 GameObject:
   m_ObjectHideFlags: 0

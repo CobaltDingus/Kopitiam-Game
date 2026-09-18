@@ -41,4 +41,13 @@ public class UIPanel : MonoBehaviour
         }
         gameObject.SetActive(!gameObject.activeSelf);
     }
+
+    public void TurnOn()
+    {
+        screenOverlay.gameObject.SetActive(true);
+    }
+    public void TurnOff()
+    {
+        screenOverlay.gameObject.SetActive(false);
+    }
 }
