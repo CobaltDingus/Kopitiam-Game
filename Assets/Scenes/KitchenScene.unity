@@ -10953,7 +10953,7 @@ MonoBehaviour:
   - {fileID: 1803299407}
   slotSprite: {fileID: 2892162361200927640}
   liquidSprite: {fileID: 1803299407}
-  outlineSprite: {fileID: 21300000, guid: 50aed6424b00fe54a9a7fce029de1958, type: 3}
+  outlineSprite: {fileID: 21300000, guid: a1edd033c4066d947b67e3c5638a58e2, type: 3}
 --- !u!1 &1184879113
 GameObject:
   m_ObjectHideFlags: 0

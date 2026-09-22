@@ -15,16 +15,16 @@ public class DrinksDatabase : ScriptableObject
     [SerializeField] private List<DrinkRecipe> dayFourDrinks;
     // O Kosong, C Kosong
     [SerializeField] private List<DrinkRecipe> dayFiveDrinks;
-
+    // Cham
     [SerializeField] private List<DrinkRecipe> daySixDrinks;
-
+    // Hor Ka Sai
     [SerializeField] private List<DrinkRecipe> daySevenDrinks;
-
+    // Sai Ka Hor
     [SerializeField] private List<DrinkRecipe> dayEightDrinks;
 
-    [SerializeField] private List<DrinkRecipe> dayNineDrinks;
+    // [SerializeField] private List<DrinkRecipe> dayNineDrinks;
 
-    [SerializeField] private List<DrinkRecipe> dayTenDrinks;
+    // [SerializeField] private List<DrinkRecipe> dayTenDrinks;
 
     private List<Drink> drinksToAdd;
     
