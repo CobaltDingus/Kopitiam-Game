@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e21d54b95bbfb1d448e418161503a8b7
+guid: 256e3c8286d7e6643a746cc2db879c3d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3775013614001625247
-    second: AuntieNormal_0
+      213: 8164581265703915439
+    second: GoLeft_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AuntieNormal_0
+      name: GoLeft_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 308
-        height: 501
+        width: 305
+        height: 67
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1676b237e157c9bc0800000000000000
-      internalID: -3775013614001625247
+      spriteID: faf4712476b6e4170800000000000000
+      internalID: 8164581265703915439
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      AuntieNormal_0: -3775013614001625247
+      GoLeft_0: 8164581265703915439
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -191,7 +191,7 @@ public class GesturePanel : MonoBehaviour,
 
         ResetGestureProgress();
 
-        SetVisibility(true);
+        // SetVisibility(true);
 
         onDetectorUnlocked?.Invoke();
 

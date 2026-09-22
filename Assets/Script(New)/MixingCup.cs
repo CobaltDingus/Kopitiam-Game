@@ -2,38 +2,24 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Linq;
 using UnityEngine.UI;
+using System.Linq;
 
-public class MixingCup : 
-// MonoBehaviour,
+public class MixingCup :
 DraggableObject,
 DropIngredientInterface,
-// DropInterface,
 IPointerDownHandler,
 IDragHandler,
 IPointerUpHandler
-
 {
-    private Drink drink = new Drink();
-    [SerializeField] private Ingredient waterAsset;
-
-    // [SerializeField] private GameObject dragCupPrefab;
     [SerializeField] private GameObject liquidObject;
     private SpriteRenderer liquidSprite;
-    // public DragEnum dragType;
-    // public bool canDrag;
-    // private GameObject draggedObject;
-    // private Camera cam;
-    private SpriteRenderer sourceRenderer;
-    public RecipeBook recipeBook;
     public string waterColorHex = "#98DCFF";
     Color currentLiquidColor;
 
     private Vector3 originalScale;
     private Coroutine bounceCoroutine;
 
-    // UI Elements
     [SerializeField] private TMP_Text ingredientText;
     [SerializeField] private TMP_Text stirCounterText;
     [SerializeField] private Button stirButton;
@@ -43,23 +29,25 @@ IPointerUpHandler
     private Image gesturePanelDrawArea;
     [SerializeField] Image gesturePanelDrawAreaOverlay;
 
-    private bool isValidDrink = false;
-    public int stirsRequired = 4;
-    public int currentStirCount = 0;
+    private void OnEnable()
+    {
+        DrinkManager.Instance.OnDrinkChanged += RefreshFromDrink;
+        DrinkManager.Instance.OnStirProgress += RefreshStirUI;
+        DrinkManager.Instance.OnDrinkCleared += HandleCleared;
+    }
 
+    private void OnDisable()
+    {
+        DrinkManager.Instance.OnDrinkChanged -= RefreshFromDrink;
+        DrinkManager.Instance.OnStirProgress -= RefreshStirUI;
+        DrinkManager.Instance.OnDrinkCleared -= HandleCleared;
+    }
 
-    // private List<Ingredient> ingredients = new List<Ingredient>();
-
-    // private void Awake()
-    // {
-    //     cam = Camera.main;
-    //     sourceRenderer = GetComponentInChildren<SpriteRenderer>();
-        
-    // }
-    
     private void Start()
     {
         MakeEmptyCup();
+        RefreshFromDrink();
+        RefreshStirUI();
     }
 
     public void SetCamera(Camera newCamera)
@@ -71,141 +59,117 @@ IPointerUpHandler
     {
         originalScale = transform.localScale;
         liquidSprite = liquidObject.GetComponent<SpriteRenderer>();
-        ingredientText.text = "Mixing Cup Contents: \n\nEMPTY";
         stirButtonText = stirButton.GetComponentInChildren<TMP_Text>();
         gesturePanelDrawArea = gesturePanel.GetComponent<Image>();
-        gesturePanelDrawArea.color = Color.white;  
-    }
+        gesturePanelDrawArea.color = Color.white;
 
+        if (DrinkManager.Instance.CurrentDrink.ingredients.Count == 0)
+        {
+            ingredientText.text = "Mixing Cup Contents: \n\nEMPTY";
+        }
+    }
     public void ReceiveIngredient(Ingredient ingredient)
     {
-        // ingredients.Add(ingredient);
-        drink.ingredients.Add(ingredient);
+        DrinkManager.Instance.AddIngredient(ingredient);
         dragType = DragEnum.UnfinishedDrink;
         canDrag = true;
-
-        UpdateIngredientText(ingredient);
     }
 
-    private IEnumerator Bounce()
+    public void AddWater()
     {
-        float duration = 0.15f;
-        float elapsed = 0f;
-
-        Vector3 squashed = new Vector3(
-            originalScale.x * 1.1f,
-            originalScale.y * 0.9f,
-            originalScale.z
-        );
-
-        // Squash
-        while (elapsed < duration / 2f)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / (duration / 2f);
-
-            transform.localScale = Vector3.Lerp(
-                originalScale,
-                squashed,
-                t
-            );
-
-            yield return null;
-        }
-
-        elapsed = 0f;
-
-        // Return to normal
-        while (elapsed < duration / 2f)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / (duration / 2f);
-
-            transform.localScale = Vector3.Lerp(
-                squashed,
-                originalScale,
-                t
-            );
-
-            yield return null;
-        }
-
-        transform.localScale = originalScale;
-        bounceCoroutine = null;
+        DrinkManager.Instance.AddWater();
+        dragType = DragEnum.UnfinishedDrink;
+        canDrag = true;
     }
 
-    // public override DraggedData GetData()
-    // {
-    //     return drink;
-    // }
-    // public void ReceiveDraggable( draggableObject)
-    // {
-    //     if (draggableObject.GetData() is Ingredient ingredient)
-    //     {
-    //         drink.ingredients.Add(ingredient);
-
-    //         UpdateIngredientText();
-    //     }
-
-    // }
-    private void UpdateIngredientText(Ingredient ingredient)
+    public void StirDrink()
     {
-        if (drink.ingredients.Count == 1)
+        DrinkManager.Instance.Stir();
+    }
+
+    // Change to drink manager
+
+    private void RefreshFromDrink()
+    {
+        var drink = DrinkManager.Instance.CurrentDrink;
+
+        RebuildIngredientText(drink);
+        AnimateBounce();
+
+        bool hasContents = drink.ingredients.Count > 0;
+        canDrag = hasContents;
+        dragType = hasContents ? DragEnum.UnfinishedDrink : DragEnum.None;
+
+        if (drink.ingredients.Any(i => i.name == "HotWater"))
         {
-            ingredientText.text = "Mixing Cup Contents: \n\n";
+            currentLiquidColor = HexToColor(waterColorHex);
+            liquidSprite.color = currentLiquidColor;
+            liquidObject.SetActive(true);
+            gesturePanelDrawArea.color = currentLiquidColor;
         }
 
-        // ingredientText.text = string.Join(
-        //     "\n",
-        //     drink.ingredients.ConvertAll(i => i.Name)
-        // );
-
-        ingredientText.text += ingredient.Name + "\n";
-
-        if (bounceCoroutine != null) {
-            StopCoroutine(bounceCoroutine);
-        }
-
-        bounceCoroutine = StartCoroutine(Bounce());
-
-        isValidDrink = CheckDrinkValidity();
-
-        if (isValidDrink)
+        if (DrinkManager.Instance.IsValidDrink)
         {
-            // stirButton.image.color = Color.green;
             stirButtonText.text = "Start stirring";
             stirButton.enabled = true;
             EnableStirring();
         }
     }
 
-    // public List<Ingredient> GetIngredients()
-    // {
-    //     return ingredients;
-    // }
+    private void RebuildIngredientText(Drink drink)
+    {
+        ingredientText.text = "Mixing Cup Contents: \n\n";
+        foreach (var ing in drink.ingredients)
+        {
+            ingredientText.text += ing.Name + "\n";
+        }
+    }
 
-    public void ClearCup()
+    private void RefreshStirUI()
+    {
+        int count = DrinkManager.Instance.CurrentStirCount;
+        int required = DrinkManager.Instance.stirsRequired;
+
+        stirCounterText.text = "Stirs Left (" + (required - count) + ")";
+
+        currentLiquidColor = Color.Lerp(
+            HexToColor(waterColorHex),
+            HexToColor(DrinkManager.Instance.CurrentDrink.colorHex),
+            count / (float)required
+        );
+
+        gesturePanelDrawArea.color = currentLiquidColor;
+        liquidSprite.color = currentLiquidColor;
+
+        if (DrinkManager.Instance.IsStirComplete)
+        {
+            stirButtonText.text = "Ready to serve!";
+            stirButton.image.color = Color.green;
+            stirButton.interactable = true;
+        }
+    }
+
+    private void HandleCleared()
     {
         ingredientText.text = "Mixing Cup Contents: \n\nEMPTY";
         canDrag = false;
         dragType = DragEnum.None;
-        drink.ingredients.Clear();
         liquidObject.SetActive(false);
         ResetUI();
     }
 
+    public void ClearCup()
+    {
+        DrinkManager.Instance.ClearDrink(); // triggers HandleCleared via event
+    }
+
     public void ResetUI()
     {
-        // stirButton
         stirButton.image.color = Color.grey;
         stirButton.enabled = false;
         stirButtonText.text = "Incomplete Drink";
+        stirCounterText.text = "Stirs Left " + DrinkManager.Instance.stirsRequired;
 
-        // stirCounter
-        stirCounterText.text = "Stirs Left " + stirsRequired;
-        currentStirCount = 0;
-
-        // gesturePanel
         gesturePanel.DisableDetector();
         gesturePanelDrawArea.color = Color.white;
         currentLiquidColor = Color.white;
@@ -213,72 +177,49 @@ IPointerUpHandler
         stirButton.interactable = false;
     }
 
-    public void AddWater()
-    {
-        if (!drink.ingredients.Any(ingredient => ingredient.name == "HotWater"))
-        {
-            drink.ingredients.Add(waterAsset);
-            UpdateIngredientText(waterAsset);
-            dragType = DragEnum.UnfinishedDrink;
-            canDrag = true;
-
-
-            currentLiquidColor = HexToColor(waterColorHex);
-            liquidSprite.color = currentLiquidColor;
-            liquidObject.SetActive(true);
-
-            gesturePanelDrawArea.color = currentLiquidColor;
-
-            // StirDrink();
-            // dragType = DragEnum.FinishedDrink;
-        } else
-        {
-            return;
-        }
-    }
-
     public void EnableStirring()
     {
-        // stirButton
         stirButton.image.color = Color.grey;
         stirButton.interactable = false;
         stirButtonText.text = "Start stirring!";
-
-        // gesturePanel
         gesturePanelDrawAreaOverlay.gameObject.SetActive(false);
         gesturePanel.UnlockAndEnableDetector();
     }
 
-    public void StirDrink()
+    private IEnumerator Bounce()
     {
-        currentStirCount++;
-        stirCounterText.text = "Stirs Left (" + (stirsRequired - currentStirCount) + ")";
+        float duration = 0.15f;
+        float elapsed = 0f;
+        Vector3 squashed = new Vector3(originalScale.x * 1.1f, originalScale.y * 0.9f, originalScale.z);
 
-        currentLiquidColor = Color.Lerp(
-            HexToColor(waterColorHex),
-            HexToColor(drink.colorHex),
-            currentStirCount / 4f
-        );
-
-        gesturePanelDrawArea.color = currentLiquidColor;
-        liquidSprite.color = currentLiquidColor;
-
-        if (currentStirCount == stirsRequired)
+        while (elapsed < duration / 2f)
         {
-            drink.isStirred = true;
-
-            stirButtonText.text = "Ready to serve!";
-            stirButton.image.color = Color.green;
-            stirButton.interactable = true;
-            
-            // stirButton.image.color = Color.green;
+            elapsed += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(originalScale, squashed, elapsed / (duration / 2f));
+            yield return null;
         }
 
+        elapsed = 0f;
+        while (elapsed < duration / 2f)
+        {
+            elapsed += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(squashed, originalScale, elapsed / (duration / 2f));
+            yield return null;
+        }
+
+        transform.localScale = originalScale;
+        bounceCoroutine = null;
+    }
+
+    private void AnimateBounce()
+    {
+        if (bounceCoroutine != null) StopCoroutine(bounceCoroutine);
+        bounceCoroutine = StartCoroutine(Bounce());
     }
 
     public override object GetData()
     {
-        return drink.Clone();
+        return DrinkManager.Instance.CurrentDrink.Clone();
     }
 
     public override void AfterDropFunctions()
@@ -286,72 +227,12 @@ IPointerUpHandler
         ClearCup();
     }
 
-    public void SetSpriteColorFromHex(string hex, SpriteRenderer spriteComponent)
-    {
-        // TryParseHtmlString returns true if the conversion is successful
-        if (ColorUtility.TryParseHtmlString(hex, out Color newColor))
-        {
-            spriteComponent.color = newColor;
-        }
-        else
-        {
-            Debug.LogWarning("Invalid Hexadecimal string provided!");
-        }
-    }
-
     public Color HexToColor(string hexCode)
     {
         if (ColorUtility.TryParseHtmlString(hexCode, out Color newColor))
-        {
             return newColor;
-        }
-        else
-        {
-            Debug.LogWarning("Invalid Hexadecimal string provided!");
-            return Color.clear;
-        }
-    }
 
-    public bool CheckDrinkValidity()
-    {
-        foreach (DrinkRecipe recipe in recipeBook.allRecipes)
-        {
-            if (drink.ingredients.Count == recipe.ingredients.Count &&
-            drink.ingredients
-            .OrderBy(i => i.Id)
-            .SequenceEqual(recipe.ingredients.OrderBy(i => i.Id)))
-            {
-                // drink.drinkSprite = recipe.drinkImage;
-                drink.drinkName = recipe.drinkName;
-                drink.colorHex = recipe.drinkColorHex;
-                return true;
-            }
-        }
-        foreach (DrinkRecipe recipe in recipeBook.TouristUniqueRecipe)
-        {
-            if (drink.ingredients.Count == recipe.ingredients.Count &&
-            drink.ingredients
-            .OrderBy(i => i.Id)
-            .SequenceEqual(recipe.ingredients.OrderBy(i => i.Id)))
-            {
-                // drink.drinkSprite = recipe.drinkImage;
-                drink.drinkName = recipe.drinkName;
-                drink.colorHex = recipe.drinkColorHex;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void StirButtonClick()
-    {
-        // if (!drink.isStirred)
-        // {
-        //     BeginStirring();
-        // }
-        // else
-        // {
-
-        // }
+        Debug.LogWarning("Invalid Hexadecimal string provided!");
+        return Color.clear;
     }
 }

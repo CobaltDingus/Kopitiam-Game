@@ -127,7 +127,7 @@ public class UiManager : MonoBehaviour
 
         if (timerText != null)
         {
-            string word = "Time Elapsed: ";
+            string word = "Time Spent: ";
             timerText.text = word + string.Format("{0:00}:{1:00}", minutes, seconds);
         }
     }

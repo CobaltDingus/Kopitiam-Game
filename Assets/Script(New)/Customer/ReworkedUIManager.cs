@@ -128,7 +128,7 @@ public class ReworkedUIManager : MonoBehaviour
 
         if (_timerText != null)
         {
-            string text = _challengeMode ? "Time Remaining " : "Time Elapsed ";
+            string text = _challengeMode ? "Time Remaining " : "Time Spent ";
             _timerText.text = text + string.Format("{0:00}:{1:00}", minutes, seconds);
         }
     }

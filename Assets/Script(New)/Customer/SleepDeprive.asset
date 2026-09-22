@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 
   customerName: 
   customerSprite: []
+  GoodOutComeSprite: []
   variant: SleepDeprive
   startFrontDialogue: []
   startBackDialogue: []

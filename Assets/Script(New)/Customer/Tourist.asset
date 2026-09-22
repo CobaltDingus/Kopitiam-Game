@@ -15,9 +15,9 @@ MonoBehaviour:
   id: C002
   customerName: 
   customerSprite:
-  - {fileID: -3775013614001625247, guid: 8060a2bc3a5ac2c4b8393c25ccc4d279, type: 3}
+  - {fileID: -3775013614001625247, guid: e21d54b95bbfb1d448e418161503a8b7, type: 3}
   GoodOutComeSprite:
-  - {fileID: -6764824688621072982, guid: 7ebdefd506adb3c41bcd134d523db432, type: 3}
+  - {fileID: -6764824688621072982, guid: 7d3c90f4ec232004f8bf8d1623b209e8, type: 3}
   variant: Tourist
   startFrontDialogue:
   - 'Eh, i heard you can make '
@@ -30,8 +30,8 @@ MonoBehaviour:
   decentFrontDialogue:
   - 'Ok lah, '
   decentBackDialogue:
-  - ' not that bad although its not what i ordered'
+  - ' not that bad although it''s not what i ordered'
   wrongFrontDialogue:
   - Huh?
   wrongBackDiaogue:
-  - ' what is this!?!?'
+  - ' What is this!?!?'
