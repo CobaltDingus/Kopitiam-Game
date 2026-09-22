@@ -28,6 +28,7 @@ IPointerUpHandler
 
     private Image gesturePanelDrawArea;
     [SerializeField] Image gesturePanelDrawAreaOverlay;
+    [SerializeField] GameObject _popUpPrefab;
 
     private void OnEnable()
     {
@@ -71,6 +72,10 @@ IPointerUpHandler
     public void ReceiveIngredient(Ingredient ingredient)
     {
         DrinkManager.Instance.AddIngredient(ingredient);
+        GameObject popUp = Instantiate(_popUpPrefab);
+        popUp.GetComponentInChildren<TMP_Text>().fontSize = 30;
+        popUp.GetComponentInChildren<TMP_Text>().text = "+" + ingredient.name;
+
         dragType = DragEnum.UnfinishedDrink;
         canDrag = true;
     }

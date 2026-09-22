@@ -29,6 +29,7 @@ public class ReworkedCustomerManager : MonoBehaviour
     [Header("General Variables (Revamp)")]
     [SerializeField] private int _minDrink = 1;
     [SerializeField] private int _maxDrink = 1;
+    [SerializeField] private GameObject _popUpPrefab;
     private int _chosenSpriteIndex;
     private int _availableRecipeCount;
     private string _currentDialogueText = "";
@@ -807,6 +808,8 @@ public class ReworkedCustomerManager : MonoBehaviour
         }
 
         // Apply calculated Favour points
+        GameObject popUp = Instantiate(_popUpPrefab);
+        popUp.GetComponentInChildren<TMP_Text>().text = "+" + totalFavourGained.ToString();
         ReworkedSaveManager.instance.Favour += totalFavourGained;
 
         if (ReworkedUIManager.instance != null)
