@@ -22,10 +22,6 @@ public class DrinksDatabase : ScriptableObject
     // Sai Ka Hor
     [SerializeField] private List<DrinkRecipe> dayEightDrinks;
 
-    // [SerializeField] private List<DrinkRecipe> dayNineDrinks;
-
-    // [SerializeField] private List<DrinkRecipe> dayTenDrinks;
-
     private List<Drink> drinksToAdd;
     
     public List<Drink> DrinksToAdd => drinksToAdd;

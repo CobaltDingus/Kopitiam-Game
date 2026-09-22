@@ -59,6 +59,7 @@ public class ReworkedCustomerManager : MonoBehaviour
     private CustomerData _currentCustomer;
     private Sprite _currentSprite;
     private List<DrinkRecipe> orderedRecipes = new();
+    public List<DrinkRecipe> OrderedRecipes => orderedRecipes;
 
     [Header("Tutorial Variables (Revamp)")]
     [SerializeField] private Sprite _tutorialSprite;
