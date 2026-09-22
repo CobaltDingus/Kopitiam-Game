@@ -40,6 +40,21 @@ public class DrinksDatabase : ScriptableObject
             case 3:
                 AddDrinksToMaster(dayThreeDrinks);
                 break;
+            case 4:
+                AddDrinksToMaster(dayFourDrinks);
+                break;
+            case 5:
+                AddDrinksToMaster(dayFiveDrinks);
+                break;
+            case 6:
+                AddDrinksToMaster(daySixDrinks);
+                break;
+            case 7:
+                AddDrinksToMaster(daySevenDrinks);
+                break;
+            case 8:
+                AddDrinksToMaster(dayEightDrinks);
+                break;
             default:
                 break;
         }
@@ -51,6 +66,15 @@ public class DrinksDatabase : ScriptableObject
         foreach (DrinkRecipe drink in drinks)
         {
             recipeBook.AllRecipes.Add(drink);
+        }
+        // RemoveFromTourist(drinks);
+    }
+
+    public void RemoveFromTourist(List<DrinkRecipe> drinks)
+    {
+        foreach (DrinkRecipe drink in drinks)
+        {
+            recipeBook.TouristUniqueRecipe.Remove(drink);
         }
     }
 }

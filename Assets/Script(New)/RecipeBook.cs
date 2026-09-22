@@ -23,4 +23,7 @@ public class RecipeBook : ScriptableObject
     public List<DrinkRecipe> _touristUniqueRecipe = new List<DrinkRecipe>();
     public List<DrinkRecipe> TouristUniqueRecipe => _touristUniqueRecipe;
 
+    public List<DrinkRecipe> _everyRecipe = new List<DrinkRecipe>();
+    public List<DrinkRecipe> EveryRecipe => _everyRecipe;
+
 }
