@@ -18,6 +18,7 @@ public class ReworkedUIManager : MonoBehaviour
     [SerializeField] private TMP_Text _dayText;
     [SerializeField] private TMP_Text _customerCountText;
     [SerializeField] private TMP_Text _favourText;
+    [SerializeField] private GameObject _topBar;
     private bool _isTimerRunning;
     private bool _challengeMode;
     private float _timeElapsed;
