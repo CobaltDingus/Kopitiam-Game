@@ -1,12 +1,10 @@
 using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class PopUpDisplay : MonoBehaviour
+public class PopUpDisplayText : MonoBehaviour
 {
     [Header("Target Object")]
     public GameObject targetObject1;
-    public GameObject targetObject2;
 
     [Header("Movement Settings")]
     public Vector2 initialVelocity;
@@ -28,36 +26,25 @@ public class PopUpDisplay : MonoBehaviour
 
     private void Start()
     {
-        
+
         if (targetObject1 != null && text != null)
         {
             text.transform.position = targetObject1.transform.position;
         }
 
-        if (targetObject2 != null && text != null)
-        {
-            text.transform.position = targetObject2.transform.position;
-        }
 
-        
-        initialVelocity = new Vector2(
-            Random.Range(-2f, 2f),
-            Random.Range(3f, 7f)
-        );
-
-        
         if (rb != null)
         {
             rb.linearVelocity = initialVelocity;
         }
 
-        
+
         if (text != null)
         {
             currentAlpha = text.color.a;
         }
 
-        
+
         Destroy(gameObject, lifetime);
     }
 
