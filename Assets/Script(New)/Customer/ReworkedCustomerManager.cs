@@ -222,6 +222,10 @@ public class ReworkedCustomerManager : MonoBehaviour
 
     public void NextDialogue()
     {
+        if (ReworkedSaveManager.instance.TutorialPhase == 5)
+        {
+            
+        }
         if ((ReworkedSaveManager.instance.TutorialPhase == 5 || ReworkedSaveManager.instance.TutorialPhase == 7)
             && ReworkedSaveManager.instance.Day == 0 && CurrentGameplayState == GameplayState.Tutorial)
         {
@@ -706,6 +710,7 @@ public class ReworkedCustomerManager : MonoBehaviour
 
     public void EvaluateGeneralOrder(List<Drink> ServedDrink)
     {
+        int totalPotentialFavour = orderedRecipes.Count * 100;
         if (_currentCustomer == null || orderedRecipes.Count == 0) return;
 
         ServedDrink ??= new List<Drink>();
@@ -809,7 +814,20 @@ public class ReworkedCustomerManager : MonoBehaviour
         }
 
         // Apply calculated Favour points
+        
         GameObject popUp = Instantiate(_popUpPrefab);
+        if (totalFavourGained == 0)
+        {
+            popUp.GetComponentInChildren<TMP_Text>().color = Color.red;
+        }
+        else if(totalFavourGained < totalPotentialFavour)
+        {
+            popUp.GetComponentInChildren<TMP_Text>().color = Color.yellow;
+        }
+        else if (totalFavourGained == totalPotentialFavour)
+        {
+            popUp.GetComponentInChildren<TMP_Text>().color = Color.green;
+        }
         popUp.GetComponentInChildren<TMP_Text>().text = "+" + totalFavourGained.ToString();
         ReworkedSaveManager.instance.Favour += totalFavourGained;
 

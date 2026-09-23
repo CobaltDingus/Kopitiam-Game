@@ -9,11 +9,11 @@ public class PopUpDisplayText : MonoBehaviour
     [Header("Movement Settings")]
     public Vector2 initialVelocity;
     public Rigidbody2D rb;
-    public float lifetime = 1.5f;
+    public float lifetime = 2.0f;
 
     [Header("Fade Settings")]
     public TMP_Text text;
-    public float fadeDuration = 1.5f;
+    public float fadeDuration = 2.0f;
     public bool isFading = true;
 
     private float currentAlpha;
@@ -48,22 +48,22 @@ public class PopUpDisplayText : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
-    private void Update()
-    {
-        if (!isFading || text == null) return;
+    //private void Update()
+    //{
+    //    if (!isFading || text == null) return;
 
-        // Reduce alpha over time
-        currentAlpha -= Time.deltaTime / fadeDuration;
-        currentAlpha = Mathf.Clamp01(currentAlpha);
+    //    // Reduce alpha over time
+    //    currentAlpha -= Time.deltaTime / fadeDuration;
+    //    currentAlpha = Mathf.Clamp01(currentAlpha);
 
-        // Apply updated alpha back to TMP component
-        Color currentColor = text.color;
-        currentColor.a = currentAlpha;
-        text.color = currentColor;
+    //    // Apply updated alpha back to TMP component
+    //    Color currentColor = text.color;
+    //    currentColor.a = currentAlpha;
+    //    text.color = currentColor;
 
-        if (currentAlpha <= 0f)
-        {
-            isFading = false;
-        }
-    }
+    //    if (currentAlpha <= 0f)
+    //    {
+    //        isFading = false;
+    //    }
+    //}
 }
