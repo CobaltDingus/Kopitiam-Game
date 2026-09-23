@@ -8,7 +8,9 @@ public class TrayDatabase : ScriptableObject
     [SerializeField] private List<Drink> savedDrinks = new List<Drink>();
     public List<Drink> SavedDrinks => savedDrinks;
     public int MaxSlots = 3;
-    public event Action OnDrinkAdded;
+    // public event Action OnDrinkAdded;
+    public event Action OnTrayUpdate;
+    public event Action OnTrayCleared;
     public void SaveDrinks(List<Drink> drinks)
     {
         savedDrinks = new List<Drink>(drinks);
@@ -16,6 +18,7 @@ public class TrayDatabase : ScriptableObject
     public void ClearDatabase()
     {
         savedDrinks.Clear();
+        OnTrayCleared?.Invoke();
     }
     public bool AddDrink(Drink drink)
     {
@@ -23,10 +26,7 @@ public class TrayDatabase : ScriptableObject
         {
             savedDrinks.Add(drink);
             Debug.Log("Drink added to tray");
-
-            Debug.Log($"Adding drink. List count: {savedDrinks.Count}");
-            Debug.Log($"Listeners: {OnDrinkAdded?.GetInvocationList().Length ?? 0}");
-            OnDrinkAdded?.Invoke();
+            OnTrayUpdate?.Invoke();
             return true;
         }
         else
@@ -44,5 +44,12 @@ public class TrayDatabase : ScriptableObject
         // }
         // Debug.Log("Tray is full");
         // return false;
+    }
+
+    public void RemoveDrink(int slotNum)
+    {
+        savedDrinks.RemoveAt(slotNum);
+        OnTrayUpdate?.Invoke();
+        // savedDrinks[slotNum] = null;
     }
 }

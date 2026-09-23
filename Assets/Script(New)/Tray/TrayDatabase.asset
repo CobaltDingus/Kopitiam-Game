@@ -12,5 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ccdd4f3d0337543b3ec0b61f0940c5, type: 3}
   m_Name: TrayDatabase
   m_EditorClassIdentifier: Assembly-CSharp::TrayDatabase
-  savedDrinks: []
-  MaxSlots: 1
+  savedDrinks:
+  - ingredients:
+    - {fileID: 11400000, guid: 7ac89a8f3d444cd498157839b50c963f, type: 2}
+    - {fileID: 11400000, guid: 97dcfa2128b4dc544bc272fad994c61a, type: 2}
+    - {fileID: 11400000, guid: d1eb19e8e41ed944a8751f7cc5627f22, type: 2}
+    drinkSprite: {fileID: 0}
+    cupSprite: {fileID: 0}
+    drinkName: Kopi O
+    containerType: 1
+    isStirred: 1
+    isFinished: 1
+    colorHex: '#32210b'
+  MaxSlots: 3
