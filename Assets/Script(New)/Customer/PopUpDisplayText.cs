@@ -29,7 +29,7 @@ public class PopUpDisplayText : MonoBehaviour
 
         if (targetObject1 != null && text != null)
         {
-            text.transform.position = targetObject1.transform.position;
+            transform.position = targetObject1.transform.position;
         }
 
 

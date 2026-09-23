@@ -67,6 +67,11 @@ public class ReworkedCustomerManager : MonoBehaviour
     private string _tutorialWrongOrderDialogue = "Hmm, that's not right. Try again.";
     [SerializeField] private bool skip;
 
+    [Header("Tutorial Icon Display (Revamp)")]
+    [SerializeField] private GameObject _icon1;
+    [SerializeField] private GameObject _icon2;
+    [SerializeField] private GameObject _icon3;
+
     // ================================ GETTER & SETTER ================================
 
     public string CurrentDialogue => _currentDialogueText;
@@ -99,7 +104,11 @@ public class ReworkedCustomerManager : MonoBehaviour
             FindOkayButton();
             FindRetryButton();
             FindKitchenButton();
+            FindIngredientIcons(); // <--- Added here
         }
+
+        LoadIngredientDisplay();
+
         if (skip)
         {
             ReworkedSaveManager.instance.Day = 1;
@@ -125,6 +134,7 @@ public class ReworkedCustomerManager : MonoBehaviour
 
         EvaluateAndUpdateGameplayState();
         EvaluateAndUpdateCounterState();
+        LoadIngredientDisplay();
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -135,6 +145,7 @@ public class ReworkedCustomerManager : MonoBehaviour
             FindOkayButton();
             FindRetryButton();
             FindKitchenButton();
+            FindIngredientIcons(); // Re-bind new scene icons
 
             if (CurrentCounterState == CounterState.TakingOrder)
             {
@@ -143,6 +154,7 @@ public class ReworkedCustomerManager : MonoBehaviour
 
             EvaluateAndUpdateGameplayState();
             EvaluateAndUpdateCounterState();
+            LoadIngredientDisplay(); // Apply display update after references are refreshed
         }
     }
 
@@ -197,6 +209,23 @@ public class ReworkedCustomerManager : MonoBehaviour
         }
     }
 
+    void FindIngredientIcons()
+    {
+        // Find parent container first (must be active)
+        GameObject dialogueContainer = GameObject.Find("NewDialogueBox");
+
+        if (dialogueContainer != null)
+        {
+            Transform slot1 = dialogueContainer.transform.Find("IngredientSlot1");
+            Transform slot2 = dialogueContainer.transform.Find("IngredientSlot2");
+            Transform slot3 = dialogueContainer.transform.Find("IngredientSlot3");
+
+            if (slot1 != null) _icon1 = slot1.gameObject;
+            if (slot2 != null) _icon2 = slot2.gameObject;
+            if (slot3 != null) _icon3 = slot3.gameObject;
+        }
+    }
+
     // ================================ TUTORIAL FUNCTIONS ================================
     public void GenerateTutorialOrder()
     {
@@ -220,12 +249,34 @@ public class ReworkedCustomerManager : MonoBehaviour
         }
     }
 
+    public void LoadIngredientDisplay()
+    {
+        // Re-bind references if they are null or pointing to destroyed scene objects
+        if (_icon1 == null || _icon2 == null || _icon3 == null)
+        {
+            FindIngredientIcons();
+        }
+
+        if (CurrentGameplayState == GameplayState.Tutorial)
+        {
+            int phase = ReworkedSaveManager.instance.TutorialPhase;
+
+            if (_icon1 != null) _icon1.SetActive(phase == 4 || phase == 5 || phase == 6);
+            if (_icon2 != null) _icon2.SetActive(phase == 4 || phase == 5 || phase == 6);
+            if (_icon3 != null) _icon3.SetActive(phase == 4 || phase == 5);
+        }
+        else
+        {
+            // General Gameplay: Keep icons active
+            if (_icon1 != null) _icon1.SetActive(true);
+            if (_icon2 != null) _icon2.SetActive(true);
+            if (_icon3 != null) _icon3.SetActive(true);
+        }
+    }
+
     public void NextDialogue()
     {
-        if (ReworkedSaveManager.instance.TutorialPhase == 5)
-        {
-            
-        }
+        LoadIngredientDisplay();
         if ((ReworkedSaveManager.instance.TutorialPhase == 5 || ReworkedSaveManager.instance.TutorialPhase == 7)
             && ReworkedSaveManager.instance.Day == 0 && CurrentGameplayState == GameplayState.Tutorial)
         {

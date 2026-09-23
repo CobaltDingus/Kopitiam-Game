@@ -34,12 +34,13 @@ public class ReworkedCustomerDisplayLink : MonoBehaviour
             Debug.LogWarning("ReworkedCustomerDisplayLink: No ReworkedCustomerManager instance found in the scene yet.");
             return;
         }
-
+        
         // new shit
         ReworkedCustomerManager.instance.RegisterDisplayReferences(_customerSpriteRenderer, _dialogueText);
 
         ReworkedCustomerManager.instance.EvaluateAndUpdateCounterState();
         ReworkedCustomerManager.instance.EvaluateAndUpdateGameplayState();
+        ReworkedCustomerManager.instance.LoadIngredientDisplay();
     }
     // ================================ ANIMATION TWEEN ==================================
     void OnEnable()
