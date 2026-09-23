@@ -6,14 +6,22 @@ public class TraySlotRowContents : MonoBehaviour
     [SerializeField] private Image ingredientImage;
     [SerializeField] private TextMeshProUGUI ingredientTMP;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void PopulateIngredient(Ingredient ingredient)
     {
-        
-    }
+        ingredientTMP.text = ingredient.Name;
+        ingredientImage.sprite = ingredient.Icon;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // foreach (Transform child in ingredientContainer)
+        //     Destroy(child.gameObject);
+
+        // if (recipe.ingredients == null) return;
+
+        // foreach (Ingredient ing in recipe.ingredients)
+        // {
+        //     if (ing == null || ing.Name == "Hot Water") continue;
+
+        //     Image icon = Instantiate(ingredientIconPrefab, ingredientContainer);
+        //     icon.sprite = ing.Icon;
+        // }
     }
 }
