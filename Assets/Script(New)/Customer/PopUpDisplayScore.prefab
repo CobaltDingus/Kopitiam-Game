@@ -150,12 +150,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopUpDisplay
   targetObject1: {fileID: 9119243611235832198, guid: e82c789a0e50741428553a655bd13b82, type: 3}
-  targetObject2: {fileID: 29536240964897451, guid: 799b9467dcc77934388143ed90410285, type: 3}
   initialVelocity: {x: 0, y: 5}
   rb: {fileID: 6128738768699177607}
-  lifetime: 1
+  lifetime: 2
   text: {fileID: 1614673648868987932}
-  fadeDuration: 1
+  fadeDuration: 2
   isFading: 1
 --- !u!50 &6128738768699177607
 Rigidbody2D:
@@ -251,8 +250,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 999
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
-  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -282,7 +281,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535

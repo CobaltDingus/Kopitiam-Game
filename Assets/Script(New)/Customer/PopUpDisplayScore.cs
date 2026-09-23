@@ -6,16 +6,15 @@ public class PopUpDisplayScore : MonoBehaviour
 {
     [Header("Target Object")]
     public GameObject targetObject1;
-    public GameObject targetObject2;
 
     [Header("Movement Settings")]
     public Vector2 initialVelocity;
     public Rigidbody2D rb;
-    public float lifetime = 1.5f;
+    public float lifetime = 2f;
 
     [Header("Fade Settings")]
     public TMP_Text text;
-    public float fadeDuration = 1.5f;
+    public float fadeDuration = 2f;
     public bool isFading = true;
 
     private float currentAlpha;
@@ -34,12 +33,6 @@ public class PopUpDisplayScore : MonoBehaviour
             text.transform.position = targetObject1.transform.position;
         }
 
-        if (targetObject2 != null && text != null)
-        {
-            text.transform.position = targetObject2.transform.position;
-        }
-
-        
         initialVelocity = new Vector2(
             Random.Range(-2f, 2f),
             Random.Range(3f, 7f)
