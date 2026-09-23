@@ -3,7 +3,7 @@ using UnityEngine;
 public class CounterCanvas : MonoBehaviour
 {
     [SerializeField] private SummaryPanel summaryPanel;
-    [SerializeField] private UIPanel noteOne;
+    [SerializeField] private SpecialNote specialNote;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,9 +34,15 @@ public class CounterCanvas : MonoBehaviour
 
     public void ShowNote(int day)
     {
-        if (day == 2)
+        if (day > 1 && day < 9)
         {
-            noteOne.OpenPanel();
+            specialNote.UpdateContent(day);
+            specialNote.OpenPanel();
         }
     }
+
+    // public void UpdateNoteContent()
+    // {
+        
+    // }
 }

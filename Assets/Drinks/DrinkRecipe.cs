@@ -12,4 +12,5 @@ public class DrinkRecipe : ScriptableObject
     public List<Ingredient> baseIngredient;
     // public Sprite drinkImage;
     public string drinkColorHex;
+    public bool isBaseDrink;
 }

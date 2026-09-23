@@ -561,7 +561,7 @@ public class ReworkedCustomerManager : MonoBehaviour
 
         for (int i = 0; i < drinkCount; i++)
         {
-            int randomRecipeIndex = RandomIndex(limit);
+            int randomRecipeIndex = RandomIndex(_recipeBook.AllRecipes.Count);
             orderedRecipes.Add(_recipeBook.AllRecipes[randomRecipeIndex]);
         }
 

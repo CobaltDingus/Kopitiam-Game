@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 [CreateAssetMenu(fileName = "DrinksDatabase", menuName = "DrinksProgression/DrinksDatabase")]
 public class DrinksDatabase : ScriptableObject
@@ -25,6 +26,14 @@ public class DrinksDatabase : ScriptableObject
     private List<Drink> drinksToAdd;
     
     public List<Drink> DrinksToAdd => drinksToAdd;
+
+    public class ProgressionData
+    {
+        public List<DrinkRecipe> newBaseDrinks;
+        public string noteText;
+        public string glossaryTerm;
+    }
+    public event Action<int> OnProgressDay;
     
     public void UnlockDrinks(int day)
     {
@@ -54,16 +63,17 @@ public class DrinksDatabase : ScriptableObject
             default:
                 break;
         }
+        // OnProgressDay?.Invoke(day);
     }
 
     public void AddDrinksToMaster(List<DrinkRecipe> drinks)
     {
-
         foreach (DrinkRecipe drink in drinks)
         {
             recipeBook.AllRecipes.Add(drink);
         }
-        // RemoveFromTourist(drinks);
+
+        
     }
 
     public void RemoveFromTourist(List<DrinkRecipe> drinks)

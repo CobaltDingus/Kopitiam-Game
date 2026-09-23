@@ -4,21 +4,24 @@ using UnityEngine;
 public class RecipeViewer : MonoBehaviour
 {
     [SerializeField] private List<DrinkRecipe> drinkRecipes;
+    [SerializeField] private List<DrinkRecipe> baseDrinkRecipes;
     [SerializeField] private RecipeRow rowPrefab;
     [SerializeField] private Transform contentParent;
+    [SerializeField] private List<DrinkRecipe> dayTwoDrinks;
+    
     private void OnEnable()
     {
-        BuildList();
+        // BuildList();
     }
 
-    public void BuildList()
+    public void BuildListMaster()
     {
         foreach (Transform child in contentParent)
             Destroy(child.gameObject);
 
         if (drinkRecipes == null) return;
 
-        foreach (DrinkRecipe recipe in drinkRecipes)
+        foreach (DrinkRecipe recipe in baseDrinkRecipes)
         {
             if (recipe == null) continue;
 
@@ -26,4 +29,40 @@ public class RecipeViewer : MonoBehaviour
             row.Populate(recipe);
         }
     }
+
+    public void BuildListNoteSingle(DrinkRecipe drinkRecipe)
+    {
+        foreach (Transform child in contentParent)
+            Destroy(child.gameObject);
+
+        // if (drinkRecipes == null) return;
+
+        // foreach (DrinkRecipe recipe in drinkRecipes)
+        // {
+            // if (recipe == null) continue;
+
+        RecipeRow row = Instantiate(rowPrefab, contentParent);
+        row.Populate(drinkRecipe);
+        // }
+    }
+
+    public void BuildListNoteMultiple(List<DrinkRecipe> drinksToAdd)
+    {
+        foreach (Transform child in contentParent)
+            Destroy(child.gameObject);
+
+        // if (drinkRecipes == null) return;
+
+        foreach (DrinkRecipe recipe in drinksToAdd)
+        {
+            if (recipe == null) continue;
+
+            RecipeRow row = Instantiate(rowPrefab, contentParent);
+            row.Populate(recipe);
+        }
+    }
+
+    // public void AddDrinkToList(DrinkRecipe drinkRecipe)
+    // {
+    // }
 }

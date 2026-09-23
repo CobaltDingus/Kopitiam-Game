@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class CheckOrderButton : MonoBehaviour
 {
@@ -27,8 +28,9 @@ public class CheckOrderButton : MonoBehaviour
         {
             UIText.text = string.Join(
                 "\n",
-                ReworkedCustomerManager.instance.OrderedRecipes.ConvertAll(i => "- " + i.drinkName)
-            );  
+                ReworkedCustomerManager.instance.OrderedRecipes
+                    .Select((recipe, index) => $"{index + 1}. {recipe.drinkName}")
+            );
         }
         else
         {
