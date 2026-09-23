@@ -21,5 +21,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d1eb19e8e41ed944a8751f7cc5627f22, type: 2}
   baseIngredient:
   - {fileID: 11400000, guid: 7ac89a8f3d444cd498157839b50c963f, type: 2}
-  drinkImage: {fileID: -8871576838943690646, guid: fce100285bfe7bf4484530da88b6cb0f, type: 3}
   drinkColorHex: '#C5A07F'
+  isBaseDrink: 1

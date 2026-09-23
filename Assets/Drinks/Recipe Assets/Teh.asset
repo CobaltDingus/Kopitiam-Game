@@ -22,3 +22,4 @@ MonoBehaviour:
   baseIngredient:
   - {fileID: 11400000, guid: 7915fd25e44d4894eb8c74cdce023b95, type: 2}
   drinkColorHex: '#C59B6D'
+  isBaseDrink: 1

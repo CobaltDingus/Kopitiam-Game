@@ -24,3 +24,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7ac89a8f3d444cd498157839b50c963f, type: 2}
   - {fileID: 11400000, guid: a71d0fe5787170a41aba78a10b8fdf6f, type: 2}
   drinkColorHex: '#725038'
+  isBaseDrink: 1

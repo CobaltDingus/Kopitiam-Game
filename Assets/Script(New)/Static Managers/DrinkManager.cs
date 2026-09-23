@@ -54,6 +54,10 @@ public class DrinkManager : MonoBehaviour
     {
         if (ingredient == null) return;
 
+        // if (currentDrink.ingredients.Count > 4)
+        // {
+        //     return;
+        // }
         currentDrink.ingredients.Add(ingredient);
         isValidDrink = CheckDrinkValidity();
 

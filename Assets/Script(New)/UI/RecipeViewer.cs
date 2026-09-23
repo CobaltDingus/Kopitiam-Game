@@ -62,6 +62,28 @@ public class RecipeViewer : MonoBehaviour
         }
     }
 
+    public void BuildListCutoff(int cutOff)
+    {
+        foreach (Transform child in contentParent)
+            Destroy(child.gameObject);
+
+        // if (drinkRecipes == null) return;
+
+        // foreach (DrinkRecipe recipe in baseDrinkRecipes)
+        // {
+        //     if (recipe == null) continue;
+
+        //     RecipeRow row = Instantiate(rowPrefab, contentParent);
+        //     row.Populate(recipe);
+        // }
+
+        for (int i = 0; i < cutOff; i++)
+        {
+            RecipeRow row = Instantiate(rowPrefab, contentParent);
+            row.Populate(baseDrinkRecipes[i]); 
+        }
+    }
+
     // public void AddDrinkToList(DrinkRecipe drinkRecipe)
     // {
     // }
