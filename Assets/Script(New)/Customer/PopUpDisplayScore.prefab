@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 3723836849122734670}
   - component: {fileID: 6128738768699177607}
   m_Layer: 0
-  m_Name: PopUpDisplay
+  m_Name: PopUpDisplayScore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
