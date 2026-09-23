@@ -23,11 +23,12 @@ public class CheckOrderButton : MonoBehaviour
 
     public void GetCurrentOrder()
     {
-
         if (ReworkedCustomerManager.instance != null)
         {
-            UIText.text = ReworkedCustomerManager.instance.CurrentDialogue;
-            Debug.Log(ReworkedCustomerManager.instance.CurrentDialogue);   
+            UIText.text = string.Join(
+                "\n",
+                ReworkedCustomerManager.instance.OrderedRecipes.ConvertAll(i => "- " + i.drinkName)
+            );  
         }
         else
         {
@@ -38,6 +39,7 @@ public class CheckOrderButton : MonoBehaviour
     public void TogglePanel()
     {
         UIPanel.TogglePanel();
+        GetCurrentOrder();
         buttonText.text = UIPanel.gameObject.activeSelf ? closeText : normalText;
     }
 }
