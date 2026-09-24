@@ -9,6 +9,9 @@ public class CheckOrderButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI buttonText;
     [SerializeField] private string normalText;
     [SerializeField] private string closeText;
+    [SerializeField] private Image buttonImage;
+    [SerializeField] private Sprite greenSprite;
+    [SerializeField] private Sprite redSprite;
     private TextMeshProUGUI UIText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,5 +46,6 @@ public class CheckOrderButton : MonoBehaviour
         UIPanel.TogglePanel();
         GetCurrentOrder();
         buttonText.text = UIPanel.gameObject.activeSelf ? closeText : normalText;
+        buttonImage.sprite = UIPanel.gameObject.activeSelf ? redSprite : greenSprite;
     }
 }

@@ -184,6 +184,14 @@ public class ReworkedCustomerManager : MonoBehaviour
             _okayButton = okayObj.GetComponent<Button>();
             _okayButton.onClick.RemoveAllListeners();
             _okayButton.onClick.AddListener(NextDialogue);
+        } else if (_okayButton != null)
+        {
+            _okayButton.onClick.RemoveAllListeners();
+            _okayButton.onClick.AddListener(NextDialogue); 
+        }
+        else
+        {
+            Debug.Log("CANT FIND OKAY");
         }
     }
 
@@ -267,10 +275,10 @@ public class ReworkedCustomerManager : MonoBehaviour
         }
         else
         {
-            // General Gameplay: Keep icons active
-            if (_icon1 != null) _icon1.SetActive(true);
-            if (_icon2 != null) _icon2.SetActive(true);
-            if (_icon3 != null) _icon3.SetActive(true);
+            // General Gameplay: Turn icons off
+            if (_icon1 != null) _icon1.SetActive(false);
+            if (_icon2 != null) _icon2.SetActive(false);
+            if (_icon3 != null) _icon3.SetActive(false);
         }
     }
 
@@ -453,10 +461,16 @@ public class ReworkedCustomerManager : MonoBehaviour
         switch (CurrentGameplayState)
         {
             case GameplayState.Tutorial:
-                ReworkedUIManager.instance.CustomerCountText.gameObject.SetActive(false);
-                ReworkedUIManager.instance.TimerText.gameObject.SetActive(false);
-                ReworkedUIManager.instance.DayText.gameObject.SetActive(true);
-                ReworkedUIManager.instance.FavourText.gameObject.SetActive(true);
+                // old text only
+                // ReworkedUIManager.instance.CustomerCountText.gameObject.SetActive(false);
+                // ReworkedUIManager.instance.TimerText.gameObject.SetActive(false);
+                // ReworkedUIManager.instance.DayText.gameObject.SetActive(true);
+                // ReworkedUIManager.instance.FavourText.gameObject.SetActive(true);
+
+                ReworkedUIManager.instance.CustomerGroup.SetActive(false);
+                ReworkedUIManager.instance.TimerGroup.gameObject.SetActive(false);
+                ReworkedUIManager.instance.DayGroup.gameObject.SetActive(true);
+                ReworkedUIManager.instance.FavourGroup.gameObject.SetActive(true);
 
                 if (ReworkedSaveManager.instance.Day == 0)
                 {
@@ -470,10 +484,14 @@ public class ReworkedCustomerManager : MonoBehaviour
                 break;
 
             case GameplayState.GeneralGameplay:
-                ReworkedUIManager.instance.CustomerCountText.gameObject.SetActive(true);
-                ReworkedUIManager.instance.TimerText.gameObject.SetActive(true);
-                ReworkedUIManager.instance.DayText.gameObject.SetActive(true);
-                ReworkedUIManager.instance.FavourText.gameObject.SetActive(true);
+                // ReworkedUIManager.instance.CustomerCountText.gameObject.SetActive(true);
+                // ReworkedUIManager.instance.TimerText.gameObject.SetActive(true);
+                // ReworkedUIManager.instance.DayText.gameObject.SetActive(true);
+                // ReworkedUIManager.instance.FavourText.gameObject.SetActive(true);
+                ReworkedUIManager.instance.CustomerGroup.SetActive(true);
+                ReworkedUIManager.instance.TimerGroup.gameObject.SetActive(true);
+                ReworkedUIManager.instance.DayGroup.gameObject.SetActive(true);
+                ReworkedUIManager.instance.FavourGroup.gameObject.SetActive(true);
 
                 ReworkedUIManager.instance.UpdateCustomerDisplayText();
                 ReworkedUIManager.instance.UpdateFavourDisplayText();

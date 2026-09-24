@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: TrayDatabase
   m_EditorClassIdentifier: Assembly-CSharp::TrayDatabase
   savedDrinks: []
-  MaxSlots: 3
+  MaxSlots: 1

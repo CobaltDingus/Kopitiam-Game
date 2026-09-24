@@ -12,6 +12,7 @@ public class DrinkManager : MonoBehaviour
     private Drink currentDrink = new Drink();
     private int currentStirCount = 0;
     private bool isValidDrink = false;
+    private bool canAddIngredients = true;
 
     public int stirsRequired = 4;
 
@@ -22,6 +23,7 @@ public class DrinkManager : MonoBehaviour
     public Drink CurrentDrink => currentDrink;
     public int CurrentStirCount => currentStirCount;
     public bool IsValidDrink => isValidDrink;
+    public bool CanAddIngredients => canAddIngredients;
     public bool IsStirComplete => currentStirCount >= stirsRequired;
 
    [Serializable]
@@ -50,18 +52,20 @@ public class DrinkManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void AddIngredient(Ingredient ingredient)
+    public bool AddIngredient(Ingredient ingredient)
     {
-        if (ingredient == null) return;
+        if (ingredient == null) return false;
 
-        // if (currentDrink.ingredients.Count > 4)
-        // {
-        //     return;
-        // }
+        if (!canAddIngredients)
+        {
+            return false;
+        }
+
         currentDrink.ingredients.Add(ingredient);
         isValidDrink = CheckDrinkValidity();
 
         OnDrinkChanged?.Invoke();
+        return true;
     }
 
     public void AddWater()
@@ -77,6 +81,8 @@ public class DrinkManager : MonoBehaviour
 
     public void Stir()
     {
+        canAddIngredients = false;
+
         currentStirCount++;
 
         if (currentStirCount >= stirsRequired)
@@ -91,6 +97,7 @@ public class DrinkManager : MonoBehaviour
     {
         currentDrink = new Drink();
         currentStirCount = 0;
+        canAddIngredients = true;
         isValidDrink = false;
 
         OnDrinkCleared?.Invoke();

@@ -4184,7 +4184,7 @@ GameObject:
   - component: {fileID: 759025202}
   - component: {fileID: 759025203}
   m_Layer: 0
-  m_Name: MenuBoard
+  m_Name: Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4272,7 +4272,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 759025199}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc6c770eef14cc84593b3f5dea627362, type: 3}
   m_Name: 
@@ -5650,8 +5650,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134092736}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00065862207}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5662,8 +5662,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -566, y: -70}
-  m_SizeDelta: {x: -1545.04, y: -442.87}
+  m_AnchoredPosition: {x: -509.56006, y: -69.999695}
+  m_SizeDelta: {x: -1415.12, y: -442.87}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1134092738
 MonoBehaviour:
@@ -5678,7 +5678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38431376, g: 0.26666668, b: 0.24313727, a: 1}
+  m_Color: {r: 0.90196085, g: 0.69803923, b: 0.44705886, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6290,7 +6290,7 @@ MonoBehaviour:
     sugar with water.
   - "Alright, I\u2019ll let you serve 3 customers for today, don\u2019t mess this
     up ah!"
-  skip: 1
+  skip: 0
   _icon1: {fileID: 1503952583}
   _icon2: {fileID: 2130767131}
   _icon3: {fileID: 279790634}
@@ -7771,6 +7771,10 @@ MonoBehaviour:
   _customerCountText: {fileID: 1103178865}
   _favourText: {fileID: 662281868}
   _topBar: {fileID: 1495328577}
+  _dayGroup: {fileID: 33997181}
+  _customerGroup: {fileID: 317372599}
+  _timerGroup: {fileID: 255963283}
+  _favourGroup: {fileID: 1577333874}
 --- !u!1 &1503952583
 GameObject:
   m_ObjectHideFlags: 0
@@ -8647,7 +8651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1642622096
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9880,10 +9884,10 @@ RectTransform:
   - {fileID: 171077749}
   - {fileID: 1188506735}
   - {fileID: 616988337}
-  - {fileID: 1134092737}
   - {fileID: 1060754922}
   - {fileID: 1084812065}
   - {fileID: 1642622096}
+  - {fileID: 1134092737}
   - {fileID: 1914570632}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9905,7 +9909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CounterCanvas
   summaryPanel: {fileID: 970952262}
-  noteOne: {fileID: 1813210476}
+  specialNote: {fileID: 0}
 --- !u!1 &1813210472
 GameObject:
   m_ObjectHideFlags: 0
@@ -14445,8 +14449,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26a75bf892524114c8e52d8af2437106, type: 2}
   - {fileID: 11400000, guid: c31b1884b2459da4aa98e415d7a72a79, type: 2}
   - {fileID: 11400000, guid: b7fe005918188174b926bf70652d0971, type: 2}
+  baseDrinkRecipes: []
   rowPrefab: {fileID: 440894929276227852, guid: e8971307be22ffa46963fd9af0ff7d9c, type: 3}
   contentParent: {fileID: 2728153786300235309}
+  dayTwoDrinks: []
 --- !u!224 &8027233872132932088
 RectTransform:
   m_ObjectHideFlags: 0

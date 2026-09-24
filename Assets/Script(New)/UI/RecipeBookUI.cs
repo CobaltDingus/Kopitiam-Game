@@ -8,6 +8,7 @@ public class RecipeBookUI : UIPanel
     [SerializeField] RecipeViewer recipeViewer;
     [SerializeField] TextMeshProUGUI glossaryText;
     [SerializeField] List<DrinkRecipe> baseDrinks;
+    private int unlockIndex = 1;
     [SerializeField] string cText;
     [SerializeField] string kosongText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -30,11 +31,11 @@ public class RecipeBookUI : UIPanel
     public void UpdateRecipeBook()
     {
         if (!ReworkedSaveManager.instance) return;
-        
+
         switch (ReworkedSaveManager.instance.Day)
         {
             case 2:
-                recipeViewer.BuildListCutoff(3);
+                unlockIndex = 3;
                 break;
             case 3:
                 glossaryText.text += "\n\n" + cText;
@@ -43,14 +44,16 @@ public class RecipeBookUI : UIPanel
                 glossaryText.text += "\n\n" + kosongText;
                 break;
             case 6:
-                recipeViewer.BuildListCutoff(4);
+                unlockIndex = 4;
                 break;
             case 7:
-                recipeViewer.BuildListCutoff(5);
+                unlockIndex = 5;
                 break;
             case 8:
-                recipeViewer.BuildListCutoff(6);
+                unlockIndex = 6;
                 break;
         }
+
+        recipeViewer.BuildListCutoff(unlockIndex);
     }
 }

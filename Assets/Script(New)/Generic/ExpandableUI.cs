@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ExpandableUI : MonoBehaviour
@@ -12,7 +13,8 @@ public class ExpandableUI : MonoBehaviour
     [SerializeField] protected Transform inactiveTransform;
     private Vector3 activePositionStored;
     private Vector3 inactivePositionStored;
-
+    [SerializeField] private float inactiveAlpha;
+    [SerializeField] private float activeAlpha;
     [SerializeField] protected List<DragEnum> validDragTypes;
 
     protected SpriteRenderer spriteRenderer;
@@ -49,6 +51,7 @@ public class ExpandableUI : MonoBehaviour
             // activeObject.SetActive(true);
             // inactiveObject.SetActive(false);
             inactiveObject.transform.position = activePositionStored;
+            // inactiveObject
         }
         else
         {

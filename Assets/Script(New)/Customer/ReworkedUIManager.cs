@@ -19,6 +19,10 @@ public class ReworkedUIManager : MonoBehaviour
     [SerializeField] private TMP_Text _customerCountText;
     [SerializeField] private TMP_Text _favourText;
     [SerializeField] private GameObject _topBar;
+    [SerializeField] private GameObject _dayGroup;
+    [SerializeField] private GameObject _customerGroup;
+    [SerializeField] private GameObject _timerGroup;
+    [SerializeField] private GameObject _favourGroup;
     private bool _isTimerRunning;
     private bool _challengeMode;
     private float _timeElapsed;
@@ -46,6 +50,11 @@ public class ReworkedUIManager : MonoBehaviour
     {
         get => _favourText;
     }
+
+    public GameObject DayGroup => _dayGroup;
+    public GameObject CustomerGroup => _customerGroup;
+    public GameObject TimerGroup => _timerGroup;
+    public GameObject FavourGroup => _favourGroup;
 
     public bool IsTimerRunning
     {

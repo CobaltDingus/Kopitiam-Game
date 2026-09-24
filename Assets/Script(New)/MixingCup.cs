@@ -71,13 +71,15 @@ IPointerUpHandler
     }
     public void ReceiveIngredient(Ingredient ingredient)
     {
-        DrinkManager.Instance.AddIngredient(ingredient);
-        GameObject popUp = Instantiate(_popUpPrefab);
-        //popUp.GetComponentInChildren<TMP_Text>().fontSize = 30;
-        popUp.GetComponentInChildren<TMP_Text>().text = "+" + ingredient.Name;
+        if (DrinkManager.Instance.AddIngredient(ingredient))
+        {
+            GameObject popUp = Instantiate(_popUpPrefab);
+            //popUp.GetComponentInChildren<TMP_Text>().fontSize = 30;
+            popUp.GetComponentInChildren<TMP_Text>().text = "+" + ingredient.Name;
 
-        dragType = DragEnum.UnfinishedDrink;
-        canDrag = true;
+            dragType = DragEnum.UnfinishedDrink;
+            canDrag = true;  
+        }
     }
 
     public void AddWater()
@@ -237,7 +239,7 @@ IPointerUpHandler
         if (ColorUtility.TryParseHtmlString(hexCode, out Color newColor))
             return newColor;
 
-        Debug.LogWarning("Invalid Hexadecimal string provided!");
+        Debug.LogWarning("Invalid Hexadecimal string provided! " + hexCode);
         return Color.clear;
     }
 }
