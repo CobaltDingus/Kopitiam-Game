@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ReworkedUIManager : MonoBehaviour
 {
@@ -82,6 +83,25 @@ public class ReworkedUIManager : MonoBehaviour
     void Start()
     {
         RestartTimer();
+    }
+
+    private Camera _mainCamera;
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        _mainCamera = Camera.main;
+
+        GetComponent<Canvas>().worldCamera = _mainCamera;
     }
 
     void Update()
