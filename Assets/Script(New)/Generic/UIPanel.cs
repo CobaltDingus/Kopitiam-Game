@@ -17,6 +17,7 @@ public class UIPanel : MonoBehaviour
 
     public void OpenPanel()
     {
+        
         if (screenOverlay != null)
         {
             screenOverlay.SetActive(true);

@@ -63,7 +63,7 @@ public class DrinkManager : MonoBehaviour
 
         currentDrink.ingredients.Add(ingredient);
         isValidDrink = CheckDrinkValidity();
-
+        AudioManager.instance.PlaySFX(SFXType.PowderFilling);
         OnDrinkChanged?.Invoke();
         return true;
     }
@@ -99,7 +99,7 @@ public class DrinkManager : MonoBehaviour
         currentStirCount = 0;
         canAddIngredients = true;
         isValidDrink = false;
-
+        AudioManager.instance.PlaySFX(SFXType.Dispose);
         OnDrinkCleared?.Invoke();
     }
 

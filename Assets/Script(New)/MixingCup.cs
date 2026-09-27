@@ -87,6 +87,7 @@ IPointerUpHandler
         DrinkManager.Instance.AddWater();
         dragType = DragEnum.UnfinishedDrink;
         canDrag = true;
+        AudioManager.instance.PlaySFX(SFXType.WaterFilling);
     }
 
     public void StirDrink()
@@ -153,6 +154,10 @@ IPointerUpHandler
             stirButtonText.text = "Ready to serve!";
             stirButton.image.color = Color.green;
             stirButton.interactable = true;
+        }
+        else
+        {
+            AudioManager.instance.PlaySFX(SFXType.Mixing);
         }
     }
 
