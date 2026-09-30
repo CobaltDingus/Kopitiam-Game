@@ -158,7 +158,7 @@ public class ReworkedUIManager : MonoBehaviour
 
         if (_timerText != null)
         {
-            string text = _challengeMode ? "Time Remaining " : "Time Spent ";
+            string text = _challengeMode ? "TIME REMAINING " : "TIME SPENT ";
             _timerText.text = text + string.Format("{0:00}:{1:00}", minutes, seconds);
         }
     }
@@ -166,18 +166,18 @@ public class ReworkedUIManager : MonoBehaviour
     public void UpdateDayDisplayText()
     {
         if (_dayText != null && ReworkedSaveManager.instance != null)
-            _dayText.text = "Day: " + ReworkedSaveManager.instance.Day;
+            _dayText.text = "DAY: " + ReworkedSaveManager.instance.Day;
     }
 
     public void UpdateCustomerDisplayText()
     {
         if (_customerCountText != null && ReworkedSaveManager.instance != null)
-            _customerCountText.text = "Customer: " + ReworkedSaveManager.instance.CurrentCustomer.ToString() + "/" + ReworkedSaveManager.instance.MaxCustomer.ToString();
+            _customerCountText.text = "CUSTOMER: " + ReworkedSaveManager.instance.CurrentCustomer.ToString() + "/" + ReworkedSaveManager.instance.MaxCustomer.ToString();
     }
 
     public void UpdateFavourDisplayText()
     {
         if (_favourText != null && ReworkedSaveManager.instance != null)
-            _favourText.text = "Favour: " + ReworkedSaveManager.instance.Favour;
+            _favourText.text = "FAVOUR: " + ReworkedSaveManager.instance.Favour;
     }
 }

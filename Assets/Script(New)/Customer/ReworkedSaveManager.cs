@@ -184,6 +184,7 @@ public class ReworkedSaveManager : MonoBehaviour
                 if (_maxCustomer < _customerMin)
                 {
                     _maxCustomer = _customerMin;
+                    _maxEvent = 0;
                 }
             }
         }
