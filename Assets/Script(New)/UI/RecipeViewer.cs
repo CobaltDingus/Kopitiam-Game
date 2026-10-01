@@ -1,17 +1,18 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RecipeViewer : MonoBehaviour
 {
     [SerializeField] private List<DrinkRecipe> drinkRecipes;
     [SerializeField] private List<DrinkRecipe> baseDrinkRecipes;
+    [SerializeField] private RecipeBook masterRecipeBook;
     [SerializeField] private RecipeRow rowPrefab;
     [SerializeField] private Transform contentParent;
-    [SerializeField] private List<DrinkRecipe> dayTwoDrinks;
     
     private void OnEnable()
     {
-        // BuildList();
+        // BuildListMaster();
     }
 
     public void BuildListMaster()
@@ -21,9 +22,9 @@ public class RecipeViewer : MonoBehaviour
 
         if (drinkRecipes == null) return;
 
-        foreach (DrinkRecipe recipe in baseDrinkRecipes)
+        foreach (DrinkRecipe recipe in masterRecipeBook.allRecipes)
         {
-            if (recipe == null) continue;
+            if (recipe == null || !recipe.isBaseDrink) continue;
 
             RecipeRow row = Instantiate(rowPrefab, contentParent);
             row.Populate(recipe);
@@ -83,8 +84,4 @@ public class RecipeViewer : MonoBehaviour
             row.Populate(baseDrinkRecipes[i]); 
         }
     }
-
-    // public void AddDrinkToList(DrinkRecipe drinkRecipe)
-    // {
-    // }
 }

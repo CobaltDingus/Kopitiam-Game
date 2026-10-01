@@ -20,6 +20,14 @@ public class ExpandableUI : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
     protected Vector3 originalPosition;
 
+    private enum ActivateType
+    {
+        TransformSprite,
+        SwapSprite
+    }
+
+    [SerializeField] private ActivateType activateType;
+
 
     private void OnEnable()
     {
@@ -46,20 +54,38 @@ public class ExpandableUI : MonoBehaviour
 
         // transform.localPosition =
         //     active ? originalPosition + activeOffset : originalPosition;
-        if (validDragTypes.Contains(dragType))
+        
+        if (activateType == ActivateType.TransformSprite)
         {
-            // activeObject.SetActive(true);
-            // inactiveObject.SetActive(false);
-            inactiveObject.transform.position = activePositionStored;
-            // inactiveObject
-        }
-        else
+            if (validDragTypes.Contains(dragType))
+            {
+                
+                // activeObject.SetActive(true);
+                // inactiveObject.SetActive(false);
+                inactiveObject.transform.position = activePositionStored;
+                // inactiveObject
+            }
+            else
+            {
+                // activeObject.SetActive(false);
+                // inactiveObject.SetActive(true);
+                // inactiveObject.transform.position += activeOffset;
+                inactiveObject.transform.position = inactivePositionStored;
+            }
+        } else if (activateType == ActivateType.SwapSprite)
         {
-            // activeObject.SetActive(false);
-            // inactiveObject.SetActive(true);
-            // inactiveObject.transform.position += activeOffset;
-            inactiveObject.transform.position = inactivePositionStored;
+            if (validDragTypes.Contains(dragType))
+            {                
+                activeObject.SetActive(true);
+                inactiveObject.SetActive(false);
+            }
+            else
+            {
+                activeObject.SetActive(false);
+                inactiveObject.SetActive(true);
+            } 
         }
+
     }
 
 

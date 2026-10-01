@@ -1872,7 +1872,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -170}
+  m_AnchoredPosition: {x: 39.000004, y: -157}
   m_SizeDelta: {x: 700, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &336268776
@@ -3259,12 +3259,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.47
+  m_fontSize: 40
   m_fontSizeBase: 26.47
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 30
+  m_fontSizeMax: 40
   m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -3298,7 +3298,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 2.5289001, w: -6.914009}
+  m_margin: {x: 0, y: -17.479965, z: 2.5289001, w: 32.4159}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4795,7 +4795,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -106}
+  m_AnchoredPosition: {x: 39, y: -93}
   m_SizeDelta: {x: 700, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &863084174
@@ -5322,8 +5322,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.16748047, y: 0}
-  m_SizeDelta: {x: -1000.335, y: -400}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -1200, y: -400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &970952260
 MonoBehaviour:
@@ -6081,7 +6081,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -364}
+  m_AnchoredPosition: {x: 39.000004, y: -351}
   m_SizeDelta: {x: 700, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1090319401
@@ -7063,7 +7063,7 @@ MonoBehaviour:
     sugar with water.
   - "Alright, I\u2019ll let you serve 3 customers for today, don\u2019t mess this
     up ah!"
-  skip: 0
+  skip: 1
   _icon1: {fileID: 2127041282}
   _icon2: {fileID: 2031556843}
   _icon3: {fileID: 1948194086}
@@ -7305,7 +7305,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -300}
+  m_AnchoredPosition: {x: 39.000004, y: -287}
   m_SizeDelta: {x: 700, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1438560468
@@ -10152,7 +10152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScreenOverlay
   uiToClose:
   - {fileID: 1813210476}
-  - {fileID: 970952262}
   panel: {fileID: 1914570631}
 --- !u!1 &1920120385
 GameObject:
@@ -10769,7 +10768,7 @@ RectTransform:
   m_GameObject: {fileID: 2056616028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.95, y: 0.95, z: 0.95}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1785886904}
@@ -10777,8 +10776,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 31}
-  m_SizeDelta: {x: 152, y: 61}
+  m_AnchoredPosition: {x: 245, y: 45}
+  m_SizeDelta: {x: 187, y: 66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2056616030
 MonoBehaviour:
@@ -10856,7 +10855,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2961812843273310554, guid: 6cbf279381738b54c9aa2ff6fdceaf67, type: 3}
+  m_Sprite: {fileID: 315358251403843917, guid: 777b3c9a31ce595478e4557090965f05, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11005,7 +11004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -234}
+  m_AnchoredPosition: {x: 39.000004, y: -221}
   m_SizeDelta: {x: 700, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2092060517
@@ -14041,9 +14040,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c31b1884b2459da4aa98e415d7a72a79, type: 2}
   - {fileID: 11400000, guid: b7fe005918188174b926bf70652d0971, type: 2}
   baseDrinkRecipes: []
+  masterRecipeBook: {fileID: 11400000, guid: 2c53c2b8eccd2834fa67b11a2aa0a51d, type: 2}
   rowPrefab: {fileID: 440894929276227852, guid: e8971307be22ffa46963fd9af0ff7d9c, type: 3}
   contentParent: {fileID: 2728153786300235309}
-  dayTwoDrinks: []
 --- !u!114 &7812042516117219410
 MonoBehaviour:
   m_ObjectHideFlags: 0

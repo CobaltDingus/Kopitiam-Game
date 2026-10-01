@@ -76,6 +76,8 @@ IPointerUpHandler
             GameObject popUp = Instantiate(_popUpPrefab);
             //popUp.GetComponentInChildren<TMP_Text>().fontSize = 30;
             popUp.GetComponentInChildren<TMP_Text>().text = "+" + ingredient.Name;
+            
+            AudioManager.instance?.PlaySFX(SFXType.PowderFilling);
 
             dragType = DragEnum.UnfinishedDrink;
             canDrag = true;  
@@ -87,12 +89,17 @@ IPointerUpHandler
         DrinkManager.Instance.AddWater();
         dragType = DragEnum.UnfinishedDrink;
         canDrag = true;
-        AudioManager.instance.PlaySFX(SFXType.WaterFilling);
+
+        AudioManager.instance?.PlaySFX(SFXType.WaterFilling);
+
     }
 
     public void StirDrink()
     {
         DrinkManager.Instance.Stir();
+
+        AudioManager.instance?.PlaySFX(SFXType.Mixing);
+        
     }
 
     // Change to drink manager
@@ -102,11 +109,16 @@ IPointerUpHandler
         var drink = DrinkManager.Instance.CurrentDrink;
 
         RebuildIngredientText(drink);
-        AnimateBounce();
+        
 
         bool hasContents = drink.ingredients.Count > 0;
         canDrag = hasContents;
         dragType = hasContents ? DragEnum.UnfinishedDrink : DragEnum.None;
+        if (hasContents)
+        {
+            AnimateBounce();
+        }
+
 
         if (drink.ingredients.Any(i => i.name == "HotWater"))
         {
@@ -155,10 +167,7 @@ IPointerUpHandler
             stirButton.image.color = Color.green;
             stirButton.interactable = true;
         }
-        else
-        {
-            AudioManager.instance.PlaySFX(SFXType.Mixing);
-        }
+
     }
 
     private void HandleCleared()

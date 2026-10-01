@@ -7187,10 +7187,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44b9a11a2dd12c40ab4be916426199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  BGM: {fileID: 0}
-  SFX: {fileID: 0}
-  SFXSlider: {fileID: 0}
+  bgmSources: []
+  sfxSources: []
   BGMSlider: {fileID: 0}
+  SFXSlider: {fileID: 0}
 --- !u!114 &1448626131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14450,9 +14450,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c31b1884b2459da4aa98e415d7a72a79, type: 2}
   - {fileID: 11400000, guid: b7fe005918188174b926bf70652d0971, type: 2}
   baseDrinkRecipes: []
+  masterRecipeBook: {fileID: 0}
   rowPrefab: {fileID: 440894929276227852, guid: e8971307be22ffa46963fd9af0ff7d9c, type: 3}
   contentParent: {fileID: 2728153786300235309}
-  dayTwoDrinks: []
 --- !u!224 &8027233872132932088
 RectTransform:
   m_ObjectHideFlags: 0
