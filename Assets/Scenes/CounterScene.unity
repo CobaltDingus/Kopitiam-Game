@@ -7049,21 +7049,19 @@ MonoBehaviour:
   CurrentGameplayState: 1
   _tutorialSprite: {fileID: -6248741079362886434, guid: fb730fb58019a604f8e2223953a42332, type: 3}
   _tutorialDialogue:
-  - Ah boy, I heard from your father that you were looking for a job, and that maybe
-    I could hire you to work here temporarily.
-  - Good lah. Time for you to experience the real world before you get too sheltered.
-  - "Now you may be my nephew, but don\u2019t go thinking that I will go soft on
-    you, I treat my employees all the same."
-  - 'The only exception is your aunt, heh. '
-  - Let's get started. You'll make two drinks for me.
-  - 'First, let''s make Kopi. Kopi is made with coffee, sugar, condensed milk and
-    water. '
-  - Not bad, let's try another drink called Kopi O.
-  - Kopi O is just Kopi but the 'O' means no condensed milk. Just put coffee and
-    sugar with water.
-  - "Alright, I\u2019ll let you serve 3 customers for today, don\u2019t mess this
-    up ah!"
-  skip: 1
+  - Ah boy ah, your father said you want to work part time is it?
+  - Good lah. Can get more experience in your culture.
+  - But you don't forget ah, you are my worker now. I don't want fire you but you
+    try to work hard lah.
+  - If you do good, I will let you to serve more customers. Maybe can pay you if
+    you work full time, haha.
+  - Ok, we start now. You make two drinks for me.
+  - First, you make Kopi. You put the coffee, sugar, condensed milk, and water.
+  - Good, you try another drink called Kopi O.
+  - Kopi O is same like Kopi but they say 'O' for no condensed milk. Just put coffee
+    and sugar with water.
+  - "Ok, I let you serve 3 customers now, don\u2019t mess up ah!"
+  skip: 0
   _icon1: {fileID: 2127041282}
   _icon2: {fileID: 2031556843}
   _icon3: {fileID: 1948194086}

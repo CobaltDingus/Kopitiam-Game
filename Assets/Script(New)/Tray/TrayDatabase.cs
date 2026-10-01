@@ -48,8 +48,12 @@ public class TrayDatabase : ScriptableObject
 
     public void RemoveDrink(int slotNum)
     {
-        savedDrinks.RemoveAt(slotNum);
-        OnTrayUpdate?.Invoke();
+        if (SavedDrinks.Count > 0)
+        {
+            savedDrinks.RemoveAt(slotNum);
+            OnTrayUpdate?.Invoke();
+        }
+
         // savedDrinks[slotNum] = null;
     }
 }

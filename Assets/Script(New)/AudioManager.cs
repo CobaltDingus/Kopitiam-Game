@@ -68,7 +68,7 @@ public class AudioManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        _bgmVolume = PlayerPrefs.GetFloat(BGM_KEY, 1.0f);
+        _bgmVolume = PlayerPrefs.GetFloat(BGM_KEY, 0.03f);
         _sfxVolume = PlayerPrefs.GetFloat(SFX_KEY, 1.0f);
     }
 
