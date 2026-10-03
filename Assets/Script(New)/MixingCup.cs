@@ -7,7 +7,8 @@ using System.Linq;
 
 public class MixingCup :
 DraggableObject,
-DropIngredientInterface,
+// DropIngredientInterface,
+DropInterface,
 IPointerDownHandler,
 IDragHandler,
 IPointerUpHandler
@@ -69,19 +70,35 @@ IPointerUpHandler
             ingredientText.text = "Mixing Cup Contents: \n\nEMPTY";
         }
     }
-    public void ReceiveIngredient(Ingredient ingredient)
+    // public void ReceiveIngredient(Ingredient ingredient)
+    // {
+    //     if (DrinkManager.Instance.AddIngredient(ingredient))
+    //     {
+    //         GameObject popUp = Instantiate(_popUpPrefab);
+    //         //popUp.GetComponentInChildren<TMP_Text>().fontSize = 30;
+    //         popUp.GetComponentInChildren<TMP_Text>().text = "+" + ingredient.Name;
+            
+    //         AudioManager.instance?.PlaySFX(SFXType.PowderFilling);
+
+    //         dragType = DragEnum.UnfinishedDrink;
+    //         canDrag = true;  
+    //     }
+    // }
+    public bool ReceiveDraggable<T>(T ingredient)
     {
-        if (DrinkManager.Instance.AddIngredient(ingredient))
+        if (ingredient is Ingredient ing && DrinkManager.Instance.AddIngredient(ing))
         {
             GameObject popUp = Instantiate(_popUpPrefab);
             //popUp.GetComponentInChildren<TMP_Text>().fontSize = 30;
-            popUp.GetComponentInChildren<TMP_Text>().text = "+" + ingredient.Name;
+            popUp.GetComponentInChildren<TMP_Text>().text = "+" + ing.Name;
             
             AudioManager.instance?.PlaySFX(SFXType.PowderFilling);
 
             dragType = DragEnum.UnfinishedDrink;
             canDrag = true;  
+            return true;
         }
+        return false;
     }
 
     public void AddWater()
@@ -97,8 +114,6 @@ IPointerUpHandler
     public void StirDrink()
     {
         DrinkManager.Instance.Stir();
-
-        AudioManager.instance?.PlaySFX(SFXType.Mixing);
         
     }
 
@@ -122,7 +137,7 @@ IPointerUpHandler
 
         if (drink.ingredients.Any(i => i.name == "HotWater"))
         {
-            currentLiquidColor = HexToColor(waterColorHex);
+            currentLiquidColor = GlobalUtilities.HexToColor(waterColorHex);
             liquidSprite.color = currentLiquidColor;
             liquidObject.SetActive(true);
             gesturePanelDrawArea.color = currentLiquidColor;
@@ -153,8 +168,8 @@ IPointerUpHandler
         stirCounterText.text = "Stirs Left (" + (required - count) + ")";
 
         currentLiquidColor = Color.Lerp(
-            HexToColor(waterColorHex),
-            HexToColor(DrinkManager.Instance.CurrentDrink.colorHex),
+            GlobalUtilities.HexToColor(waterColorHex),
+            GlobalUtilities.HexToColor(DrinkManager.Instance.CurrentDrink.colorHex),
             count / (float)required
         );
 
@@ -246,14 +261,5 @@ IPointerUpHandler
     public override void AfterDropFunctions()
     {
         ClearCup();
-    }
-
-    public Color HexToColor(string hexCode)
-    {
-        if (ColorUtility.TryParseHtmlString(hexCode, out Color newColor))
-            return newColor;
-
-        Debug.LogWarning("Invalid Hexadecimal string provided! " + hexCode);
-        return Color.clear;
     }
 }

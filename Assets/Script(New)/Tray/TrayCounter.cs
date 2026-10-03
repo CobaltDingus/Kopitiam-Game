@@ -41,7 +41,7 @@ public class TrayCounter :
                     cupRenderers[i].sprite = containerSprites[0];
                 }
 
-                drinkRenderers[i].color = HexToColor(trayDatabase.SavedDrinks[i].colorHex);
+                drinkRenderers[i].color = GlobalUtilities.HexToColor(trayDatabase.SavedDrinks[i].colorHex);
                 drinkRenderers[i].enabled = true;
             }
             else
@@ -175,19 +175,6 @@ public class TrayCounter :
             {
                 spriteRenderer.sortingLayerName = normalSortingLayer;
             }
-        }
-    }
-
-    public Color HexToColor(string hexCode)
-    {
-        if (ColorUtility.TryParseHtmlString(hexCode, out Color newColor))
-        {
-            return newColor;
-        }
-        else
-        {
-            Debug.LogWarning("Invalid Hexadecimal string provided!");
-            return Color.clear;
         }
     }
 }

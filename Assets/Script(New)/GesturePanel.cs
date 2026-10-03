@@ -129,6 +129,7 @@ public class GesturePanel : MonoBehaviour,
             return;
 
         StartDrawing(screenPos);
+        
     }
 
 
@@ -229,6 +230,7 @@ public class GesturePanel : MonoBehaviour,
 
             PositionFingerIndicator(screenPos);
         }
+        AudioManager.instance?.PlaySFX(SFXType.Mixing);
     }
 
 
@@ -389,6 +391,7 @@ public class GesturePanel : MonoBehaviour,
 
         if (fingerIndicator != null)
             fingerIndicator.gameObject.SetActive(false);
+        AudioManager.instance?.StopSFX(SFXType.Mixing);
     }
 
 
