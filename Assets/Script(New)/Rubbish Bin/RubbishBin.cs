@@ -8,6 +8,7 @@ DropInterface
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public bool ReceiveDraggable<T>(T dragData) 
     {
+        AudioManager.instance?.PlaySFX(SFXType.Dispose);
         Debug.Log("Item was thrown away");
         return true;
     }

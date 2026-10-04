@@ -98,7 +98,6 @@ public class DrinkManager : MonoBehaviour
         currentStirCount = 0;
         canAddIngredients = true;
         isValidDrink = false;
-        AudioManager.instance?.PlaySFX(SFXType.Dispose);
         OnDrinkCleared?.Invoke();
     }
 
@@ -160,7 +159,7 @@ public class DrinkManager : MonoBehaviour
         pouringSlot.storedDrink = drink.Clone();
         pouringSlot.storedDrink.containerType = pouringSlot.containerType;
         pouringSlot.storedDrink.isFinished = true;
-
+        AudioManager.instance?.PlaySFX(SFXType.WaterFilling);
         OnPouringSlotChanged?.Invoke();
         return true;
     }

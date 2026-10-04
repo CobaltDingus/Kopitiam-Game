@@ -8,7 +8,7 @@ public class CustomerDisplayLink : MonoBehaviour
     [SerializeField] private TMP_Text dialogueText;
 
     [SerializeField] private float slideDuration = 0.5f;
-    [SerializeField] private float startYOffset = -800f; // how far below screen to start
+    // [SerializeField] private float startYOffset = -800f; // how far below screen to start
 
     [SerializeField] private Transform customerTransform;
     private Vector3 onscreenWorldPos;

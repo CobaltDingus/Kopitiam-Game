@@ -30,7 +30,35 @@ public class TrayCounter :
 
     [SerializeField] private List<SpriteRenderer> objectSprites;
 
+    private void OnEnable()
+    {
+        trayDatabase.OnTrayUpdate += UpdateTray;
+    }
+
+    private void OnDisable()
+    {
+        trayDatabase.OnTrayUpdate -= UpdateTray;
+    }
+
     void Update()
+    {
+    }
+
+    private void Awake()
+    {
+        cam = Camera.main;
+        trayCollider = GetComponent<Collider2D>();
+    }
+
+    private void Start()
+    {
+        startPosition = transform.position;
+
+        UpdateTray();
+
+    }
+
+    private void UpdateTray()
     {
         for (int i = 0; i < cupRenderers.Length; i++)
         {
@@ -51,17 +79,6 @@ public class TrayCounter :
                 drinkRenderers[i].enabled = false;
             }
         }
-    }
-
-    private void Awake()
-    {
-        cam = Camera.main;
-        trayCollider = GetComponent<Collider2D>();
-    }
-
-    private void Start()
-    {
-        startPosition = transform.position;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -162,6 +179,7 @@ public class TrayCounter :
                         spriteRenderer.sortingLayerName = normalSortingLayer;
                     }
                 }
+                UpdateTray();
                 return;
             }
         }

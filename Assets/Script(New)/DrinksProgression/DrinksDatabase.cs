@@ -33,7 +33,7 @@ public class DrinksDatabase : ScriptableObject
         public string noteText;
         public string glossaryTerm;
     }
-    public event Action<int> OnProgressDay;
+    // public event Action<int> OnProgressDay;
     
     public void UnlockDrinks(int day)
     {

@@ -16,3 +16,4 @@ MonoBehaviour:
   ingredientName: Evaporated Milk
   icon: {fileID: -42116026334767669, guid: 5891aa66bce65ee4fbbe6c1309c7075f, type: 3}
   isBaseIngredient: 0
+  ingType: 1

@@ -46,7 +46,7 @@ public class PouringSlot : DraggableObject, DropInterface
         if (state.storedDrink.isFinished)
         {
             liquidSprite.enabled = true;
-            liquidSprite.color = HexToColor(state.storedDrink.colorHex);
+            liquidSprite.color = GlobalUtilities.HexToColor(state.storedDrink.colorHex);
             dragType = DragEnum.FinishedDrink;
         }
         else
@@ -90,14 +90,5 @@ public class PouringSlot : DraggableObject, DropInterface
     public override void AfterDropFunctions()
     {
         DrinkManager.Instance.ClearPouringSlot();
-    }
-
-    public Color HexToColor(string hexCode)
-    {
-        if (ColorUtility.TryParseHtmlString(hexCode, out Color newColor))
-            return newColor;
-
-        Debug.LogWarning("Invalid Hexadecimal string provided!");
-        return Color.clear;
     }
 }

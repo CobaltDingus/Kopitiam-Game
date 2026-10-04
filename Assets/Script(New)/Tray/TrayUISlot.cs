@@ -51,7 +51,7 @@ public class TrayUISlot : MonoBehaviour
             disposeButton.image.color = Color.red;
             disposeButton.enabled = true;
             cupImage.gameObject.SetActive(true);
-            liquidImage.color = HexToColor(trayDatabase.SavedDrinks[(int)slotNum].colorHex);
+            liquidImage.color = GlobalUtilities.HexToColor(trayDatabase.SavedDrinks[(int)slotNum].colorHex);
             liquidImage.gameObject.SetActive(true);
 
             foreach (Transform child in traySlotDrinkContents.transform) 
@@ -90,18 +90,5 @@ public class TrayUISlot : MonoBehaviour
         trayDatabase.RemoveDrink((int) slotNum);
         ResetSlot();
         trayStorageUI.UpdateTray();
-    }
-
-    public Color HexToColor(string hexCode)
-    {
-        if (ColorUtility.TryParseHtmlString(hexCode, out Color newColor))
-        {
-            return newColor;
-        }
-        else
-        {
-            Debug.LogWarning("Invalid Hexadecimal string provided!");
-            return Color.clear;
-        }
     }
 }

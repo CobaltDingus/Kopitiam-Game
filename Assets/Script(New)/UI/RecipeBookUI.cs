@@ -8,7 +8,7 @@ public class RecipeBookUI : UIPanel
     [SerializeField] RecipeViewer recipeViewer;
     [SerializeField] TextMeshProUGUI glossaryText;
     [SerializeField] List<DrinkRecipe> baseDrinks;
-    private int unlockIndex = 1;
+    // private int unlockIndex = 1;
     [SerializeField] string cText;
     [SerializeField] string kosongText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

@@ -17,7 +17,7 @@ public class ReworkedCustomerDisplayLink : MonoBehaviour
     [SerializeField] private SpriteRenderer _customerSpriteRenderer;
     [SerializeField] private TMP_Text _dialogueText;
     [SerializeField] private float slideDuration = 0.5f;
-    [SerializeField] private float startYOffset = -800f; // how far below screen to start
+    // [SerializeField] private float startYOffset = -800f; // how far below screen to start
     [SerializeField] private Transform customerTransform;
     private Vector3 onscreenWorldPos;
 

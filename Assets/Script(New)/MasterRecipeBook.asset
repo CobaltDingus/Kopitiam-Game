@@ -15,10 +15,6 @@ MonoBehaviour:
   allRecipes:
   - {fileID: 11400000, guid: 795ca57872a30e749b35df29fcc7ebb7, type: 2}
   - {fileID: 11400000, guid: 9b3ef01474759fb49b4163596b4c47a9, type: 2}
-  - {fileID: 11400000, guid: 26a75bf892524114c8e52d8af2437106, type: 2}
-  - {fileID: 11400000, guid: 27fb300da3e529c4aaff12a6c5a783bf, type: 2}
-  - {fileID: 11400000, guid: bc62210cbbe0c074c97e919270784329, type: 2}
-  - {fileID: 11400000, guid: 6eb0fd95eb9be4d499c82926b3028ff2, type: 2}
   _touristUniqueRecipe:
   - {fileID: 11400000, guid: a3811a3d226c6d747a084385dbf47392, type: 2}
   - {fileID: 11400000, guid: e01435b7bf7b19847b64fce840d6c57c, type: 2}

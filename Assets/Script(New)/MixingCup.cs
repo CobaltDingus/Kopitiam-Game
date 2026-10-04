@@ -70,20 +70,6 @@ IPointerUpHandler
             ingredientText.text = "Mixing Cup Contents: \n\nEMPTY";
         }
     }
-    // public void ReceiveIngredient(Ingredient ingredient)
-    // {
-    //     if (DrinkManager.Instance.AddIngredient(ingredient))
-    //     {
-    //         GameObject popUp = Instantiate(_popUpPrefab);
-    //         //popUp.GetComponentInChildren<TMP_Text>().fontSize = 30;
-    //         popUp.GetComponentInChildren<TMP_Text>().text = "+" + ingredient.Name;
-            
-    //         AudioManager.instance?.PlaySFX(SFXType.PowderFilling);
-
-    //         dragType = DragEnum.UnfinishedDrink;
-    //         canDrag = true;  
-    //     }
-    // }
     public bool ReceiveDraggable<T>(T ingredient)
     {
         if (ingredient is Ingredient ing && DrinkManager.Instance.AddIngredient(ing))
@@ -92,7 +78,13 @@ IPointerUpHandler
             //popUp.GetComponentInChildren<TMP_Text>().fontSize = 30;
             popUp.GetComponentInChildren<TMP_Text>().text = "+" + ing.Name;
             
-            AudioManager.instance?.PlaySFX(SFXType.PowderFilling);
+            if (ing.IngType == Ingredient.IngredientType.Powder)
+            {
+                AudioManager.instance?.PlaySFX(SFXType.PowderFilling);
+            } else if (ing.IngType == Ingredient.IngredientType.Liquid)
+            {
+                AudioManager.instance?.PlaySFX(SFXType.WaterFilling);
+            }
 
             dragType = DragEnum.UnfinishedDrink;
             canDrag = true;  

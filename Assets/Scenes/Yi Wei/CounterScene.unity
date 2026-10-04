@@ -4059,7 +4059,6 @@ MonoBehaviour:
   _customerSpriteRenderer: {fileID: 731234698}
   _dialogueText: {fileID: 1856555087}
   slideDuration: 0.5
-  startYOffset: -800
   customerTransform: {fileID: 731234699}
 --- !u!1 &738535695
 GameObject:
