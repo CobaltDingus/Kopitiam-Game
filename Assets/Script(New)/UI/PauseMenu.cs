@@ -30,7 +30,7 @@ public class PauseMenu : UIPanel
     public void TogglePauseWindow()
     {
         TogglePanel();
-        Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+        GlobalUtilities.ToggleTimeScale();
     }
 
 }

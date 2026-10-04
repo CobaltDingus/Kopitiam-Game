@@ -64,6 +64,7 @@ public class PouringSlot : DraggableObject, DropInterface
         {
             if (draggableObject is DrinkContainer drinkContainer)
             {
+                AudioManager.instance?.PlaySFX(SFXType.CupPlacing);
                 return DrinkManager.Instance.TrySetContainer(
                     drinkContainer.containerType, drinkContainer.containerSprite);
             }

@@ -39,6 +39,16 @@ UIPanel
         
     }
 
+    public void OnEnable()
+    {
+        ToggleTimescaleBridge();
+    }
+
+    public void OnDisable()
+    {
+        ToggleTimescaleBridge();
+    }
+
     public void UpdateContent(int day)
     {
         switch (day)
@@ -71,5 +81,10 @@ UIPanel
             default:
                 break;
         }
+    }
+
+    public void ToggleTimescaleBridge()
+    {
+        GlobalUtilities.ToggleTimeScale();
     }
 }

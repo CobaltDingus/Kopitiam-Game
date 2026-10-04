@@ -20,17 +20,17 @@ MonoBehaviour:
   - {fileID: -6764824688621072982, guid: 7d3c90f4ec232004f8bf8d1623b209e8, type: 3}
   variant: Tourist
   startFrontDialogue:
-  - 'Eh, i heard you can make '
+  - 'Eh, you sure know '
   startBackDialogue:
-  - ', can make me one ah?'
+  - right? Can make me one ah?
   perfectFrontDialogue:
-  - 'Wah, actually taste  '
+  - 'Wah, actually taste '
   perfectBackDialgue:
   - very nice
   decentFrontDialogue:
   - 'Ok lah, '
   decentBackDialogue:
-  - ' not that bad although it''s not what i ordered'
+  - not that bad but not what I ordered
   wrongFrontDialogue:
   - Huh?
   wrongBackDiaogue:
