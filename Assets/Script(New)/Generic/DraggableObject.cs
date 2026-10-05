@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,15 +9,13 @@ public abstract class DraggableObject :
     IDragHandler,
     IPointerUpHandler
 {
-    // [SerializeField] private object draggableObject;
     public DragEnum dragType;
-
     public bool canDrag;
     
     private GameObject draggedObject;
-
     [SerializeField] private GameObject dragPrefab;
     [SerializeField] private Sprite dragPrefabSprite;
+
     public Camera cam;
     [SerializeField] private bool hasDragIcon;
     private Collider2D objectCollider;
@@ -27,10 +23,7 @@ public abstract class DraggableObject :
     private Vector3 dragOffset;
 
     [SerializeField] private UIPanel panel;
-
     public UIPanel Panel => panel;
-    // [SerializeField] private UIPanel overlay;
-
     [SerializeField] private float dragHoldTime = 0.2f;
 
     private float holdTimer;
@@ -58,16 +51,6 @@ public abstract class DraggableObject :
     public abstract object GetData();
 
     public abstract void AfterDropFunctions();
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        
-        holdTimer = 0f;
-        isHolding = true;
-        isDragging = false;
-
-        pointerDownPosition = eventData.position;
-    }
 
     void Update()
     {
@@ -107,7 +90,6 @@ public abstract class DraggableObject :
             SpriteRenderer dragRenderer = draggedObject.GetComponentInChildren<SpriteRenderer>();
 
             dragRenderer.sprite = dragPrefabSprite;
-            // dragRenderer.sortingOrder = 100;
 
             Debug.Log("Dragging icon");
         }
@@ -121,6 +103,17 @@ public abstract class DraggableObject :
         }
         DragManager.BeginDrag(dragType);
     }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        
+        holdTimer = 0f;
+        isHolding = true;
+        isDragging = false;
+
+        pointerDownPosition = eventData.position;
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
         if (!isDragging)
@@ -143,6 +136,7 @@ public abstract class DraggableObject :
             transform.position = worldPos + dragOffset;
         }
     }
+    
     public void OnPointerUp(PointerEventData eventData)
     {
         isHolding = false;
@@ -152,7 +146,6 @@ public abstract class DraggableObject :
             if (panel != null)
             {
                 panel.OpenPanel();
-                // overlay.SetActive(!overlay.activeSelf);
             }
 
             return;

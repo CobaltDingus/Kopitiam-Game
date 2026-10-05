@@ -1,6 +1,4 @@
 using System;
-using UnityEngine;
-using UnityEngine.Events;
 
 public enum DragEnum
 {
@@ -15,8 +13,6 @@ public enum DragEnum
 public static class DragManager
 {
     public static bool IsDragging { get; private set; }
-
-    // public static DraggableObject Current { get; private set; }
     public static DragEnum CurrentlyDragging;
     public static event Action<DragEnum> onDragChange;
 
@@ -24,7 +20,6 @@ public static class DragManager
     {
         IsDragging = true;
         CurrentlyDragging = dragType;
-        Debug.Log(CurrentlyDragging + "HI");
         onDragChange?.Invoke(CurrentlyDragging);
     }
 
