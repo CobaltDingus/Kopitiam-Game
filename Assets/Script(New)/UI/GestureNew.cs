@@ -194,6 +194,7 @@ public class GestureNew : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoi
     {
         isDrawing = true;
 
+        // Make sure the center is up to date.
         UpdateRotationCenter();
 
         CurrentFingerWorldPosition = worldPos;
@@ -225,11 +226,13 @@ public class GestureNew : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoi
                 );
         }
 
+        // Calculate distance from the center of the drawing area.
         Vector2 delta =
             currentPos - rotationCenter;
 
         float radius = delta.magnitude;
 
+        // Ignore movement that is too close or too far.
         if (radius < minRadius ||
             radius > maxRadius)
         {
@@ -240,6 +243,7 @@ public class GestureNew : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoi
             Mathf.Atan2(delta.y, delta.x) *
             Mathf.Rad2Deg;
 
+        // First valid point.
         if (!hasPrevAngle)
         {
             prevAngle = angle;
@@ -247,14 +251,22 @@ public class GestureNew : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoi
             return;
         }
 
+        // Calculate angular movement.
         float diff =
             Mathf.DeltaAngle(prevAngle, angle);
 
+        // Ignore extremely tiny movement.
         if (Mathf.Abs(diff) <= 0.1f)
             return;
 
+        // ========================================================
+        // Determine rotation direction
+        // ========================================================
+
         if (currentDirection == RotationDirection.None)
         {
+            // Accumulate movement until we have enough information
+            // to determine the intended direction.
             directionDetectionProgress += diff;
 
             if (Mathf.Abs(directionDetectionProgress)
@@ -271,7 +283,8 @@ public class GestureNew : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoi
                         RotationDirection.Clockwise;
                 }
 
-
+                // Only start counting toward the circle after
+                // direction has been established.
                 totalAngle = 0f;
 
                 Debug.Log(
@@ -284,6 +297,10 @@ public class GestureNew : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoi
             return;
         }
 
+        // ========================================================
+        // Detect backtracking
+        // ========================================================
+
         bool isBacktracking =
             (currentDirection ==
                 RotationDirection.CounterClockwise &&
@@ -295,6 +312,8 @@ public class GestureNew : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoi
 
         if (isBacktracking)
         {
+            // Instead of resetting completely, subtract the
+            // backwards movement.
 
             totalAngle -= Mathf.Abs(diff);
 
@@ -305,6 +324,9 @@ public class GestureNew : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoi
             return;
         }
 
+        // ========================================================
+        // Normal rotation
+        // ========================================================
 
         totalAngle += Mathf.Abs(diff);
 

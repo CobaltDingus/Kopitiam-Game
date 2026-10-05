@@ -9,6 +9,11 @@ public class RecipeViewer : MonoBehaviour
     [SerializeField] private RecipeBook masterRecipeBook;
     [SerializeField] private RecipeRow rowPrefab;
     [SerializeField] private Transform contentParent;
+    
+    private void OnEnable()
+    {
+        // BuildListMaster();
+    }
 
     public void BuildListMaster()
     {
@@ -31,8 +36,15 @@ public class RecipeViewer : MonoBehaviour
         foreach (Transform child in contentParent)
             Destroy(child.gameObject);
 
+        // if (drinkRecipes == null) return;
+
+        // foreach (DrinkRecipe recipe in drinkRecipes)
+        // {
+            // if (recipe == null) continue;
+
         RecipeRow row = Instantiate(rowPrefab, contentParent);
         row.Populate(drinkRecipe);
+        // }
     }
 
     public void BuildListNoteMultiple(List<DrinkRecipe> drinksToAdd)
@@ -40,12 +52,36 @@ public class RecipeViewer : MonoBehaviour
         foreach (Transform child in contentParent)
             Destroy(child.gameObject);
 
+        // if (drinkRecipes == null) return;
+
         foreach (DrinkRecipe recipe in drinksToAdd)
         {
             if (recipe == null) continue;
 
             RecipeRow row = Instantiate(rowPrefab, contentParent);
             row.Populate(recipe);
+        }
+    }
+
+    public void BuildListCutoff(int cutOff)
+    {
+        foreach (Transform child in contentParent)
+            Destroy(child.gameObject);
+
+        // if (drinkRecipes == null) return;
+
+        // foreach (DrinkRecipe recipe in baseDrinkRecipes)
+        // {
+        //     if (recipe == null) continue;
+
+        //     RecipeRow row = Instantiate(rowPrefab, contentParent);
+        //     row.Populate(recipe);
+        // }
+
+        for (int i = 0; i < cutOff; i++)
+        {
+            RecipeRow row = Instantiate(rowPrefab, contentParent);
+            row.Populate(baseDrinkRecipes[i]); 
         }
     }
 }

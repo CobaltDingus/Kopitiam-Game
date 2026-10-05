@@ -7,7 +7,23 @@ public class IngredientShelf : MonoBehaviour
 
     void OnEnable()
     {
+        // ReworkedSaveManager.OnDayStart += UnlockIngredientDay;
         UnlockIngredientDay();
+    }
+
+    void OnDisable()
+    {
+        // ReworkedSaveManager.OnDayStart -= UnlockIngredientDay;
+    }
+
+    void Start()
+    {
+        
+    }
+
+    void Update()
+    {
+
     }
 
     private void UnlockIngredientDay()

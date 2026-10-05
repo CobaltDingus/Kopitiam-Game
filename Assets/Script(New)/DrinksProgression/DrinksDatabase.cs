@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 [CreateAssetMenu(fileName = "DrinksDatabase", menuName = "DrinksProgression/DrinksDatabase")]
 public class DrinksDatabase : ScriptableObject
@@ -22,16 +23,16 @@ public class DrinksDatabase : ScriptableObject
     // Sai Ka Hor
     [SerializeField] private List<DrinkRecipe> dayEightDrinks;
 
-    // private List<Drink> drinksToAdd;
+    private List<Drink> drinksToAdd;
     
-    // public List<Drink> DrinksToAdd => drinksToAdd;
+    public List<Drink> DrinksToAdd => drinksToAdd;
 
-    // public class ProgressionData
-    // {
-    //     public List<DrinkRecipe> newBaseDrinks;
-    //     public string noteText;
-    //     public string glossaryTerm;
-    // }
+    public class ProgressionData
+    {
+        public List<DrinkRecipe> newBaseDrinks;
+        public string noteText;
+        public string glossaryTerm;
+    }
     // public event Action<int> OnProgressDay;
     
     public void UnlockDrinks(int day)
@@ -72,5 +73,14 @@ public class DrinksDatabase : ScriptableObject
             recipeBook.AllRecipes.Add(drink);
         }
 
+        
+    }
+
+    public void RemoveFromTourist(List<DrinkRecipe> drinks)
+    {
+        foreach (DrinkRecipe drink in drinks)
+        {
+            recipeBook.TouristUniqueRecipe.Remove(drink);
+        }
     }
 }
