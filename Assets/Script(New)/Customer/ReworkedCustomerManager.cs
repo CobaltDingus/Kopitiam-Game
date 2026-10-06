@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class ReworkedCustomerManager : MonoBehaviour
 {
+    bool isFirstTutorial = true;
+
     public static ReworkedCustomerManager instance { get; private set; }
 
     [Header("Database (Revamp)")]
@@ -289,7 +291,15 @@ public class ReworkedCustomerManager : MonoBehaviour
             && ReworkedSaveManager.instance.Day == 0 && CurrentGameplayState == GameplayState.Tutorial)
         {
             GenerateTutorialOrder();
-            ToKitchen();
+
+            if (isFirstTutorial) {
+                isFirstTutorial = false;
+                SceneManager.LoadScene("TutorialScene");
+            }
+            else
+            {
+                ToKitchen();
+            }
             CurrentCounterState = CounterState.ServingOrder;
             EvaluateAndUpdateCounterState();
             return;
@@ -1049,4 +1059,6 @@ public class ReworkedCustomerManager : MonoBehaviour
         if (_dialogueText != null && !string.IsNullOrEmpty(_currentDialogueText))
             _dialogueText.text = _currentDialogueText;
     }
+
+
 }

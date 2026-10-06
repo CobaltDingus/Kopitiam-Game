@@ -8,10 +8,6 @@ public void MainMenu()
         SceneManager.LoadScene("MainMenuScene");
     }
 
-    //public void PlayGame()
-    //{
-    //    SceneManager.LoadScene("PlayGame");
-    //}
     public void SettingsScene()
     {
         SceneManager.LoadScene("SettingsScene");
@@ -33,6 +29,11 @@ public void MainMenu()
     }
 
     public void LoadCounter()
+    {
+        SceneManager.LoadScene("CounterScene");
+    }
+
+    public void LoadTutorial()
     {
         SceneManager.LoadScene("CounterScene");
     }
